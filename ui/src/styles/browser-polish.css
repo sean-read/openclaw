@@ -1,0 +1,604 @@
+/*
+   Browser polish layer
+   --------------------
+   This file is intentionally imported last from ui/src/styles.css.
+   It refines spacing, alignment, scrollbar treatment, shell depth, chat layout,
+   and control sizing without changing the Lit component structure.
+*/
+
+:root {
+  --polish-page-max: 1480px;
+  --polish-chat-max: 1180px;
+  --polish-card-border: color-mix(in srgb, var(--border) 76%, transparent);
+  --polish-card-border-strong: color-mix(in srgb, var(--border-strong) 76%, transparent);
+  --polish-surface: color-mix(in srgb, var(--card) 88%, var(--bg) 12%);
+  --polish-surface-soft: color-mix(in srgb, var(--bg-elevated) 76%, var(--bg) 24%);
+  --polish-glass: color-mix(in srgb, var(--bg) 82%, transparent);
+  --polish-shadow-soft: 0 1px 0 color-mix(in srgb, white 7%, transparent),
+    0 16px 44px color-mix(in srgb, black 28%, transparent);
+  --polish-shadow-panel: 0 1px 0 color-mix(in srgb, white 8%, transparent),
+    0 24px 70px color-mix(in srgb, black 26%, transparent);
+  --polish-inner-line: inset 0 1px 0 color-mix(in srgb, white 7%, transparent);
+}
+
+:root[data-theme-mode="light"] {
+  --polish-card-border: color-mix(in srgb, var(--border) 88%, transparent);
+  --polish-card-border-strong: color-mix(in srgb, var(--border-strong) 82%, transparent);
+  --polish-surface: color-mix(in srgb, var(--card) 92%, var(--bg) 8%);
+  --polish-surface-soft: color-mix(in srgb, var(--bg-elevated) 92%, var(--bg) 8%);
+  --polish-glass: color-mix(in srgb, var(--bg-elevated) 84%, transparent);
+  --polish-shadow-soft: 0 1px 0 rgba(255, 255, 255, 0.82),
+    0 16px 40px rgba(15, 23, 42, 0.08);
+  --polish-shadow-panel: 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 26px 70px rgba(15, 23, 42, 0.1);
+  --polish-inner-line: inset 0 1px 0 rgba(255, 255, 255, 0.88);
+}
+
+html {
+  background: var(--bg);
+  scrollbar-gutter: stable;
+}
+
+body {
+  min-width: 320px;
+  background:
+    radial-gradient(circle at 12% 8%, color-mix(in srgb, var(--accent) 10%, transparent) 0, transparent 30rem),
+    radial-gradient(circle at 88% 12%, color-mix(in srgb, var(--accent-2) 8%, transparent) 0, transparent 28rem),
+    linear-gradient(135deg, color-mix(in srgb, var(--bg) 95%, black 5%), var(--bg));
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(color-mix(in srgb, var(--grid-line) 80%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--grid-line) 80%, transparent) 1px, transparent 1px);
+  background-size: 40px 40px;
+  mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.46), transparent 62%);
+}
+
+openclaw-app {
+  isolation: isolate;
+}
+
+.shell {
+  background: transparent;
+}
+
+.content {
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--bg) 80%, transparent), transparent 34%),
+    color-mix(in srgb, var(--bg) 95%, var(--bg-elevated) 5%);
+  padding: clamp(14px, 1.7vw, 28px);
+}
+
+:root[data-theme-mode="light"] .content {
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--bg-content) 82%, white 18%), var(--bg-content));
+}
+
+.content > .card,
+.content > .grid,
+.content > .stack,
+.content > .stat-grid,
+.content > .note-grid,
+.content > .content-header,
+.content > .chat {
+  width: min(100%, var(--polish-page-max));
+  margin-inline: auto;
+}
+
+.topbar {
+  min-height: var(--shell-topbar-height);
+  padding: 0 clamp(14px, 1.4vw, 24px);
+  background: var(--polish-glass);
+  border-bottom-color: color-mix(in srgb, var(--border) 70%, transparent);
+  box-shadow: 0 1px 0 color-mix(in srgb, white 6%, transparent);
+}
+
+@supports (backdrop-filter: blur(1px)) {
+  .topbar,
+  .sidebar,
+  .agent-chat__input,
+  .slash-menu,
+  .theme-orb__menu {
+    backdrop-filter: blur(18px) saturate(1.4);
+    -webkit-backdrop-filter: blur(18px) saturate(1.4);
+  }
+}
+
+.topnav-shell {
+  max-width: var(--polish-page-max);
+  margin-inline: auto;
+}
+
+.topnav-shell .dashboard-header__breadcrumb-current,
+.page-title {
+  color: var(--text-strong);
+}
+
+.shell-nav {
+  background: color-mix(in srgb, var(--bg) 80%, transparent);
+  border-right-color: color-mix(in srgb, var(--border) 70%, transparent);
+}
+
+.sidebar {
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--bg-elevated) 18%, transparent), transparent 42%),
+    color-mix(in srgb, var(--bg) 94%, var(--bg-elevated) 6%);
+}
+
+.sidebar-shell {
+  padding: 16px 12px 14px;
+}
+
+.sidebar-brand__logo,
+.nav-collapse-toggle,
+.btn,
+.pill,
+.card,
+.stat,
+.account-card,
+.sidebar-version,
+.field input,
+.field textarea,
+.field select,
+.agent-chat__input,
+.chat-assistant-attachment-card,
+.slash-menu,
+.theme-orb__menu {
+  box-shadow: var(--polish-inner-line);
+}
+
+.sidebar-brand__title,
+.card-title,
+.stat-value,
+.nav-item__text {
+  text-rendering: geometricPrecision;
+}
+
+.nav-section {
+  gap: 8px;
+}
+
+.nav-section__items {
+  gap: 5px;
+}
+
+.nav-section__label {
+  min-height: 30px;
+  padding-inline: 11px;
+}
+
+.nav-item {
+  min-height: 42px;
+  padding: 0 11px;
+  border-radius: 12px;
+  outline-offset: 2px;
+}
+
+.nav-item.active,
+.nav-item--active {
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--accent) 14%, var(--bg-elevated) 86%),
+    color-mix(in srgb, var(--accent) 7%, var(--bg) 93%));
+  border-color: color-mix(in srgb, var(--accent) 24%, transparent);
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, white 10%, transparent),
+    0 10px 24px color-mix(in srgb, var(--accent) 10%, transparent);
+}
+
+.card,
+.stat,
+.account-card,
+.cron-form-section,
+.cron-summary-item,
+.chat-assistant-attachment-card {
+  border-color: var(--polish-card-border);
+  background:
+    linear-gradient(180deg, color-mix(in srgb, white 3%, transparent), transparent 48%),
+    var(--polish-surface);
+}
+
+.card {
+  border-radius: 18px;
+  padding: clamp(16px, 1.35vw, 22px);
+}
+
+.card:hover,
+.stat:hover,
+.account-card:hover {
+  border-color: var(--polish-card-border-strong);
+  box-shadow: var(--polish-shadow-soft);
+}
+
+.stat-grid,
+.note-grid,
+.grid {
+  gap: clamp(14px, 1.35vw, 22px);
+}
+
+.stat {
+  min-height: 92px;
+  border-radius: 16px;
+}
+
+.stat-label,
+.sidebar-brand__eyebrow,
+.nav-section__label-text,
+.cron-summary-label {
+  letter-spacing: 0.075em;
+}
+
+.btn,
+.pill,
+.topbar-search,
+.topbar-theme-mode,
+.nav-collapse-toggle,
+.theme-orb__trigger,
+.theme-orb__menu,
+.sidebar-version {
+  border-color: var(--polish-card-border);
+  background: var(--polish-surface-soft);
+}
+
+.btn {
+  min-height: 36px;
+  border-radius: 12px;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.btn:hover:not(:disabled),
+.topbar-search:hover,
+.nav-collapse-toggle:hover,
+.theme-orb__trigger:hover {
+  border-color: var(--polish-card-border-strong);
+  transform: translateY(-1px);
+}
+
+.btn.primary,
+.btn.cron-refresh-btn--loading {
+  background:
+    linear-gradient(180deg, color-mix(in srgb, white 18%, transparent), transparent 55%),
+    var(--accent);
+  border-color: color-mix(in srgb, var(--accent) 72%, white 10%);
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, white 22%, transparent),
+    0 14px 30px color-mix(in srgb, var(--accent) 22%, transparent);
+}
+
+.btn.primary:hover:not(:disabled) {
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, white 22%, transparent),
+    0 18px 38px color-mix(in srgb, var(--accent) 28%, transparent);
+}
+
+.btn--ghost,
+.agent-chat__input-btn,
+.chat-send-btn {
+  box-shadow: none;
+}
+
+.field input,
+.field textarea,
+.field select,
+.login-gate__secret-row input,
+.chat-compose .chat-compose__field textarea {
+  min-height: 38px;
+  border-color: var(--polish-card-border);
+  background:
+    linear-gradient(180deg, color-mix(in srgb, white 3%, transparent), transparent 55%),
+    color-mix(in srgb, var(--card) 82%, var(--bg) 18%);
+  border-radius: 12px;
+}
+
+.field input:hover,
+.field textarea:hover,
+.field select:hover,
+.login-gate__secret-row input:hover,
+.chat-compose .chat-compose__field textarea:hover {
+  border-color: var(--polish-card-border-strong);
+}
+
+.field input:focus,
+.field textarea:focus,
+.field select:focus,
+.login-gate__secret-row input:focus,
+.chat-compose .chat-compose__field textarea:focus {
+  border-color: color-mix(in srgb, var(--ring) 78%, transparent);
+  box-shadow: var(--focus-glow);
+}
+
+.field select,
+.chat-controls__session select,
+.chat-controls__model select {
+  min-height: 38px;
+  line-height: 1.2;
+  background-position: right 12px center;
+}
+
+.chat {
+  min-height: 0;
+}
+
+.content--chat {
+  padding: 14px 18px 0;
+  gap: 0;
+}
+
+.content--chat .content-header {
+  width: min(100%, var(--polish-chat-max));
+  padding: 6px 2px 12px;
+}
+
+.chat-thread {
+  width: min(100%, var(--polish-chat-max));
+  margin-inline: auto;
+  padding: 6px clamp(4px, 1vw, 12px) 10px;
+  border-radius: 18px;
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--accent) 28%, var(--border)) transparent;
+}
+
+.chat-thread-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: min(100%, var(--polish-chat-max));
+  margin-inline: auto;
+}
+
+.chat-compose {
+  width: min(100%, var(--polish-chat-max));
+  margin-inline: auto;
+  padding: 14px 0 16px;
+  background: linear-gradient(to bottom, transparent, color-mix(in srgb, var(--bg) 92%, transparent) 24%, var(--bg) 100%);
+}
+
+:root[data-theme-mode="light"] .chat-compose {
+  background: linear-gradient(to bottom, transparent, color-mix(in srgb, var(--bg-content) 86%, transparent) 24%, var(--bg-content) 100%);
+}
+
+.agent-chat__input {
+  margin: 0;
+  border-radius: 20px;
+  border-color: color-mix(in srgb, var(--border-strong) 58%, transparent);
+  background:
+    linear-gradient(180deg, color-mix(in srgb, white 5%, transparent), transparent 54%),
+    color-mix(in srgb, var(--card) 88%, var(--bg) 12%);
+  box-shadow: var(--polish-shadow-panel);
+  overflow: hidden;
+}
+
+.agent-chat__input:focus-within {
+  border-color: color-mix(in srgb, var(--ring) 58%, var(--border-strong));
+  box-shadow:
+    var(--polish-shadow-panel),
+    0 0 0 3px color-mix(in srgb, var(--ring) 18%, transparent);
+}
+
+.agent-chat__input > textarea {
+  min-height: 54px;
+  padding: 15px 16px 10px;
+}
+
+.agent-chat__toolbar {
+  min-height: 44px;
+  padding: 7px 11px;
+  border-top-color: color-mix(in srgb, var(--border) 64%, transparent);
+}
+
+.agent-chat__input-btn,
+.agent-chat__toolbar .btn--ghost,
+.chat-send-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+}
+
+.agent-chat__input-btn:hover:not(:disabled),
+.agent-chat__toolbar .btn--ghost:hover:not(:disabled),
+.chat-send-btn:hover:not(:disabled) {
+  color: var(--text-strong);
+  background: color-mix(in srgb, var(--accent-subtle) 56%, var(--bg-hover) 44%);
+}
+
+.chat-send-btn:not(:disabled) {
+  color: var(--accent);
+}
+
+.chat-send-btn--stop {
+  color: var(--destructive-foreground);
+  background: var(--danger);
+}
+
+.chat-controls {
+  gap: 9px;
+}
+
+.chat-controls__session,
+.chat-controls__model {
+  min-width: 180px;
+}
+
+.chat-controls__thinking {
+  min-height: 36px;
+  border-radius: 12px;
+  background: var(--polish-surface-soft);
+  border-color: var(--polish-card-border);
+}
+
+.chat-new-messages,
+.context-notice,
+.slash-menu {
+  box-shadow: var(--polish-shadow-soft);
+}
+
+.slash-menu {
+  border-radius: 16px;
+  padding: 8px;
+  background: color-mix(in srgb, var(--popover) 88%, transparent);
+}
+
+.slash-menu-item {
+  min-height: 38px;
+  border-radius: 11px;
+}
+
+.table,
+table {
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.table,
+.card table,
+table.account-table,
+table.sessions-table {
+  width: 100%;
+  overflow: hidden;
+  border: 1px solid var(--polish-card-border);
+  border-radius: 14px;
+  background: var(--polish-surface);
+}
+
+th,
+td {
+  vertical-align: middle;
+}
+
+th {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 650;
+  letter-spacing: 0.055em;
+  text-transform: uppercase;
+}
+
+tr + tr td,
+thead + tbody tr:first-child td {
+  border-top-color: color-mix(in srgb, var(--border) 72%, transparent);
+}
+
+pre,
+code,
+.cm-preview pre {
+  border-radius: 12px;
+}
+
+.cm-preview {
+  color: var(--text);
+}
+
+.login-gate {
+  background:
+    radial-gradient(circle at 50% 0%, color-mix(in srgb, var(--accent) 14%, transparent), transparent 32rem),
+    var(--bg);
+}
+
+.login-gate__card {
+  border-radius: 24px;
+  border-color: var(--polish-card-border-strong);
+  background:
+    linear-gradient(180deg, color-mix(in srgb, white 5%, transparent), transparent 55%),
+    var(--polish-surface);
+  box-shadow: var(--polish-shadow-panel);
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  min-height: 42px;
+  border: 3px solid transparent;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--accent) 26%, var(--border-strong) 74%);
+  background-clip: padding-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in srgb, var(--accent) 42%, var(--border-strong) 58%);
+  background-clip: padding-box;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--accent) 30%, var(--border-strong)) transparent;
+}
+
+@media (max-width: 1100px) {
+  .content > .card,
+  .content > .grid,
+  .content > .stack,
+  .content > .stat-grid,
+  .content > .note-grid,
+  .content > .content-header,
+  .content > .chat,
+  .topnav-shell,
+  .chat-thread,
+  .chat-compose,
+  .content--chat .content-header {
+    width: 100%;
+  }
+
+  .topbar {
+    min-height: auto;
+  }
+
+  .topnav-shell {
+    gap: 10px;
+  }
+}
+
+@media (max-width: 760px) {
+  .content {
+    padding: 12px;
+  }
+
+  .content--chat {
+    padding: 10px 10px 0;
+  }
+
+  .card {
+    border-radius: 16px;
+  }
+
+  .chat-controls__session,
+  .chat-controls__model {
+    min-width: min(100%, 150px);
+    max-width: 100%;
+  }
+
+  .agent-chat__input {
+    border-radius: 18px;
+  }
+
+  .agent-chat__toolbar {
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .agent-chat__toolbar-left,
+  .agent-chat__toolbar-right {
+    flex-wrap: wrap;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn:hover:not(:disabled),
+  .topbar-search:hover,
+  .nav-collapse-toggle:hover,
+  .theme-orb__trigger:hover {
+    transform: none;
+  }
+}
