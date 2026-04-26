@@ -1,75 +1,34 @@
-// OpenClaw Control – Service Worker
-// Handles offline caching and push notifications.
+// OpenClaw Control – Service Worker (passive)
+// Caching is intentionally disabled. The SW only clears any
+// previously-cached content on activate, then stays out of the way
+// (no fetch handler) so every request goes straight to the network.
+// This avoids the stale-asset class of bugs during active UI work.
 
-const CACHE_NAME = "openclaw-control-v1";
-
-// Minimal app-shell files to precache.
-const PRECACHE_URLS = ["./"];
-
-self.addEventListener("install", (event) => {
-  event.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(PRECACHE_URLS)));
+self.addEventListener("install", () => {
   self.skipWaiting();
 });
 
 self.addEventListener("activate", (event) => {
   event.waitUntil(
-    caches
-      .keys()
-      .then((keys) =>
-        Promise.all(keys.filter((key) => key !== CACHE_NAME).map((key) => caches.delete(key))),
-      ),
+    (async () => {
+      try {
+        const keys = await caches.keys();
+        await Promise.all(keys.map((key) => caches.delete(key)));
+      } catch (_e) {
+        /* ignore */
+      }
+      try {
+        await self.clients.claim();
+      } catch (_e) {
+        /* ignore */
+      }
+    })(),
   );
-  self.clients.claim();
 });
 
-self.addEventListener("fetch", (event) => {
-  const url = new URL(event.request.url);
+// No fetch handler. Every request goes to the network.
 
-  // Skip non-GET and cross-origin requests.
-  if (event.request.method !== "GET" || url.origin !== self.location.origin) {
-    return;
-  }
-
-  // Skip non-UI routes — API, RPC, and plugin routes should never be cached.
-  if (
-    url.pathname.startsWith("/api/") ||
-    url.pathname.startsWith("/rpc") ||
-    url.pathname.startsWith("/plugins/")
-  ) {
-    return;
-  }
-
-  // Cache-first for hashed assets; network-first for HTML/other.
-  if (url.pathname.includes("/assets/")) {
-    event.respondWith(
-      caches.match(event.request).then(
-        (cached) =>
-          cached ||
-          fetch(event.request).then((response) => {
-            if (response.ok) {
-              const clone = response.clone();
-              void caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
-            }
-            return response;
-          }),
-      ),
-    );
-  } else {
-    event.respondWith(
-      fetch(event.request)
-        .then((response) => {
-          if (response.ok) {
-            const clone = response.clone();
-            void caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
-          }
-          return response;
-        })
-        .catch(() => caches.match(event.request)),
-    );
-  }
-});
-
-// --- Web Push ---
+// --- Web Push (kept so notification subscriptions still work) ---
 
 self.addEventListener("push", (event) => {
   if (!event.data) {
@@ -102,7 +61,6 @@ self.addEventListener("notificationclick", (event) => {
 
   event.waitUntil(
     self.clients.matchAll({ type: "window", includeUncontrolled: true }).then((clients) => {
-      // Focus an existing window if one is open.
       for (const client of clients) {
         if (new URL(client.url).pathname === new URL(targetUrl, self.location.origin).pathname) {
           return client.focus();

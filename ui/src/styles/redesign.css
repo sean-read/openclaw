@@ -9,6 +9,14 @@
    1. APP CHROME — backdrop, scroll behavior, typography
    -------------------------------------------------------------- */
 
+:root {
+  /* Claude-style serif display stack for hero headings.
+     Falls back to system serif if Tiempos / Charter unavailable. */
+  --font-display-serif:
+    "Tiempos Headline", "Charter", "Iowan Old Style", "Cambria",
+    "Georgia", ui-serif, serif;
+}
+
 body {
   font-feature-settings: "ss01", "cv11", "cv02";
   letter-spacing: -0.005em;
@@ -341,18 +349,17 @@ openclaw-app::before {
 }
 
 .agent-chat__welcome h2 {
-  font-size: 32px;
-  font-weight: 650;
-  letter-spacing: -0.028em;
-  background: linear-gradient(
-    135deg,
-    var(--text-strong) 30%,
-    color-mix(in srgb, var(--accent) 70%, var(--text-strong)) 100%
-  );
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  font-family: var(--font-display-serif);
+  font-size: 36px;
+  font-weight: 500;
+  letter-spacing: -0.012em;
+  line-height: 1.18;
+  color: var(--text-strong);
   margin: 4px 0 0;
+}
+
+:root[data-theme-mode="light"] .agent-chat__welcome h2 {
+  color: #2a2925;
 }
 
 .agent-chat__hint {
@@ -485,69 +492,68 @@ openclaw-app::before {
    9. MESSAGE BUBBLES — clean, modern
    -------------------------------------------------------------- */
 
-/* Base bubble — subtle elevated card */
+/* Claude-style messages: assistant is borderless prose with calm
+   spacing; user is a refined coral pill, right-aligned, restrained. */
+
+/* Base bubble — minimal default for tool / system / loading skeletons */
 .chat-bubble {
   position: relative;
-  padding: 14px 18px;
-  border-radius: 16px;
-  background: color-mix(in srgb, var(--card) 85%, transparent);
-  border: 1px solid color-mix(in srgb, var(--border) 65%, transparent);
-  box-shadow: 0 2px 8px -3px color-mix(in srgb, black 30%, transparent);
+  padding: 12px 16px !important;
+  border-radius: 14px !important;
+  background: color-mix(in srgb, var(--card) 70%, transparent) !important;
+  border: 1px solid color-mix(in srgb, var(--border) 70%, transparent) !important;
+  box-shadow: none !important;
   transition:
     background var(--duration-fast) ease,
-    border-color var(--duration-fast) ease,
-    box-shadow var(--duration-normal) ease;
+    border-color var(--duration-fast) ease;
 }
 
-:root[data-theme-mode="light"] .chat-bubble {
-  background: var(--card);
-  border-color: color-mix(in srgb, var(--border) 90%, transparent);
-  box-shadow: 0 2px 6px -3px color-mix(in srgb, black 8%, transparent);
-}
-
-.chat-bubble:hover {
-  border-color: color-mix(in srgb, var(--accent) 30%, var(--border));
-}
-
-/* Assistant — calm card, sender-side asymmetric corner */
+/* ASSISTANT — Claude's borderless prose. The message reads as
+   thoughtful text, not a chunk of UI. */
 .chat-group.assistant .chat-bubble,
 .chat-group.other .chat-bubble,
 .chat-group:not(.user):not(.tool):not(.system) .chat-bubble {
-  background: linear-gradient(
-    180deg,
-    color-mix(in srgb, var(--bg-elevated) 100%, white 1%),
-    var(--bg-elevated) 100%
-  );
-  border-color: color-mix(in srgb, var(--border-strong) 80%, transparent);
-  border-bottom-left-radius: 6px;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 4px 2px 8px !important;
+  border-radius: 0 !important;
+  border-bottom-left-radius: 0 !important;
 }
 
-:root[data-theme-mode="light"] .chat-group.assistant .chat-bubble,
-:root[data-theme-mode="light"] .chat-group.other .chat-bubble,
-:root[data-theme-mode="light"] .chat-group:not(.user):not(.tool):not(.system) .chat-bubble {
-  background: var(--card);
-  border-color: color-mix(in srgb, var(--border) 90%, transparent);
+/* No accent rail on assistant — keep it clean. */
+.chat-group.assistant .chat-bubble::before,
+.chat-group.other .chat-bubble::before,
+.chat-group:not(.user):not(.tool):not(.system) .chat-bubble::before {
+  content: none;
 }
 
-/* User — bold filled coral with asymmetric corner + glow */
+.chat-group.assistant .chat-bubble:hover,
+.chat-group.other .chat-bubble:hover,
+.chat-group:not(.user):not(.tool):not(.system) .chat-bubble:hover {
+  background: transparent !important;
+  border: none !important;
+}
+
+/* USER — refined coral pill, right-aligned, no shouty glow. */
 .chat-group.user .chat-bubble {
-  background: linear-gradient(
-    135deg,
-    color-mix(in srgb, var(--accent) 100%, white 4%),
-    color-mix(in srgb, var(--accent) 100%, black 16%)
-  );
-  color: var(--accent-foreground);
-  border-color: color-mix(in srgb, var(--accent) 60%, transparent);
-  border-bottom-right-radius: 6px;
-  box-shadow:
-    0 8px 22px -6px color-mix(in srgb, var(--accent) 40%, transparent),
-    inset 0 1px 0 color-mix(in srgb, white 22%, transparent);
+  background: var(--accent) !important;
+  color: var(--accent-foreground) !important;
+  border: 1px solid color-mix(in srgb, var(--accent) 80%, black 6%) !important;
+  border-bottom-right-radius: 6px !important;
+  padding: 12px 16px !important;
+  box-shadow: none !important;
+  font-weight: 500;
+}
+
+:root[data-theme-mode="light"] .chat-group.user .chat-bubble {
+  background: var(--accent) !important;
+  color: #ffffff !important;
+  border-color: color-mix(in srgb, var(--accent) 90%, black 8%) !important;
 }
 
 .chat-group.user .chat-bubble:hover {
-  box-shadow:
-    0 12px 30px -6px color-mix(in srgb, var(--accent) 50%, transparent),
-    inset 0 1px 0 color-mix(in srgb, white 26%, transparent);
+  background: color-mix(in srgb, var(--accent) 100%, black 4%) !important;
 }
 
 .chat-group.user .chat-bubble :where(a) {
@@ -599,49 +605,37 @@ openclaw-app::before {
    10. COMPOSER — floating glass tile
    -------------------------------------------------------------- */
 
+/* Claude-style composer: a clean rounded textarea, calm background,
+   subtle border, no glass-tile drama. The accent only surfaces on
+   focus as a soft halo. */
 .agent-chat__input {
-  margin: 0 16px 16px;
-  border-radius: 22px;
-  background: color-mix(in srgb, var(--card) 80%, transparent);
-  border: 1px solid color-mix(in srgb, var(--border-strong) 55%, transparent);
-  box-shadow:
-    0 18px 50px -16px color-mix(in srgb, black 50%, transparent),
-    0 4px 12px -4px color-mix(in srgb, black 25%, transparent),
-    inset 0 1px 0 color-mix(in srgb, white 6%, transparent);
+  margin: 0 12px 16px !important;
+  border-radius: 16px !important;
+  background: #1a1d27 !important;
+  border: 1px solid #2c3142 !important;
+  box-shadow: 0 4px 14px -6px rgba(0, 0, 0, 0.4) !important;
   transition:
-    border-color var(--duration-fast) ease,
-    box-shadow var(--duration-normal) ease;
-}
-
-@supports (backdrop-filter: blur(1px)) {
-  .agent-chat__input {
-    background: color-mix(in srgb, var(--card) 65%, transparent);
-    backdrop-filter: blur(24px) saturate(1.6);
-    -webkit-backdrop-filter: blur(24px) saturate(1.6);
-  }
+    border-color 160ms ease,
+    box-shadow 200ms ease;
 }
 
 :root[data-theme-mode="light"] .agent-chat__input {
-  background: color-mix(in srgb, white 88%, transparent);
-  border-color: color-mix(in srgb, var(--border) 80%, transparent);
-  box-shadow:
-    0 18px 50px -16px color-mix(in srgb, black 14%, transparent),
-    0 4px 10px -4px color-mix(in srgb, black 8%, transparent),
-    inset 0 1px 0 color-mix(in srgb, white 80%, transparent);
-}
-
-@supports (backdrop-filter: blur(1px)) {
-  :root[data-theme-mode="light"] .agent-chat__input {
-    background: color-mix(in srgb, white 72%, transparent);
-  }
+  background: #ffffff !important;
+  border-color: #d8d4cc !important;
+  box-shadow: 0 4px 14px -6px rgba(40, 20, 10, 0.08) !important;
 }
 
 .agent-chat__input:focus-within {
-  border-color: color-mix(in srgb, var(--accent) 55%, var(--border-strong));
+  border-color: color-mix(in srgb, var(--accent) 70%, var(--border-strong)) !important;
   box-shadow:
-    0 18px 50px -16px color-mix(in srgb, black 50%, transparent),
-    0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent),
-    inset 0 1px 0 color-mix(in srgb, white 6%, transparent);
+    0 4px 14px -6px rgba(0, 0, 0, 0.4),
+    0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent) !important;
+}
+
+:root[data-theme-mode="light"] .agent-chat__input:focus-within {
+  box-shadow:
+    0 4px 14px -6px rgba(40, 20, 10, 0.08),
+    0 0 0 3px color-mix(in srgb, var(--accent) 22%, transparent) !important;
 }
 
 .agent-chat__input > textarea {
@@ -758,15 +752,59 @@ button.btn {
   font-weight: 500;
 }
 
-/* Chat header pills (model/session/reasoning) */
+/* Chat header dropdown pills (session / model / reasoning) —
+   Claude-style: clean pill, custom chevron, comfortable padding. */
 .chat-controls__session select,
-.chat-controls__model select {
-  border-radius: 10px;
-  height: 34px;
-  font-size: 13px;
-  letter-spacing: -0.005em;
-  border: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
-  background: color-mix(in srgb, var(--card) 70%, transparent);
+.chat-controls__model select,
+.chat-controls__thinking select,
+.chat-session select,
+select.chat-controls__session,
+select.chat-controls__model {
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  height: 36px !important;
+  padding: 0 36px 0 14px !important;
+  border-radius: 10px !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  letter-spacing: -0.005em !important;
+  border: 1px solid color-mix(in srgb, var(--border) 70%, transparent) !important;
+  background:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238a8a92' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'></polyline></svg>")
+    no-repeat right 12px center / 12px,
+    color-mix(in srgb, var(--card) 70%, transparent) !important;
+  color: var(--text) !important;
+  cursor: pointer;
+  transition:
+    border-color 150ms ease,
+    background-color 150ms ease;
+}
+
+.chat-controls__session select:hover,
+.chat-controls__model select:hover,
+.chat-controls__thinking select:hover,
+.chat-session select:hover {
+  border-color: color-mix(in srgb, var(--border-strong) 90%, transparent) !important;
+  background-color: color-mix(in srgb, var(--card) 90%, transparent) !important;
+}
+
+.chat-controls__session select:focus-visible,
+.chat-controls__model select:focus-visible,
+.chat-controls__thinking select:focus-visible,
+.chat-session select:focus-visible {
+  border-color: color-mix(in srgb, var(--accent) 60%, var(--border-strong)) !important;
+  outline: none !important;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent) !important;
+}
+
+/* Native option list in dark themes — let the browser handle but
+   improve readability. */
+.chat-controls__session select option,
+.chat-controls__model select option,
+.chat-controls__thinking select option {
+  background: var(--card);
+  color: var(--text);
 }
 
 /* New messages pill */
