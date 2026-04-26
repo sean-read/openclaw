@@ -49,3 +49,16 @@ Configured as a **static** deployment:
 ├── openclaw.mjs         # CLI entrypoint
 └── package.json         # Monorepo root (pnpm)
 ```
+
+## Visual customizations made in Replit
+
+These are local CSS-only tweaks layered on top of the upstream UI:
+
+- **Login screen** (`ui/src/styles/login-polish.css`): compacted card width 640→440px, smaller logo (58→40px), tighter inputs (54→38px) and button (56→40px).
+- **Chat screen** (`ui/src/styles/chat/{text,grouped,layout}.css`):
+  - Centered single-column layout (max-width 768px) for chat groups and composer, ChatGPT/Claude style.
+  - Text 14→15px, line-height 1.5→1.65 for better readability.
+  - Assistant messages: no bubble or border (transparent); user messages: subtle pill with rounded 18px border.
+  - Streaming indicator: blinking accent caret at end of line (replaced pulsing border).
+  - Composer: rounded 22px pill card, accent focus glow, larger 15px text, circular high-contrast send button.
+
