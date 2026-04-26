@@ -234,11 +234,18 @@ nav.shell-nav {
 }
 
 .chat-bubble {
-  border-radius: var(--radius-lg);
-  padding: 14px 18px;
-  background: var(--bg-elevated);
-  border: 1px solid var(--border-strong);
-  box-shadow: var(--shadow-md);
+  position: relative;
+  border-radius: var(--radius-lg) !important;
+  padding: 16px 20px !important;
+  background: linear-gradient(
+    180deg,
+    #242936 0%,
+    #1c2030 100%
+  ) !important;
+  border: 1px solid #3a3f55 !important;
+  box-shadow:
+    0 6px 20px -4px rgba(0, 0, 0, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
   transition:
     background var(--duration-fast) ease,
     border-color var(--duration-fast) ease,
@@ -247,66 +254,115 @@ nav.shell-nav {
 }
 
 :root[data-theme-mode="light"] .chat-bubble {
-  background: var(--card);
-  border-color: var(--border);
+  background: #ffffff !important;
+  border-color: #e2e2dc !important;
+  box-shadow:
+    0 4px 14px -4px rgba(40, 20, 10, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5) !important;
 }
 
 .chat-bubble:hover {
-  border-color: color-mix(in srgb, var(--accent) 35%, var(--border-strong));
-  box-shadow: var(--shadow-lg);
+  border-color: color-mix(in srgb, var(--accent) 50%, #3a3f55) !important;
+  box-shadow:
+    0 10px 28px -6px rgba(0, 0, 0, 0.6),
+    0 0 0 1px color-mix(in srgb, var(--accent) 30%, transparent),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
 }
 
-/* User bubble — filled coral, asymmetric tail, dramatic glow */
+/* USER BUBBLE — bold filled coral with thick glow + asymmetric tail */
 .chat-group.user .chat-bubble {
   background: linear-gradient(
     135deg,
-    color-mix(in srgb, var(--accent) 88%, white 4%),
-    color-mix(in srgb, var(--accent) 100%, black 16%)
-  );
-  color: var(--accent-foreground);
-  border: 1px solid color-mix(in srgb, var(--accent) 55%, transparent);
-  border-bottom-right-radius: 6px;
-  padding: 14px 18px;
+    #ff8170 0%,
+    #ff5c4a 100%
+  ) !important;
+  color: #1a0e0c !important;
+  border: 1px solid #ff5c4a !important;
+  border-bottom-right-radius: 6px !important;
+  padding: 16px 20px !important;
   box-shadow:
-    var(--shadow-md),
-    0 8px 24px -8px color-mix(in srgb, var(--accent) 40%, transparent),
-    inset 0 1px 0 color-mix(in srgb, white 18%, transparent);
+    0 8px 28px -4px rgba(255, 92, 74, 0.5),
+    0 2px 8px rgba(255, 92, 74, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3) !important;
+  font-weight: 500;
+}
+
+:root[data-theme-mode="light"] .chat-group.user .chat-bubble {
+  background: linear-gradient(
+    135deg,
+    #e84a3a 0%,
+    #c92e22 100%
+  ) !important;
+  color: #ffffff !important;
+  border-color: #c92e22 !important;
+  box-shadow:
+    0 6px 20px -4px rgba(201, 46, 34, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.25) !important;
 }
 
 .chat-group.user .chat-bubble:hover {
   box-shadow:
-    var(--shadow-lg),
-    0 12px 32px -8px color-mix(in srgb, var(--accent) 50%, transparent),
-    inset 0 1px 0 color-mix(in srgb, white 22%, transparent);
+    0 12px 36px -4px rgba(255, 92, 74, 0.65),
+    0 4px 12px rgba(255, 92, 74, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4) !important;
 }
 
 .chat-group.user .chat-bubble :where(a) {
-  color: color-mix(in srgb, var(--accent-foreground) 85%, white);
-  text-decoration-color: color-mix(in srgb, var(--accent-foreground) 50%, transparent);
+  color: rgba(26, 14, 12, 0.85);
+  text-decoration-color: rgba(26, 14, 12, 0.5);
 }
 
 .chat-group.user .chat-bubble :where(:not(pre) > code) {
-  background: color-mix(in srgb, var(--accent-foreground) 14%, transparent);
-  color: var(--accent-foreground);
+  background: rgba(26, 14, 12, 0.18);
+  color: #1a0e0c;
 }
 
-/* Assistant bubble — clearly elevated card with asymmetric tail */
+:root[data-theme-mode="light"] .chat-group.user .chat-bubble :where(a) {
+  color: rgba(255, 255, 255, 0.92);
+}
+
+:root[data-theme-mode="light"] .chat-group.user .chat-bubble :where(:not(pre) > code) {
+  background: rgba(255, 255, 255, 0.22);
+  color: #ffffff;
+}
+
+/* ASSISTANT BUBBLE — clearly elevated card with coral accent rail on the left */
 .chat-group:not(.user):not(.tool):not(.system) .chat-bubble {
   background: linear-gradient(
     180deg,
-    color-mix(in srgb, var(--bg-elevated) 100%, white 2%),
-    var(--bg-elevated)
-  );
-  border: 1px solid var(--border-strong);
-  border-bottom-left-radius: 6px;
+    #242936 0%,
+    #1c2030 100%
+  ) !important;
+  border: 1px solid #3a3f55 !important;
+  border-bottom-left-radius: 6px !important;
   box-shadow:
-    var(--shadow-md),
-    inset 0 1px 0 color-mix(in srgb, white 5%, transparent);
+    0 6px 20px -4px rgba(0, 0, 0, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+}
+
+.chat-group:not(.user):not(.tool):not(.system) .chat-bubble::before {
+  content: "";
+  position: absolute;
+  top: 12px;
+  bottom: 12px;
+  left: -1px;
+  width: 3px;
+  border-radius: 0 3px 3px 0;
+  background: linear-gradient(
+    180deg,
+    var(--accent),
+    color-mix(in srgb, var(--accent) 60%, transparent)
+  );
+  opacity: 0.85;
+  pointer-events: none;
 }
 
 :root[data-theme-mode="light"] .chat-group:not(.user):not(.tool):not(.system) .chat-bubble {
-  background: var(--card);
-  border-color: var(--border);
+  background: #ffffff !important;
+  border-color: #e2e2dc !important;
+  box-shadow:
+    0 4px 14px -4px rgba(40, 20, 10, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5) !important;
 }
 
 /* Avatar sculpt — larger and more prominent */
