@@ -1,0 +1,601 @@
+/* ============================================================
+   CARAPACE REDESIGN OVERLAY
+   --------------------------------------------------------------
+   Visual polish layer applied on top of existing component CSS.
+   Refines the browser communication surface (chat, composer,
+   sidebar, topbar, welcome) without changing markup or class
+   names. Loaded last so it can override defaults cleanly.
+   ============================================================ */
+
+/* ------------------------------------------------------------
+   GLOBAL TYPOGRAPHY POLISH
+   ------------------------------------------------------------ */
+
+body {
+  font-feature-settings:
+    "ss01", "ss02", "cv11", "cv02", "cv03";
+  letter-spacing: -0.005em;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.dashboard-header__breadcrumb-current {
+  letter-spacing: -0.018em;
+  font-feature-settings: "ss01", "ss02", "cv11";
+}
+
+/* Subtle warm gradient wash behind the entire app surface */
+openclaw-app::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(
+      1100px 700px at 12% -8%,
+      color-mix(in srgb, var(--accent) 10%, transparent),
+      transparent 60%
+    ),
+    radial-gradient(
+      900px 600px at 92% 108%,
+      color-mix(in srgb, var(--accent-2, #38bdf8) 6%, transparent),
+      transparent 55%
+    );
+  opacity: 0.95;
+}
+
+:root[data-theme-mode="light"] openclaw-app::before {
+  background:
+    radial-gradient(
+      1100px 700px at 12% -8%,
+      color-mix(in srgb, var(--accent) 5%, transparent),
+      transparent 60%
+    ),
+    radial-gradient(
+      900px 600px at 92% 108%,
+      color-mix(in srgb, var(--accent-2, #0284c7) 4%, transparent),
+      transparent 55%
+    );
+}
+
+/* ------------------------------------------------------------
+   SHELL — TOPBAR + SIDEBAR
+   ------------------------------------------------------------ */
+
+.shell {
+  --shell-pad: 18px;
+  --shell-gap: 18px;
+  --shell-nav-width: 268px;
+}
+
+.topbar {
+  border-bottom: 1px solid color-mix(in srgb, var(--border) 60%, transparent);
+  background: var(--chrome);
+  backdrop-filter: blur(18px) saturate(1.7);
+  -webkit-backdrop-filter: blur(18px) saturate(1.7);
+}
+
+.topnav-shell .dashboard-header__breadcrumb-current {
+  color: var(--text-strong);
+  font-weight: 600;
+  letter-spacing: -0.012em;
+}
+
+/* Refined sidebar surface */
+.shell-nav,
+.sidebar,
+nav.shell-nav {
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--bg-accent) 92%, var(--accent) 0%),
+    var(--bg) 60%
+  );
+  border-right: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
+}
+
+/* Active nav item glow */
+.nav-item--active,
+.shell-nav__item[aria-current="page"],
+.shell-nav__item.is-active {
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--accent) 14%, transparent),
+    color-mix(in srgb, var(--accent) 4%, transparent)
+  );
+  border-radius: var(--radius-md);
+  position: relative;
+}
+
+.nav-item--active::before,
+.shell-nav__item[aria-current="page"]::before,
+.shell-nav__item.is-active::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 6px;
+  bottom: 6px;
+  width: 3px;
+  border-radius: 0 3px 3px 0;
+  background: var(--accent);
+  box-shadow: 0 0 12px var(--accent-glow);
+}
+
+/* ------------------------------------------------------------
+   CHAT THREAD — WELCOME, MESSAGES, COMPOSER
+   ------------------------------------------------------------ */
+
+.chat-thread {
+  padding: 4px 10px 10px;
+  scroll-padding-bottom: 120px;
+}
+
+.chat-thread-inner {
+  max-width: 920px;
+  margin: 0 auto;
+  padding-top: 18px;
+}
+
+/* Welcome screen — sculpted hero */
+.agent-chat__welcome {
+  padding: 64px 24px 96px;
+  gap: 18px;
+}
+
+.agent-chat__welcome h2 {
+  font-size: 30px;
+  font-weight: 650;
+  letter-spacing: -0.025em;
+  background: linear-gradient(
+    135deg,
+    var(--text-strong) 30%,
+    color-mix(in srgb, var(--accent) 65%, var(--text-strong)) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.agent-chat__avatar--logo,
+.agent-chat__avatar--text {
+  width: 64px;
+  height: 64px;
+  border-radius: var(--radius-xl);
+  box-shadow:
+    var(--shadow-md),
+    inset 0 1px 0 color-mix(in srgb, white 7%, transparent);
+  background:
+    radial-gradient(circle at 30% 25%, color-mix(in srgb, var(--accent) 22%, transparent), transparent 65%),
+    var(--panel-strong);
+  border: 1px solid color-mix(in srgb, var(--border) 90%, transparent);
+}
+
+.agent-chat__avatar--logo img {
+  width: 36px;
+  height: 36px;
+}
+
+.agent-chat__suggestions {
+  max-width: 620px;
+  gap: 10px;
+}
+
+.agent-chat__suggestion {
+  padding: 10px 18px;
+  font-size: 13.5px;
+  font-weight: 500;
+  background: color-mix(in srgb, var(--card) 92%, transparent);
+  border: 1px solid color-mix(in srgb, var(--border) 80%, transparent);
+  border-radius: var(--radius-full);
+  box-shadow: var(--shadow-sm);
+  transition:
+    transform var(--duration-fast) var(--ease-out),
+    border-color var(--duration-fast) ease,
+    box-shadow var(--duration-fast) ease,
+    background var(--duration-fast) ease;
+}
+
+.agent-chat__suggestion:hover {
+  transform: translateY(-1px);
+  border-color: color-mix(in srgb, var(--accent) 50%, var(--border));
+  background: color-mix(in srgb, var(--accent) 6%, var(--card));
+  box-shadow: var(--shadow-md);
+}
+
+/* ------------------------------------------------------------
+   MESSAGE BUBBLES — sculpted & differentiated
+   ------------------------------------------------------------ */
+
+.chat-group {
+  margin-bottom: 18px;
+}
+
+.chat-group-messages {
+  max-width: min(820px, 78%);
+  gap: 4px;
+}
+
+.chat-bubble {
+  border-radius: var(--radius-lg);
+  padding: 12px 16px;
+  background: color-mix(in srgb, var(--card) 95%, transparent);
+  border: 1px solid color-mix(in srgb, var(--border) 75%, transparent);
+  box-shadow: var(--shadow-sm);
+  transition:
+    background var(--duration-fast) ease,
+    border-color var(--duration-fast) ease,
+    box-shadow var(--duration-normal) ease;
+}
+
+.chat-bubble:hover {
+  border-color: color-mix(in srgb, var(--border-strong) 80%, transparent);
+}
+
+/* User bubble — filled coral, sender-side asymmetric corner */
+.chat-group.user .chat-bubble {
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--accent) 92%, white 0%),
+    color-mix(in srgb, var(--accent) 100%, black 8%)
+  );
+  color: var(--accent-foreground);
+  border: 1px solid color-mix(in srgb, var(--accent) 65%, transparent);
+  border-bottom-right-radius: 6px;
+  box-shadow:
+    var(--shadow-md),
+    0 0 0 1px color-mix(in srgb, var(--accent) 45%, transparent) inset;
+}
+
+.chat-group.user .chat-bubble :where(a) {
+  color: color-mix(in srgb, var(--accent-foreground) 85%, white);
+  text-decoration-color: color-mix(in srgb, var(--accent-foreground) 50%, transparent);
+}
+
+.chat-group.user .chat-bubble :where(:not(pre) > code) {
+  background: color-mix(in srgb, var(--accent-foreground) 14%, transparent);
+  color: var(--accent-foreground);
+}
+
+/* Assistant bubble — sculpted card, sender-side asymmetric corner */
+.chat-group:not(.user):not(.tool):not(.system) .chat-bubble {
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--card) 100%, transparent),
+    color-mix(in srgb, var(--card) 92%, var(--bg))
+  );
+  border-bottom-left-radius: 6px;
+}
+
+/* Avatar sculpt */
+.chat-avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: var(--radius-md);
+  font-weight: 700;
+  font-size: 13px;
+  box-shadow: var(--shadow-sm);
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--panel-strong) 100%, transparent),
+    color-mix(in srgb, var(--panel-strong) 80%, var(--bg))
+  );
+}
+
+.chat-avatar.user {
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--accent) 30%, var(--card)),
+    color-mix(in srgb, var(--accent) 14%, var(--card))
+  );
+  color: var(--accent);
+  border-color: color-mix(in srgb, var(--accent) 38%, transparent);
+}
+
+/* Message text size + rhythm */
+.chat-text {
+  font-size: 14.5px;
+  line-height: 1.62;
+}
+
+.chat-text :where(p + p, p + ul, p + ol, p + pre, p + blockquote) {
+  margin-top: 0.85em;
+}
+
+/* Inline code on dark — warmer */
+.chat-text :where(:not(pre) > code) {
+  background: color-mix(in srgb, var(--accent) 10%, var(--bg-muted));
+  color: color-mix(in srgb, var(--accent) 30%, var(--text-strong));
+  padding: 0.16em 0.42em;
+  border-radius: 6px;
+}
+
+/* Code blocks */
+.chat-text :where(pre) {
+  background: color-mix(in srgb, var(--bg) 70%, var(--bg-muted));
+  border: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
+  border-radius: var(--radius-md);
+  padding: 14px 16px;
+  box-shadow: var(--shadow-sm);
+}
+
+/* Sender / timestamp footer */
+.chat-sender-name {
+  font-weight: 600;
+  letter-spacing: -0.005em;
+}
+
+/* ------------------------------------------------------------
+   COMPOSER — floating glass tile
+   ------------------------------------------------------------ */
+
+.chat-compose {
+  padding: 16px 12px 12px;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    var(--bg) 25%
+  );
+}
+
+:root[data-theme-mode="light"] .chat-compose {
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    var(--bg-content) 25%
+  );
+}
+
+.chat-compose__row {
+  position: relative;
+  align-items: stretch;
+  gap: 10px;
+  padding: 10px 12px;
+  background: color-mix(in srgb, var(--card) 88%, transparent);
+  border: 1px solid color-mix(in srgb, var(--border) 80%, transparent);
+  border-radius: var(--radius-xl);
+  box-shadow:
+    var(--shadow-lg),
+    inset 0 1px 0 color-mix(in srgb, white 4%, transparent);
+  transition:
+    border-color var(--duration-fast) ease,
+    box-shadow var(--duration-normal) ease;
+}
+
+@supports (backdrop-filter: blur(1px)) {
+  .chat-compose__row {
+    backdrop-filter: blur(20px) saturate(1.7);
+    -webkit-backdrop-filter: blur(20px) saturate(1.7);
+  }
+}
+
+.chat-compose__row:focus-within {
+  border-color: color-mix(in srgb, var(--accent) 60%, var(--border));
+  box-shadow:
+    var(--shadow-lg),
+    0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent);
+}
+
+.chat-compose .chat-compose__field textarea {
+  background: transparent;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 8px 6px;
+  height: 44px;
+  min-height: 44px;
+  max-height: 200px;
+  font-size: 14.5px;
+  line-height: 1.5;
+}
+
+.chat-compose .chat-compose__field textarea:focus,
+.chat-compose .chat-compose__field textarea:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Send button — coral pill */
+.chat-compose .chat-compose__actions .btn {
+  height: 44px;
+  border-radius: var(--radius-lg);
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  padding: 0 18px;
+  background: linear-gradient(
+    135deg,
+    var(--accent),
+    color-mix(in srgb, var(--accent) 100%, black 14%)
+  );
+  color: var(--accent-foreground);
+  border: 1px solid color-mix(in srgb, var(--accent) 70%, transparent);
+  box-shadow:
+    var(--shadow-md),
+    inset 0 1px 0 color-mix(in srgb, white 12%, transparent);
+  transition:
+    transform var(--duration-fast) var(--ease-out),
+    box-shadow var(--duration-fast) ease;
+}
+
+.chat-compose .chat-compose__actions .btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow:
+    var(--shadow-lg),
+    var(--shadow-glow),
+    inset 0 1px 0 color-mix(in srgb, white 14%, transparent);
+}
+
+.chat-compose .chat-compose__actions .btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.chat-compose .chat-compose__actions .btn:disabled {
+  opacity: 0.45;
+  filter: saturate(0.6);
+}
+
+/* Agent chat composer (alt layout) */
+.agent-chat__input {
+  border-radius: var(--radius-xl);
+  background: color-mix(in srgb, var(--card) 88%, transparent);
+  border: 1px solid color-mix(in srgb, var(--border) 80%, transparent);
+  box-shadow: var(--shadow-lg);
+}
+
+@supports (backdrop-filter: blur(1px)) {
+  .agent-chat__input {
+    backdrop-filter: blur(20px) saturate(1.7);
+    -webkit-backdrop-filter: blur(20px) saturate(1.7);
+  }
+}
+
+.agent-chat__input:focus-within {
+  border-color: color-mix(in srgb, var(--accent) 55%, var(--border));
+  box-shadow:
+    var(--shadow-lg),
+    0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent);
+}
+
+.chat-send-btn:not(:disabled) {
+  color: var(--accent);
+}
+
+.chat-send-btn:not(:disabled):hover {
+  background: color-mix(in srgb, var(--accent) 14%, transparent);
+  color: var(--accent-hover);
+}
+
+/* ------------------------------------------------------------
+   PILLS, BADGES, BUTTONS — refined
+   ------------------------------------------------------------ */
+
+.btn,
+button.btn {
+  border-radius: var(--radius-md);
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  transition:
+    background var(--duration-fast) ease,
+    border-color var(--duration-fast) ease,
+    color var(--duration-fast) ease,
+    box-shadow var(--duration-fast) ease,
+    transform var(--duration-fast) var(--ease-out);
+}
+
+.btn--primary,
+.btn.is-primary {
+  background: linear-gradient(
+    135deg,
+    var(--accent),
+    color-mix(in srgb, var(--accent) 100%, black 14%)
+  );
+  color: var(--accent-foreground);
+  border: 1px solid color-mix(in srgb, var(--accent) 70%, transparent);
+  box-shadow:
+    var(--shadow-sm),
+    inset 0 1px 0 color-mix(in srgb, white 10%, transparent);
+}
+
+.btn--primary:hover:not(:disabled),
+.btn.is-primary:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md), var(--shadow-glow);
+}
+
+.pill {
+  border-radius: var(--radius-full);
+  border: 1px solid color-mix(in srgb, var(--border) 80%, transparent);
+  background: color-mix(in srgb, var(--card) 92%, transparent);
+  letter-spacing: -0.005em;
+}
+
+/* Status dot glow on the topbar */
+.topbar-status .statusDot {
+  box-shadow: 0 0 0 3px color-mix(in srgb, currentColor 22%, transparent);
+}
+
+/* New messages pill */
+.chat-new-messages {
+  background: color-mix(in srgb, var(--card) 92%, transparent);
+  border: 1px solid color-mix(in srgb, var(--border) 80%, transparent);
+  box-shadow: var(--shadow-md);
+  backdrop-filter: blur(14px) saturate(1.6);
+  -webkit-backdrop-filter: blur(14px) saturate(1.6);
+}
+
+.chat-new-messages:hover {
+  border-color: color-mix(in srgb, var(--accent) 55%, var(--border));
+}
+
+/* ------------------------------------------------------------
+   SCROLLBAR — coral tint on hover
+   ------------------------------------------------------------ */
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--text) 14%, transparent);
+  border-radius: var(--radius-full);
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in srgb, var(--accent) 38%, transparent);
+  background-clip: padding-box;
+}
+
+/* ------------------------------------------------------------
+   SLASH MENU — refined popover
+   ------------------------------------------------------------ */
+
+.slash-menu {
+  border-radius: var(--radius-lg);
+  border: 1px solid color-mix(in srgb, var(--border-strong) 70%, transparent);
+  box-shadow: var(--shadow-xl);
+  backdrop-filter: blur(20px) saturate(1.7);
+  -webkit-backdrop-filter: blur(20px) saturate(1.7);
+  background: color-mix(in srgb, var(--popover) 92%, transparent);
+}
+
+.slash-menu-item {
+  border-radius: var(--radius-md);
+}
+
+/* ------------------------------------------------------------
+   FORM CONTROLS — softer baseline
+   ------------------------------------------------------------ */
+
+input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
+textarea,
+select {
+  border-radius: var(--radius-md);
+  transition:
+    border-color var(--duration-fast) ease,
+    box-shadow var(--duration-fast) ease,
+    background var(--duration-fast) ease;
+}
+
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  border-color: color-mix(in srgb, var(--accent) 50%, var(--border-strong));
+}
+
+/* ------------------------------------------------------------
+   REDUCED MOTION
+   ------------------------------------------------------------ */
+
+@media (prefers-reduced-motion: reduce) {
+  .agent-chat__suggestion:hover,
+  .chat-compose .chat-compose__actions .btn:hover:not(:disabled),
+  .btn--primary:hover:not(:disabled),
+  .btn.is-primary:hover:not(:disabled) {
+    transform: none;
+  }
+}
