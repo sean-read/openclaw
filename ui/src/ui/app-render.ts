@@ -146,6 +146,7 @@ import {
 import { renderDreaming } from "./views/dreaming.ts";
 import { renderExecApprovalPrompt } from "./views/exec-approval.ts";
 import { renderGatewayUrlConfirmation } from "./views/gateway-url-confirmation.ts";
+import { renderDemoChat } from "./views/demo-chat.ts";
 import { renderLoginGate } from "./views/login-gate.ts";
 import { renderOverview } from "./views/overview.ts";
 
@@ -642,6 +643,9 @@ export function renderApp(state: AppViewState) {
   // Gate: require successful gateway connection before showing the dashboard.
   // The gateway URL confirmation overlay is always rendered so URL-param flows still work.
   if (!state.connected) {
+    if (state.demoMode) {
+      return html` ${renderDemoChat(state)} ${renderGatewayUrlConfirmation(state)} `;
+    }
     return html` ${renderLoginGate(state)} ${renderGatewayUrlConfirmation(state)} `;
   }
 

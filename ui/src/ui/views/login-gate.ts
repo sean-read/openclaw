@@ -101,6 +101,15 @@ export function renderLoginGate(state: AppViewState) {
           <button class="btn primary login-gate__connect" @click=${() => state.connect()}>
             Connect
           </button>
+          <button
+            type="button"
+            class="login-gate__demo-link"
+            @click=${() => {
+              state.demoMode = true;
+            }}
+          >
+            View polished chat demo (no gateway needed) →
+          </button>
         </div>
         ${state.lastError
           ? html`<div class="callout danger" style="margin-top: 14px;">
