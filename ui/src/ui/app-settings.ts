@@ -436,7 +436,7 @@ export function detachThemeListener(host: SettingsHost) {
   host.systemThemeCleanup = null;
 }
 
-const BASE_RADII = { sm: 6, md: 10, lg: 14, xl: 20, full: 9999, default: 10 };
+const BASE_RADII = { sm: 8, md: 12, lg: 18, xl: 24, full: 9999, default: 12 };
 
 export function applyBorderRadius(value: number) {
   if (typeof document === "undefined") {
