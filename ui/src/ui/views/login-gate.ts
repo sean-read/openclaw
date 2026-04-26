@@ -15,12 +15,14 @@ export function renderLoginGate(state: AppViewState) {
       <div class="login-gate__card">
         <div class="login-gate__header">
           <img class="login-gate__logo" src=${faviconSrc} alt="OpenClaw" />
-          <div class="login-gate__title">OpenClaw</div>
-          <div class="login-gate__sub">${t("login.subtitle")}</div>
+          <div class="login-gate__title">OpenClaw Control</div>
+          <div class="login-gate__sub">
+            Connect this browser to your local OpenClaw gateway using the WebSocket URL and gateway token.
+          </div>
         </div>
         <div class="login-gate__form">
           <label class="field">
-            <span>${t("overview.access.wsUrl")}</span>
+            <span>WebSocket URL</span>
             <input
               .value=${state.settings.gatewayUrl}
               @input=${(e: Event) => {
@@ -31,7 +33,7 @@ export function renderLoginGate(state: AppViewState) {
             />
           </label>
           <label class="field">
-            <span>${t("overview.access.token")}</span>
+            <span>Gateway token</span>
             <div class="login-gate__secret-row">
               <input
                 type=${state.loginShowGatewayToken ? "text" : "password"}
@@ -42,7 +44,7 @@ export function renderLoginGate(state: AppViewState) {
                   const v = (e.target as HTMLInputElement).value;
                   state.applySettings({ ...state.settings, token: v });
                 }}
-                placeholder="OPENCLAW_GATEWAY_TOKEN (${t("login.passwordPlaceholder")})"
+                placeholder="OPENCLAW_GATEWAY_TOKEN (optional)"
                 @keydown=${(e: KeyboardEvent) => {
                   if (e.key === "Enter") {
                     state.connect();
@@ -52,8 +54,8 @@ export function renderLoginGate(state: AppViewState) {
               <button
                 type="button"
                 class="btn btn--icon ${state.loginShowGatewayToken ? "active" : ""}"
-                title=${state.loginShowGatewayToken ? t("login.hideToken") : t("login.showToken")}
-                aria-label=${t("login.toggleTokenVisibility")}
+                title=${state.loginShowGatewayToken ? "Hide token" : "Show token"}
+                aria-label="Toggle token visibility"
                 aria-pressed=${state.loginShowGatewayToken}
                 @click=${() => {
                   state.loginShowGatewayToken = !state.loginShowGatewayToken;
@@ -64,7 +66,7 @@ export function renderLoginGate(state: AppViewState) {
             </div>
           </label>
           <label class="field">
-            <span>${t("overview.access.password")}</span>
+            <span>Password (not stored)</span>
             <div class="login-gate__secret-row">
               <input
                 type=${state.loginShowGatewayPassword ? "text" : "password"}
@@ -75,7 +77,7 @@ export function renderLoginGate(state: AppViewState) {
                   const v = (e.target as HTMLInputElement).value;
                   state.password = v;
                 }}
-                placeholder="${t("login.passwordPlaceholder")}"
+                placeholder="optional"
                 @keydown=${(e: KeyboardEvent) => {
                   if (e.key === "Enter") {
                     state.connect();
@@ -85,10 +87,8 @@ export function renderLoginGate(state: AppViewState) {
               <button
                 type="button"
                 class="btn btn--icon ${state.loginShowGatewayPassword ? "active" : ""}"
-                title=${state.loginShowGatewayPassword
-                  ? t("login.hidePassword")
-                  : t("login.showPassword")}
-                aria-label=${t("login.togglePasswordVisibility")}
+                title=${state.loginShowGatewayPassword ? "Hide password" : "Show password"}
+                aria-label="Toggle password visibility"
                 aria-pressed=${state.loginShowGatewayPassword}
                 @click=${() => {
                   state.loginShowGatewayPassword = !state.loginShowGatewayPassword;
@@ -99,7 +99,7 @@ export function renderLoginGate(state: AppViewState) {
             </div>
           </label>
           <button class="btn primary login-gate__connect" @click=${() => state.connect()}>
-            ${t("common.connect")}
+            Connect
           </button>
         </div>
         ${state.lastError
@@ -108,13 +108,13 @@ export function renderLoginGate(state: AppViewState) {
             </div>`
           : ""}
         <div class="login-gate__help">
-          <div class="login-gate__help-title">${t("overview.connection.title")}</div>
+          <div class="login-gate__help-title">How to connect</div>
           <ol class="login-gate__steps">
             <li>
-              ${t("overview.connection.step1")}${renderConnectCommand("openclaw gateway run")}
+              Start the gateway on your host machine:${renderConnectCommand("openclaw gateway run")}
             </li>
-            <li>${t("overview.connection.step2")} ${renderConnectCommand("openclaw dashboard")}</li>
-            <li>${t("overview.connection.step3")}</li>
+            <li>Get a tokenised dashboard URL: ${renderConnectCommand("openclaw dashboard")}</li>
+            <li>Paste the WebSocket URL and token above, or open the tokenised URL directly.</li>
           </ol>
           <div class="login-gate__docs">
             <a
@@ -122,7 +122,7 @@ export function renderLoginGate(state: AppViewState) {
               href="https://docs.openclaw.ai/web/dashboard"
               target="_blank"
               rel="noreferrer"
-              >${t("overview.connection.docsLink")}</a
+              >Read the docs</a
             >
           </div>
         </div>
