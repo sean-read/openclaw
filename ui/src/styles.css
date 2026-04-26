@@ -10,6 +10,7 @@
 @import "./styles/dreams.css";
 @import "@create-markdown/preview/themes/system.css";
 @import "./styles/browser-polish.css";
+@import "./styles/login-polish.css";
 
 .cm-preview {
   --cm-mono: var(--mono);
