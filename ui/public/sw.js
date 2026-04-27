@@ -1,8 +1,9 @@
-// OpenClaw Control – Service Worker (passive)
-// Caching is intentionally disabled. The SW only clears any
-// previously-cached content on activate, then stays out of the way
-// (no fetch handler) so every request goes straight to the network.
-// This avoids the stale-asset class of bugs during active UI work.
+// OpenClaw Control – Service Worker (self-unregistering)
+// Caching is intentionally disabled. On install/activate the worker
+// purges every cache and unregisters itself, so subsequent page
+// loads have NO service worker controlling them and content always
+// comes fresh from the gateway. This is the safest mode while the
+// UI is under active redesign.
 
 self.addEventListener("install", () => {
   self.skipWaiting();
@@ -19,6 +20,11 @@ self.addEventListener("activate", (event) => {
       }
       try {
         await self.clients.claim();
+      } catch (_e) {
+        /* ignore */
+      }
+      try {
+        await self.registration.unregister();
       } catch (_e) {
         /* ignore */
       }
