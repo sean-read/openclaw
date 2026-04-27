@@ -22,6 +22,31 @@ body {
   letter-spacing: -0.005em;
 }
 
+/* SMOKE TEST — unmistakable banner to verify the redesign CSS is
+   actually loading in the user's browser. If this banner is not
+   visible at the top of the page, the browser is serving cached
+   CSS and the cache must be cleared manually via DevTools.
+   Remove this rule once the redesign is confirmed live. */
+body::before {
+  content: "✦ Carapace v9 active";
+  position: fixed !important;
+  top: 8px !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  z-index: 99999 !important;
+  padding: 6px 14px !important;
+  background: #ff1493 !important;
+  color: #ffffff !important;
+  font-family: var(--font-body) !important;
+  font-weight: 700 !important;
+  font-size: 12px !important;
+  letter-spacing: 0.06em !important;
+  border-radius: 999px !important;
+  border: 2px solid #ffffff !important;
+  box-shadow: 0 6px 24px rgba(255, 20, 147, 0.5) !important;
+  pointer-events: none !important;
+}
+
 openclaw-app {
   position: relative;
 }
