@@ -1,8 +1,8 @@
 /*
- * Clean neutral dark UI layer.
- * Purpose: keep OpenClaw's stable layout intact while making the interface
- * calmer and closer to ChatGPT dark mode.
- * Do not set widths, positioning, flex, grid, overflow, or margins here.
+ * Clean neutral UI layer.
+ * Purpose: keep OpenClaw's stable layout intact while making dark mode calmer
+ * and closer to ChatGPT. This file must not force widths, positioning, flex,
+ * grid, overflow, margins, or permanent dark colours in light mode.
  */
 
 :root {
@@ -12,8 +12,25 @@
   --color-accent: var(--accent);
   --bg-content: var(--bg-accent);
 
+  --shadow-sm: none;
+  --shadow-md: none;
+  --shadow-lg: none;
+  --shadow-xl: none;
+  --shadow-glow: none;
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-xl: 24px;
+  --radius: 12px;
+}
+
+:root[data-theme-mode="dark"] {
+  color-scheme: dark;
+
   --bg: #0f0f0f;
   --bg-accent: #151515;
+  --bg-content: #151515;
   --bg-elevated: #1f1f1f;
   --bg-hover: #2a2a2a;
   --bg-muted: #191919;
@@ -48,159 +65,318 @@
 
   --secondary: #1f1f1f;
   --secondary-foreground: #ececec;
-
-  --shadow-sm: none;
-  --shadow-md: none;
-  --shadow-lg: none;
-  --shadow-xl: none;
-  --shadow-glow: none;
-
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 18px;
-  --radius-xl: 24px;
-  --radius: 12px;
 }
 
-html,
-body,
-openclaw-app {
+:root[data-theme-mode="light"] {
+  color-scheme: light;
+
+  --bg: #ffffff;
+  --bg-accent: #f7f7f7;
+  --bg-content: #f7f7f7;
+  --bg-elevated: #ffffff;
+  --bg-hover: #eeeeee;
+  --bg-muted: #f3f3f3;
+  --card: #ffffff;
+  --card-foreground: #111111;
+  --panel: #ffffff;
+  --panel-strong: #f5f5f5;
+  --panel-hover: #eeeeee;
+  --popover: #ffffff;
+  --popover-foreground: #111111;
+
+  --text: #202020;
+  --text-strong: #0f0f0f;
+  --chat-text: #202020;
+  --muted: #6b6b6b;
+  --muted-strong: #4a4a4a;
+  --muted-foreground: #6b6b6b;
+
+  --border: rgba(0, 0, 0, 0.10);
+  --border-strong: rgba(0, 0, 0, 0.18);
+  --border-hover: rgba(0, 0, 0, 0.24);
+  --input: rgba(0, 0, 0, 0.12);
+
+  --accent: #202020;
+  --accent-hover: #000000;
+  --accent-muted: #4a4a4a;
+  --accent-subtle: rgba(0, 0, 0, 0.06);
+  --accent-foreground: #ffffff;
+  --ring: #202020;
+  --primary: #202020;
+  --primary-foreground: #ffffff;
+
+  --secondary: #f5f5f5;
+  --secondary-foreground: #202020;
+}
+
+:root[data-theme-mode="dark"] html,
+:root[data-theme-mode="dark"] body,
+:root[data-theme-mode="dark"] openclaw-app {
   background: var(--bg) !important;
   color: var(--text) !important;
 }
 
-.shell-nav,
-.sidebar {
+:root[data-theme-mode="light"] html,
+:root[data-theme-mode="light"] body,
+:root[data-theme-mode="light"] openclaw-app {
+  background: var(--bg) !important;
+  color: var(--text) !important;
+}
+
+:root[data-theme-mode="dark"] .shell-nav,
+:root[data-theme-mode="dark"] .sidebar {
   background: #111111 !important;
   border-color: var(--border) !important;
 }
 
-.topbar,
-.content-header,
-.chat-header {
+:root[data-theme-mode="light"] .shell-nav,
+:root[data-theme-mode="light"] .sidebar {
+  background: #f7f7f7 !important;
+  border-color: var(--border) !important;
+}
+
+:root[data-theme-mode="dark"] .topbar,
+:root[data-theme-mode="dark"] .content-header,
+:root[data-theme-mode="dark"] .chat-header,
+:root[data-theme-mode="light"] .topbar,
+:root[data-theme-mode="light"] .content-header,
+:root[data-theme-mode="light"] .chat-header {
   background: var(--bg) !important;
   border-color: var(--border) !important;
 }
 
-.nav-item {
-  color: #c7c7c7 !important;
+:root[data-theme-mode="dark"] .nav-item,
+:root[data-theme-mode="light"] .nav-item {
   border-radius: 12px !important;
 }
 
-.nav-item:hover {
+:root[data-theme-mode="dark"] .nav-item {
+  color: #c7c7c7 !important;
+}
+
+:root[data-theme-mode="light"] .nav-item {
+  color: #4a4a4a !important;
+}
+
+:root[data-theme-mode="dark"] .nav-item:hover {
   background: rgba(255, 255, 255, 0.07) !important;
   color: #ffffff !important;
 }
 
-.nav-item--active,
-.nav-item[aria-current="page"],
-.nav-item.is-active {
+:root[data-theme-mode="light"] .nav-item:hover {
+  background: rgba(0, 0, 0, 0.06) !important;
+  color: #0f0f0f !important;
+}
+
+:root[data-theme-mode="dark"] .nav-item--active,
+:root[data-theme-mode="dark"] .nav-item[aria-current="page"],
+:root[data-theme-mode="dark"] .nav-item.is-active {
   background: #2f2f2f !important;
   color: #ffffff !important;
   box-shadow: none !important;
 }
 
-.nav-item--active .nav-item__icon,
-.nav-item[aria-current="page"] .nav-item__icon,
-.nav-item.is-active .nav-item__icon {
-  color: #ffffff !important;
+:root[data-theme-mode="light"] .nav-item--active,
+:root[data-theme-mode="light"] .nav-item[aria-current="page"],
+:root[data-theme-mode="light"] .nav-item.is-active {
+  background: #e9e9e9 !important;
+  color: #0f0f0f !important;
+  box-shadow: none !important;
 }
 
-.card,
-.stat,
-.account-card,
-.cron-form-section,
-.cron-summary-item,
-.agent-chat__input,
-.chat-bubble,
-.login-gate__card {
+:root[data-theme-mode="dark"] .nav-item--active .nav-item__icon,
+:root[data-theme-mode="dark"] .nav-item[aria-current="page"] .nav-item__icon,
+:root[data-theme-mode="dark"] .nav-item.is-active .nav-item__icon,
+:root[data-theme-mode="light"] .nav-item--active .nav-item__icon,
+:root[data-theme-mode="light"] .nav-item[aria-current="page"] .nav-item__icon,
+:root[data-theme-mode="light"] .nav-item.is-active .nav-item__icon {
+  color: currentColor !important;
+}
+
+:root[data-theme-mode="dark"] .card,
+:root[data-theme-mode="dark"] .stat,
+:root[data-theme-mode="dark"] .account-card,
+:root[data-theme-mode="dark"] .cron-form-section,
+:root[data-theme-mode="dark"] .cron-summary-item,
+:root[data-theme-mode="dark"] .agent-chat__input,
+:root[data-theme-mode="dark"] .chat-bubble,
+:root[data-theme-mode="dark"] .login-gate__card,
+:root[data-theme-mode="light"] .card,
+:root[data-theme-mode="light"] .stat,
+:root[data-theme-mode="light"] .account-card,
+:root[data-theme-mode="light"] .cron-form-section,
+:root[data-theme-mode="light"] .cron-summary-item,
+:root[data-theme-mode="light"] .agent-chat__input,
+:root[data-theme-mode="light"] .chat-bubble,
+:root[data-theme-mode="light"] .login-gate__card {
   background: var(--card) !important;
   border-color: var(--border) !important;
   box-shadow: none !important;
 }
 
-.chat-group.user .chat-bubble {
+:root[data-theme-mode="dark"] .chat-group.user .chat-bubble {
   background: #2f2f2f !important;
   color: #ffffff !important;
   border-color: var(--border) !important;
   box-shadow: none !important;
 }
 
-.chat-group.assistant .chat-bubble,
-.chat-group.other .chat-bubble,
-.chat-group:not(.user):not(.tool):not(.system) .chat-bubble {
+:root[data-theme-mode="light"] .chat-group.user .chat-bubble {
+  background: #e9e9e9 !important;
+  color: #111111 !important;
+  border-color: var(--border) !important;
+  box-shadow: none !important;
+}
+
+:root[data-theme-mode="dark"] .chat-group.assistant .chat-bubble,
+:root[data-theme-mode="dark"] .chat-group.other .chat-bubble,
+:root[data-theme-mode="dark"] .chat-group:not(.user):not(.tool):not(.system) .chat-bubble {
   background: #171717 !important;
   border-color: rgba(255, 255, 255, 0.08) !important;
   box-shadow: none !important;
 }
 
-.btn,
-button.btn,
-.agent-chat__input-btn,
-.chat-send-btn {
+:root[data-theme-mode="light"] .chat-group.assistant .chat-bubble,
+:root[data-theme-mode="light"] .chat-group.other .chat-bubble,
+:root[data-theme-mode="light"] .chat-group:not(.user):not(.tool):not(.system) .chat-bubble {
+  background: #ffffff !important;
+  border-color: rgba(0, 0, 0, 0.08) !important;
   box-shadow: none !important;
 }
 
-.btn,
-button.btn {
+:root[data-theme-mode="dark"] .btn,
+:root[data-theme-mode="dark"] button.btn,
+:root[data-theme-mode="light"] .btn,
+:root[data-theme-mode="light"] button.btn,
+:root[data-theme-mode="dark"] .agent-chat__input-btn,
+:root[data-theme-mode="light"] .agent-chat__input-btn,
+:root[data-theme-mode="dark"] .chat-send-btn,
+:root[data-theme-mode="light"] .chat-send-btn {
+  box-shadow: none !important;
+}
+
+:root[data-theme-mode="dark"] .btn,
+:root[data-theme-mode="dark"] button.btn {
   background: #1f1f1f !important;
   border-color: var(--border) !important;
   color: #ececec !important;
 }
 
-.btn:hover:not(:disabled),
-button.btn:hover:not(:disabled) {
+:root[data-theme-mode="light"] .btn,
+:root[data-theme-mode="light"] button.btn {
+  background: #ffffff !important;
+  border-color: var(--border) !important;
+  color: #202020 !important;
+}
+
+:root[data-theme-mode="dark"] .btn:hover:not(:disabled),
+:root[data-theme-mode="dark"] button.btn:hover:not(:disabled) {
   background: #2a2a2a !important;
   border-color: var(--border-strong) !important;
 }
 
-.chat-send-btn,
-.btn.primary,
-.btn--primary,
-.btn.is-primary {
+:root[data-theme-mode="light"] .btn:hover:not(:disabled),
+:root[data-theme-mode="light"] button.btn:hover:not(:disabled) {
+  background: #f3f3f3 !important;
+  border-color: var(--border-strong) !important;
+}
+
+:root[data-theme-mode="dark"] .chat-send-btn,
+:root[data-theme-mode="dark"] .btn.primary,
+:root[data-theme-mode="dark"] .btn--primary,
+:root[data-theme-mode="dark"] .btn.is-primary {
   background: #ececec !important;
   border-color: #ececec !important;
   color: #0f0f0f !important;
 }
 
-.chat-send-btn:hover:not(:disabled),
-.btn.primary:hover:not(:disabled),
-.btn--primary:hover:not(:disabled),
-.btn.is-primary:hover:not(:disabled) {
+:root[data-theme-mode="light"] .chat-send-btn,
+:root[data-theme-mode="light"] .btn.primary,
+:root[data-theme-mode="light"] .btn--primary,
+:root[data-theme-mode="light"] .btn.is-primary {
+  background: #202020 !important;
+  border-color: #202020 !important;
+  color: #ffffff !important;
+}
+
+:root[data-theme-mode="dark"] .chat-send-btn:hover:not(:disabled),
+:root[data-theme-mode="dark"] .btn.primary:hover:not(:disabled),
+:root[data-theme-mode="dark"] .btn--primary:hover:not(:disabled),
+:root[data-theme-mode="dark"] .btn.is-primary:hover:not(:disabled) {
   background: #ffffff !important;
   border-color: #ffffff !important;
 }
 
-.chat-controls .btn--icon.active,
-.chat-controls .btn--icon[aria-pressed="true"],
-.btn.active {
+:root[data-theme-mode="light"] .chat-send-btn:hover:not(:disabled),
+:root[data-theme-mode="light"] .btn.primary:hover:not(:disabled),
+:root[data-theme-mode="light"] .btn--primary:hover:not(:disabled),
+:root[data-theme-mode="light"] .btn.is-primary:hover:not(:disabled) {
+  background: #000000 !important;
+  border-color: #000000 !important;
+}
+
+:root[data-theme-mode="dark"] .chat-controls .btn--icon.active,
+:root[data-theme-mode="dark"] .chat-controls .btn--icon[aria-pressed="true"],
+:root[data-theme-mode="dark"] .btn.active {
   background: #2f2f2f !important;
   border-color: var(--border-strong) !important;
   color: #ffffff !important;
 }
 
-input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
-textarea,
-select,
-.field input,
-.field textarea,
-.field select,
-.topbar-search {
+:root[data-theme-mode="light"] .chat-controls .btn--icon.active,
+:root[data-theme-mode="light"] .chat-controls .btn--icon[aria-pressed="true"],
+:root[data-theme-mode="light"] .btn.active {
+  background: #e9e9e9 !important;
+  border-color: var(--border-strong) !important;
+  color: #0f0f0f !important;
+}
+
+:root[data-theme-mode="dark"] input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
+:root[data-theme-mode="dark"] textarea,
+:root[data-theme-mode="dark"] select,
+:root[data-theme-mode="dark"] .field input,
+:root[data-theme-mode="dark"] .field textarea,
+:root[data-theme-mode="dark"] .field select,
+:root[data-theme-mode="dark"] .topbar-search {
   background: #1f1f1f !important;
   border-color: var(--input) !important;
   color: #ececec !important;
   box-shadow: none !important;
 }
 
-input:focus-visible,
-textarea:focus-visible,
-select:focus-visible,
-.field input:focus,
-.field textarea:focus,
-.field select:focus,
-.agent-chat__input:focus-within {
+:root[data-theme-mode="light"] input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
+:root[data-theme-mode="light"] textarea,
+:root[data-theme-mode="light"] select,
+:root[data-theme-mode="light"] .field input,
+:root[data-theme-mode="light"] .field textarea,
+:root[data-theme-mode="light"] .field select,
+:root[data-theme-mode="light"] .topbar-search {
+  background: #ffffff !important;
+  border-color: var(--input) !important;
+  color: #202020 !important;
+  box-shadow: none !important;
+}
+
+:root[data-theme-mode="dark"] input:focus-visible,
+:root[data-theme-mode="dark"] textarea:focus-visible,
+:root[data-theme-mode="dark"] select:focus-visible,
+:root[data-theme-mode="dark"] .field input:focus,
+:root[data-theme-mode="dark"] .field textarea:focus,
+:root[data-theme-mode="dark"] .field select:focus,
+:root[data-theme-mode="dark"] .agent-chat__input:focus-within {
   border-color: rgba(255, 255, 255, 0.28) !important;
   box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.06) !important;
+}
+
+:root[data-theme-mode="light"] input:focus-visible,
+:root[data-theme-mode="light"] textarea:focus-visible,
+:root[data-theme-mode="light"] select:focus-visible,
+:root[data-theme-mode="light"] .field input:focus,
+:root[data-theme-mode="light"] .field textarea:focus,
+:root[data-theme-mode="light"] .field select:focus,
+:root[data-theme-mode="light"] .agent-chat__input:focus-within {
+  border-color: rgba(0, 0, 0, 0.28) !important;
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.06) !important;
 }
 
 .sidebar-brand__logo,
