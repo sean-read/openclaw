@@ -11,6 +11,7 @@
 @import "@create-markdown/preview/themes/system.css";
 @import "./styles/browser-polish.css";
 @import "./styles/login-polish.css";
+@import "./styles/chatgpt-clean.css";
 
 .cm-preview {
   --cm-mono: var(--mono);
