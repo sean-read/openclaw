@@ -1,0 +1,215 @@
+/*
+ * Clean neutral dark UI layer.
+ * Purpose: keep OpenClaw's stable layout intact while making the interface
+ * calmer and closer to ChatGPT dark mode.
+ * Do not set widths, positioning, flex, grid, overflow, or margins here.
+ */
+
+:root {
+  --fg: var(--text);
+  --font-mono: var(--mono);
+  --danger-color: var(--danger);
+  --color-accent: var(--accent);
+  --bg-content: var(--bg-accent);
+
+  --bg: #0f0f0f;
+  --bg-accent: #151515;
+  --bg-elevated: #1f1f1f;
+  --bg-hover: #2a2a2a;
+  --bg-muted: #191919;
+  --card: #171717;
+  --card-foreground: #ececec;
+  --panel: #0f0f0f;
+  --panel-strong: #1f1f1f;
+  --panel-hover: #2a2a2a;
+  --popover: #1f1f1f;
+  --popover-foreground: #ececec;
+
+  --text: #ececec;
+  --text-strong: #ffffff;
+  --chat-text: #ececec;
+  --muted: #a6a6a6;
+  --muted-strong: #c7c7c7;
+  --muted-foreground: #a6a6a6;
+
+  --border: rgba(255, 255, 255, 0.10);
+  --border-strong: rgba(255, 255, 255, 0.18);
+  --border-hover: rgba(255, 255, 255, 0.24);
+  --input: rgba(255, 255, 255, 0.12);
+
+  --accent: #ececec;
+  --accent-hover: #ffffff;
+  --accent-muted: #cfcfcf;
+  --accent-subtle: rgba(255, 255, 255, 0.08);
+  --accent-foreground: #0f0f0f;
+  --ring: #d0d0d0;
+  --primary: #ececec;
+  --primary-foreground: #0f0f0f;
+
+  --secondary: #1f1f1f;
+  --secondary-foreground: #ececec;
+
+  --shadow-sm: none;
+  --shadow-md: none;
+  --shadow-lg: none;
+  --shadow-xl: none;
+  --shadow-glow: none;
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-xl: 24px;
+  --radius: 12px;
+}
+
+html,
+body,
+openclaw-app {
+  background: var(--bg) !important;
+  color: var(--text) !important;
+}
+
+.shell-nav,
+.sidebar {
+  background: #111111 !important;
+  border-color: var(--border) !important;
+}
+
+.topbar,
+.content-header,
+.chat-header {
+  background: var(--bg) !important;
+  border-color: var(--border) !important;
+}
+
+.nav-item {
+  color: #c7c7c7 !important;
+  border-radius: 12px !important;
+}
+
+.nav-item:hover {
+  background: rgba(255, 255, 255, 0.07) !important;
+  color: #ffffff !important;
+}
+
+.nav-item--active,
+.nav-item[aria-current="page"],
+.nav-item.is-active {
+  background: #2f2f2f !important;
+  color: #ffffff !important;
+  box-shadow: none !important;
+}
+
+.nav-item--active .nav-item__icon,
+.nav-item[aria-current="page"] .nav-item__icon,
+.nav-item.is-active .nav-item__icon {
+  color: #ffffff !important;
+}
+
+.card,
+.stat,
+.account-card,
+.cron-form-section,
+.cron-summary-item,
+.agent-chat__input,
+.chat-bubble,
+.login-gate__card {
+  background: var(--card) !important;
+  border-color: var(--border) !important;
+  box-shadow: none !important;
+}
+
+.chat-group.user .chat-bubble {
+  background: #2f2f2f !important;
+  color: #ffffff !important;
+  border-color: var(--border) !important;
+  box-shadow: none !important;
+}
+
+.chat-group.assistant .chat-bubble,
+.chat-group.other .chat-bubble,
+.chat-group:not(.user):not(.tool):not(.system) .chat-bubble {
+  background: #171717 !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+  box-shadow: none !important;
+}
+
+.btn,
+button.btn,
+.agent-chat__input-btn,
+.chat-send-btn {
+  box-shadow: none !important;
+}
+
+.btn,
+button.btn {
+  background: #1f1f1f !important;
+  border-color: var(--border) !important;
+  color: #ececec !important;
+}
+
+.btn:hover:not(:disabled),
+button.btn:hover:not(:disabled) {
+  background: #2a2a2a !important;
+  border-color: var(--border-strong) !important;
+}
+
+.chat-send-btn,
+.btn.primary,
+.btn--primary,
+.btn.is-primary {
+  background: #ececec !important;
+  border-color: #ececec !important;
+  color: #0f0f0f !important;
+}
+
+.chat-send-btn:hover:not(:disabled),
+.btn.primary:hover:not(:disabled),
+.btn--primary:hover:not(:disabled),
+.btn.is-primary:hover:not(:disabled) {
+  background: #ffffff !important;
+  border-color: #ffffff !important;
+}
+
+.chat-controls .btn--icon.active,
+.chat-controls .btn--icon[aria-pressed="true"],
+.btn.active {
+  background: #2f2f2f !important;
+  border-color: var(--border-strong) !important;
+  color: #ffffff !important;
+}
+
+input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
+textarea,
+select,
+.field input,
+.field textarea,
+.field select,
+.topbar-search {
+  background: #1f1f1f !important;
+  border-color: var(--input) !important;
+  color: #ececec !important;
+  box-shadow: none !important;
+}
+
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+.field input:focus,
+.field textarea:focus,
+.field select:focus,
+.agent-chat__input:focus-within {
+  border-color: rgba(255, 255, 255, 0.28) !important;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.06) !important;
+}
+
+.sidebar-brand__logo,
+.chat-avatar {
+  border-radius: 12px !important;
+}
+
+.login-gate__steps code,
+.login-gate__command code,
+.field textarea {
+  font-family: var(--mono) !important;
+}
