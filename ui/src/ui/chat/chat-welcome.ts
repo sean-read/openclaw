@@ -17,7 +17,7 @@ export type ChatWelcomeProps = {
 
 const WELCOME_SUGGESTIONS = [
   "What can you do?",
-  "Summarize my recent sessions",
+  "Summarise my recent sessions",
   "Help me configure a channel",
   "Check system health",
 ];
@@ -62,11 +62,13 @@ export function renderWelcomeState(props: ChatWelcomeProps) {
           : html`<div class="agent-chat__avatar agent-chat__avatar--logo">
               <img src=${fallbackAvatarUrl} alt=${name} />
             </div>`}
-      <h2>${name}</h2>
+      <h2>How can I help, today?</h2>
       <div class="agent-chat__badges">
-        <span class="agent-chat__badge"><img src=${logoUrl} alt="" /> Ready to chat</span>
+        <span class="agent-chat__badge"><img src=${logoUrl} alt="" /> ${name} &middot; ready</span>
       </div>
-      <p class="agent-chat__hint">Type a message below &middot; <kbd>/</kbd> for commands</p>
+      <p class="agent-chat__hint">
+        Ask anything below &middot; press <kbd>/</kbd> for commands
+      </p>
       <div class="agent-chat__suggestions">
         ${WELCOME_SUGGESTIONS.map(
           (text) => html`

@@ -1,0 +1,339 @@
+/* =============================================
+   CHAT POLISH — ChatGPT/Claude-style refinements
+   for the authenticated main chat screen.
+   These rules layer on top of layout.css / grouped.css.
+   ============================================= */
+
+/* ── Two-column shell when conversations sidebar is shown ── */
+
+.chat--with-conversations {
+  display: grid;
+  grid-template-columns: 248px minmax(0, 1fr);
+  align-items: stretch;
+  gap: 0;
+  background: transparent;
+}
+
+.chat--with-conversations > .chat-content {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+@media (max-width: 900px) {
+  .chat--with-conversations {
+    display: flex;
+    flex-direction: column;
+  }
+  .chat-conversations {
+    display: none !important;
+  }
+}
+
+/* ── Conversations sidebar ── */
+
+.chat-conversations {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  border-right: 1px solid color-mix(in srgb, var(--border) 80%, transparent);
+  background: color-mix(in srgb, var(--bg) 85%, var(--card) 15%);
+  padding: 12px 10px;
+  gap: 8px;
+}
+
+.chat-conversations__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 2px 6px 4px;
+}
+
+.chat-conversations__title {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.chat-conversations__new {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 9px 12px;
+  margin: 2px 0 4px;
+  background: transparent;
+  color: var(--text);
+  border: 1px solid color-mix(in srgb, var(--border-strong) 80%, transparent);
+  border-radius: 10px;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  cursor: pointer;
+  transition:
+    background 120ms ease,
+    border-color 120ms ease;
+}
+
+.chat-conversations__new:hover {
+  background: var(--bg-hover, color-mix(in srgb, var(--card) 80%, transparent));
+  border-color: color-mix(in srgb, var(--accent) 35%, var(--border-strong));
+}
+
+.chat-conversations__new svg {
+  width: 14px;
+  height: 14px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.8px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  flex-shrink: 0;
+}
+
+.chat-conversations__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  flex: 1 1 0;
+  min-height: 0;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--muted) 35%, transparent) transparent;
+}
+
+.chat-conversations__group-label {
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 12px 8px 6px;
+  user-select: none;
+}
+
+.chat-conversations__item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 8px 10px;
+  margin: 1px 0;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text-muted, var(--muted));
+  font: inherit;
+  font-size: 13px;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    background 120ms ease,
+    color 120ms ease;
+  min-width: 0;
+}
+
+.chat-conversations__item:hover {
+  background: var(--bg-hover, color-mix(in srgb, var(--card) 70%, transparent));
+  color: var(--text);
+}
+
+.chat-conversations__item--active {
+  background: color-mix(in srgb, var(--card) 92%, var(--accent) 8%);
+  color: var(--text);
+  border-color: color-mix(in srgb, var(--border) 80%, transparent);
+}
+
+.chat-conversations__item-icon {
+  display: inline-flex;
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  color: var(--muted);
+}
+
+.chat-conversations__item-icon svg {
+  width: 14px;
+  height: 14px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.6px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.chat-conversations__item-label {
+  flex: 1 1 auto;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+}
+
+.chat-conversations__item-time {
+  flex-shrink: 0;
+  font-size: 11px;
+  color: var(--muted);
+  opacity: 0.75;
+}
+
+.chat-conversations__empty {
+  padding: 14px 8px;
+  font-size: 12.5px;
+  color: var(--muted);
+  text-align: center;
+  line-height: 1.5;
+}
+
+/* ── Bubble & thread polish (refines grouped.css) ── */
+
+.chat-thread {
+  padding-top: 24px !important;
+}
+
+.chat-group {
+  margin-bottom: 24px !important;
+  gap: 14px !important;
+}
+
+.chat-bubble {
+  font-size: 15px;
+  line-height: 1.65;
+  letter-spacing: -0.005em;
+}
+
+.chat-group:not(.user) .chat-bubble {
+  max-width: calc(768px - 28px - 14px - 48px);
+}
+
+/* Refined user pill bubble — slightly more padding & subtle shadow */
+.chat-group.user .chat-bubble {
+  padding: 10px 16px !important;
+  border-radius: 18px !important;
+  box-shadow: 0 1px 0 color-mix(in srgb, white 4%, transparent) inset;
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+/* Inline code looks crisper */
+.chat-bubble code {
+  font-family: var(--mono, ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace);
+  background: color-mix(in srgb, var(--card) 60%, var(--bg-hover) 40%);
+  padding: 1px 6px;
+  border-radius: 5px;
+  font-size: 0.9em;
+}
+
+/* Avatar refinement — gradient brand mark for assistant */
+.chat-avatar.assistant,
+.chat-avatar.other {
+  background: linear-gradient(135deg, #ef4f37, #b22a17);
+  color: white;
+  border-color: transparent;
+  box-shadow: 0 4px 14px color-mix(in srgb, var(--accent) 30%, transparent);
+}
+
+/* Divider — subtler */
+.chat-divider {
+  margin: 22px auto !important;
+  max-width: 720px;
+  padding: 0 12px;
+}
+
+.chat-divider__line {
+  opacity: 0.5;
+}
+
+.chat-divider__label {
+  background: transparent;
+  border: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
+  font-size: 10.5px;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+}
+
+/* ── Composer polish ── */
+
+.agent-chat__input {
+  margin-bottom: 18px !important;
+  border-radius: 24px !important;
+  background: color-mix(in srgb, var(--card) 95%, var(--bg) 5%) !important;
+}
+
+.agent-chat__input > textarea {
+  font-size: 15px;
+  padding: 16px 20px 12px !important;
+}
+
+.agent-chat__input > textarea::placeholder {
+  color: color-mix(in srgb, var(--muted) 90%, transparent);
+}
+
+.agent-chat__toolbar {
+  padding: 6px 12px 10px !important;
+}
+
+/* Tiny hint line under composer */
+.chat-compose-hint {
+  text-align: center;
+  color: var(--muted);
+  font-size: 11px;
+  margin: 6px auto 14px;
+  max-width: 768px;
+  letter-spacing: -0.005em;
+  opacity: 0.85;
+  user-select: none;
+}
+
+/* ── Welcome state polish ── */
+
+.agent-chat__welcome h2 {
+  letter-spacing: -0.02em;
+  font-weight: 650;
+}
+
+.agent-chat__welcome .agent-chat__hint {
+  color: var(--muted);
+  font-size: 13px;
+  letter-spacing: -0.005em;
+}
+
+.agent-chat__suggestion {
+  border-radius: 12px !important;
+  padding: 10px 14px !important;
+  font-size: 13.5px !important;
+  letter-spacing: -0.005em;
+  background: color-mix(in srgb, var(--card) 80%, transparent) !important;
+  border-color: color-mix(in srgb, var(--border) 70%, transparent) !important;
+  transition:
+    background 140ms ease,
+    border-color 140ms ease,
+    transform 140ms ease;
+}
+
+.agent-chat__suggestion:hover {
+  background: var(--card) !important;
+  border-color: color-mix(in srgb, var(--accent) 30%, var(--border-strong)) !important;
+  transform: translateY(-1px);
+}
+
+/* ── Light-mode adjustments ── */
+
+:root[data-theme-mode="light"] .chat-conversations {
+  background: color-mix(in srgb, var(--bg) 80%, white 20%);
+}
+
+:root[data-theme-mode="light"] .chat-conversations__item--active {
+  background: color-mix(in srgb, var(--card) 96%, var(--accent) 4%);
+}
+
+:root[data-theme-mode="light"] .chat-avatar.assistant,
+:root[data-theme-mode="light"] .chat-avatar.other {
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--accent) 22%, transparent);
+}

@@ -1,6 +1,8 @@
 import { html, nothing, type TemplateResult } from "lit";
 import { ref } from "lit/directives/ref.js";
 import { repeat } from "lit/directives/repeat.js";
+import { formatRelativeTimestamp } from "../format.ts";
+import type { GatewaySessionRow } from "../types.ts";
 import type { CompactionStatus, FallbackStatus } from "../app-tool-stream.ts";
 import {
   CHAT_ATTACHMENT_ACCEPT,
@@ -195,6 +197,138 @@ export function resetChatViewState() {
 }
 
 export const cleanupChatModuleState = resetChatViewState;
+
+function sessionDisplayLabel(row: GatewaySessionRow): string {
+  return (
+    row.label?.trim() ||
+    row.displayName?.trim() ||
+    row.subject?.trim() ||
+    row.room?.trim() ||
+    row.space?.trim() ||
+    row.surface?.trim() ||
+    row.key
+  );
+}
+
+function bucketSessions(rows: readonly GatewaySessionRow[]): Array<{
+  label: string;
+  rows: GatewaySessionRow[];
+}> {
+  const now = Date.now();
+  const startOfToday = new Date(now);
+  startOfToday.setHours(0, 0, 0, 0);
+  const startOfYesterday = startOfToday.getTime() - 24 * 60 * 60 * 1000;
+  const sevenDaysAgo = now - 7 * 24 * 60 * 60 * 1000;
+  const thirtyDaysAgo = now - 30 * 24 * 60 * 60 * 1000;
+
+  const buckets: Array<{ label: string; rows: GatewaySessionRow[] }> = [
+    { label: "Today", rows: [] },
+    { label: "Yesterday", rows: [] },
+    { label: "Previous 7 days", rows: [] },
+    { label: "Previous 30 days", rows: [] },
+    { label: "Older", rows: [] },
+  ];
+
+  for (const row of rows) {
+    const ts = row.updatedAt ?? 0;
+    if (ts >= startOfToday.getTime()) {
+      buckets[0].rows.push(row);
+    } else if (ts >= startOfYesterday) {
+      buckets[1].rows.push(row);
+    } else if (ts >= sevenDaysAgo) {
+      buckets[2].rows.push(row);
+    } else if (ts >= thirtyDaysAgo) {
+      buckets[3].rows.push(row);
+    } else {
+      buckets[4].rows.push(row);
+    }
+  }
+
+  for (const b of buckets) {
+    b.rows.sort((a, c) => (c.updatedAt ?? 0) - (a.updatedAt ?? 0));
+  }
+
+  return buckets.filter((b) => b.rows.length > 0);
+}
+
+function renderConversationsSidebar(props: ChatProps) {
+  const rows = props.sessions?.sessions ?? [];
+  const buckets = bucketSessions(rows);
+  const handleNew = () => props.onNewSession();
+  const handlePick = (key: string) => {
+    if (key === props.sessionKey) {
+      return;
+    }
+    if (props.onSessionSelect) {
+      props.onSessionSelect(key);
+    } else {
+      props.onSessionKeyChange(key);
+    }
+  };
+
+  return html`
+    <aside class="chat-conversations" aria-label="Conversations">
+      <div class="chat-conversations__header">
+        <span class="chat-conversations__title">Conversations</span>
+      </div>
+      <button
+        type="button"
+        class="chat-conversations__new"
+        @click=${handleNew}
+        ?disabled=${!props.connected}
+        title="Start a new chat"
+      >
+        ${icons.plus}
+        <span>New chat</span>
+      </button>
+      <ul class="chat-conversations__list" role="list">
+        ${rows.length === 0
+          ? html`<li class="chat-conversations__empty">
+              No conversations yet. Send a message to start one.
+            </li>`
+          : nothing}
+        ${buckets.map(
+          (bucket) => html`
+            <li>
+              <div class="chat-conversations__group-label">${bucket.label}</div>
+              <ul role="list" style="list-style:none;margin:0;padding:0;">
+                ${repeat(
+                  bucket.rows,
+                  (row) => row.key,
+                  (row) => {
+                    const active = row.key === props.sessionKey;
+                    const label = sessionDisplayLabel(row);
+                    const ts = row.updatedAt
+                      ? formatRelativeTimestamp(row.updatedAt)
+                      : "";
+                    return html`<li>
+                      <button
+                        type="button"
+                        class="chat-conversations__item ${active
+                          ? "chat-conversations__item--active"
+                          : ""}"
+                        title=${label}
+                        @click=${() => handlePick(row.key)}
+                      >
+                        <span class="chat-conversations__item-icon">
+                          ${icons.messageSquare}
+                        </span>
+                        <span class="chat-conversations__item-label">${label}</span>
+                        ${ts
+                          ? html`<span class="chat-conversations__item-time">${ts}</span>`
+                          : nothing}
+                      </button>
+                    </li>`;
+                  },
+                )}
+              </ul>
+            </li>
+          `,
+        )}
+      </ul>
+    </aside>
+  `;
+}
 
 function adjustTextareaHeight(el: HTMLTextAreaElement) {
   el.style.height = "auto";
@@ -1008,12 +1142,17 @@ export function renderChat(props: ChatProps) {
     props.onDraftChange(target.value);
   };
 
+  const showConversations =
+    !props.focusMode && (props.sessions?.sessions?.length ?? 0) >= 0;
+
   return html`
     <section
-      class="card chat"
+      class="card chat ${showConversations ? "chat--with-conversations" : ""}"
       @drop=${(e: DragEvent) => handleDrop(e, props)}
       @dragover=${(e: DragEvent) => e.preventDefault()}
     >
+      ${showConversations ? renderConversationsSidebar(props) : nothing}
+      <div class="chat-content">
       ${props.disabledReason ? html`<div class="callout">${props.disabledReason}</div>` : nothing}
       ${props.error ? html`<div class="callout danger">${props.error}</div>` : nothing}
       ${props.focusMode
@@ -1231,6 +1370,10 @@ export function renderChat(props: ChatProps) {
             onStoreDraft: (draft) => inputHistory.push(draft),
           })}
         </div>
+      </div>
+      <div class="chat-compose-hint">
+        OpenClaw can make mistakes. Verify important information.
+      </div>
       </div>
     </section>
   `;
