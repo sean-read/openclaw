@@ -1,0 +1,129 @@
+/*
+ * UI repair layer for the Carapace redesign.
+ * Loaded last from ui/src/styles.css so it can safely correct broad legacy and redesign rules.
+ */
+
+:root {
+  /* Backwards-compatible aliases used by older component styles. */
+  --fg: var(--text);
+  --font-mono: var(--mono);
+  --danger-color: var(--danger);
+  --color-accent: var(--accent);
+  --bg-content: var(--bg-accent);
+}
+
+/* Keep the application shell stable after login. Avoid page-level rules accidentally
+   turning the chat/dashboard shell into a padded document layout. */
+.shell,
+.app-shell,
+.dashboard-shell {
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+.shell main,
+.app-shell main,
+.dashboard-shell main,
+.chat-main,
+.chat-pane,
+.agent-chat {
+  min-width: 0;
+}
+
+/* Neutralise the broad `main` padding introduced by the redesign layer. */
+.shell main,
+.app-shell main,
+.dashboard-shell main,
+.chat-main,
+.agent-chat {
+  padding: 0 !important;
+}
+
+/* Page tabs still need document spacing. Scope it to actual content wrappers only. */
+.content,
+.content-inner {
+  padding: 28px 32px 40px !important;
+}
+
+/* Chat layout repair: keep the thread and composer centred without deforming the app shell. */
+.chat-main {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--bg);
+}
+
+.chat-thread {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 24px 32px 120px !important;
+}
+
+.chat-thread-inner,
+.chat-compose,
+.agent-chat__input {
+  width: min(100%, 760px) !important;
+  max-width: 760px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+.chat-compose {
+  flex: 0 0 auto;
+  padding: 0 32px 20px;
+}
+
+.agent-chat__input {
+  box-sizing: border-box;
+}
+
+/* Prevent native selects and toolbar controls from stretching the header into a broken shape. */
+.chat-controls,
+.chat-controls__session-row {
+  min-width: 0;
+}
+
+.chat-controls select {
+  max-width: min(260px, 36vw) !important;
+}
+
+.content-header,
+.chat-header,
+.topbar {
+  min-width: 0;
+}
+
+/* Safer form styling. The legacy components file uses --fg and --font-mono; the aliases above fix the colour/font fallbacks. */
+.login-gate__steps code,
+.login-gate__command code,
+.field textarea {
+  font-family: var(--mono) !important;
+}
+
+/* Mobile repairs. */
+@media (max-width: 768px) {
+  .content,
+  .content-inner {
+    padding: 18px 16px 28px !important;
+  }
+
+  .chat-thread {
+    padding: 16px 14px 112px !important;
+  }
+
+  .chat-compose {
+    padding: 0 12px 14px;
+  }
+
+  .chat-thread-inner,
+  .chat-compose,
+  .agent-chat__input {
+    width: 100% !important;
+    max-width: none !important;
+  }
+
+  .chat-controls select {
+    max-width: 100% !important;
+  }
+}
