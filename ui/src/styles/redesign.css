@@ -304,19 +304,60 @@ openclaw-app::before {
 }
 
 /* --------------------------------------------------------------
-   5. CHAT THREAD — generous, refined
+   5. CHAT THREAD — generous, refined, centered
    -------------------------------------------------------------- */
 
 .chat-thread {
-  padding: 16px 16px 20px;
+  padding: 24px 32px 24px !important;
   scroll-padding-bottom: 160px;
   background: transparent;
 }
 
 .chat-thread-inner {
-  max-width: 820px;
-  margin: 0 auto;
+  max-width: 760px !important;
+  margin: 0 auto !important;
   padding-top: 8px;
+}
+
+/* Chat header / content header sits above the thread — center
+   it on the same column as the messages. */
+.content-header,
+.chat-header,
+.chat-content-header {
+  max-width: 760px !important;
+  margin: 0 auto 8px !important;
+  padding: 16px 32px 8px !important;
+}
+
+/* Composer matches the chat column width. */
+.agent-chat__input,
+.chat-compose {
+  max-width: 760px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+@media (min-width: 1280px) {
+  .chat-thread {
+    padding: 32px 32px 32px !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .chat-thread {
+    padding: 16px 16px 20px !important;
+  }
+  .content-header,
+  .chat-header,
+  .chat-content-header {
+    padding: 12px 16px 8px !important;
+  }
+  .agent-chat__input,
+  .chat-compose {
+    max-width: none !important;
+    margin-left: 12px !important;
+    margin-right: 12px !important;
+  }
 }
 
 /* --------------------------------------------------------------
@@ -752,33 +793,113 @@ button.btn {
   font-weight: 500;
 }
 
+/* Chat content header — clean compact row. The default app stacks
+   pills awkwardly and surrounds icon buttons with coral borders;
+   tighten everything into a single calm row. */
+.chat-controls {
+  flex-wrap: nowrap !important;
+  align-items: center !important;
+  gap: 8px !important;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.chat-controls__session-row {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  flex-wrap: wrap !important;
+}
+
+.chat-controls__separator {
+  display: none !important;
+}
+
+/* Mute the action icons in the chat content header (refresh,
+   thinking, tool-calls, focus, cron-filter). Default app draws
+   them with a coral border which is visually loud. */
+.chat-controls .btn--icon,
+.chat-controls .btn.btn--sm.btn--icon {
+  width: 32px !important;
+  height: 32px !important;
+  border-radius: 8px !important;
+  border: 1px solid color-mix(in srgb, var(--border) 60%, transparent) !important;
+  background: color-mix(in srgb, var(--card) 50%, transparent) !important;
+  color: var(--muted) !important;
+  box-shadow: none !important;
+  transition:
+    color 150ms ease,
+    background 150ms ease,
+    border-color 150ms ease !important;
+}
+
+.chat-controls .btn--icon svg {
+  width: 16px !important;
+  height: 16px !important;
+}
+
+.chat-controls .btn--icon:hover:not(:disabled) {
+  color: var(--accent) !important;
+  border-color: color-mix(in srgb, var(--accent) 35%, var(--border-strong)) !important;
+  background: color-mix(in srgb, var(--accent) 8%, var(--card)) !important;
+}
+
+.chat-controls .btn--icon.active {
+  color: var(--accent) !important;
+  border-color: color-mix(in srgb, var(--accent) 50%, var(--border-strong)) !important;
+  background: color-mix(in srgb, var(--accent) 12%, transparent) !important;
+}
+
+.chat-controls .btn--icon:focus-visible {
+  outline: none !important;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 20%, transparent) !important;
+}
+
 /* Chat header dropdown pills (session / model / reasoning) —
    Claude-style: clean pill, custom chevron, comfortable padding. */
 .chat-controls__session select,
 .chat-controls__model select,
 .chat-controls__thinking select,
+.chat-controls__thinking-select select,
 .chat-session select,
 select.chat-controls__session,
 select.chat-controls__model {
   appearance: none !important;
   -webkit-appearance: none !important;
   -moz-appearance: none !important;
-  height: 36px !important;
-  padding: 0 36px 0 14px !important;
-  border-radius: 10px !important;
-  font-size: 13px !important;
+  height: 32px !important;
+  min-height: 32px !important;
+  padding: 0 30px 0 12px !important;
+  border-radius: 8px !important;
+  font-size: 12.5px !important;
   font-weight: 500 !important;
   letter-spacing: -0.005em !important;
-  border: 1px solid color-mix(in srgb, var(--border) 70%, transparent) !important;
+  border: 1px solid color-mix(in srgb, var(--border) 60%, transparent) !important;
   background:
     url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238a8a92' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'></polyline></svg>")
-    no-repeat right 12px center / 12px,
-    color-mix(in srgb, var(--card) 70%, transparent) !important;
+    no-repeat right 10px center / 11px,
+    color-mix(in srgb, var(--card) 50%, transparent) !important;
   color: var(--text) !important;
   cursor: pointer;
+  max-width: 220px !important;
   transition:
     border-color 150ms ease,
     background-color 150ms ease;
+}
+
+/* Compact label rendering for chat-controls fields. */
+.chat-controls .field {
+  gap: 0 !important;
+}
+
+.chat-controls .field > span {
+  display: none !important;
+}
+
+.chat-controls__thinking,
+.chat-controls__thinking-select {
+  height: 32px !important;
+  min-width: 0 !important;
 }
 
 .chat-controls__session select:hover,
