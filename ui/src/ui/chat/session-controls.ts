@@ -16,6 +16,58 @@ import {
 } from "../thinking.ts";
 import type { GatewayThinkingLevelOption, SessionsListResult } from "../types.ts";
 
+/**
+ * Beautify a raw model identifier for display in dropdowns.
+ *
+ * Examples:
+ *   "claude-sonnet-4-5-20250929 · anthropic" → "Claude Sonnet 4.5"
+ *   "claude-opus-4-5 · anthropic"             → "Claude Opus 4.5"
+ *   "gpt-4o-2024-08-06 · openai"              → "GPT-4o"
+ *   "Default (claude-sonnet-4-5-20250929 · anthropic)"
+ *      → "Default (Claude Sonnet 4.5)"
+ */
+function prettifyModelLabel(input: string): string {
+  if (!input) return input;
+  // Recurse into "Default (...)" wrappers so the inner model is also prettified.
+  const wrapped = /^Default\s*\((.+)\)\s*$/i.exec(input);
+  if (wrapped) {
+    return `Default (${prettifyModelLabel(wrapped[1])})`;
+  }
+
+  // Drop the trailing " · provider" suffix used by the model catalog.
+  let id = input.split("·")[0].trim();
+  if (!id) return input;
+
+  // Strip a trailing 6/8-digit date stamp like "-20250929".
+  id = id.replace(/-\d{6,8}$/u, "");
+
+  // Special-case OpenAI gpt-NN names so the casing reads right.
+  if (/^gpt-/iu.test(id)) {
+    return id
+      .replace(/^gpt-([a-z0-9.]+)/iu, (_m, rest: string) => `GPT-${rest}`)
+      .replace(/-/g, " ")
+      .replace(/\s+/g, " ")
+      .trim();
+  }
+
+  // Convert e.g. "claude-sonnet-4-5" → "Claude Sonnet 4.5"
+  const parts = id.split("-");
+  const out: string[] = [];
+  for (let i = 0; i < parts.length; i++) {
+    const part = parts[i];
+    if (/^\d+$/u.test(part) && i > 0 && /^\d+$/u.test(parts[i + 1] ?? "")) {
+      // Two consecutive numeric parts = a version pair.
+      out.push(`${part}.${parts[i + 1]}`);
+      i++;
+    } else if (/^\d+$/u.test(part)) {
+      out.push(part);
+    } else {
+      out.push(part.charAt(0).toUpperCase() + part.slice(1));
+    }
+  }
+  return out.join(" ");
+}
+
 type ChatSessionSwitchHandler = (state: AppViewState, nextSessionKey: string) => void;
 
 export function renderChatSessionSelect(
@@ -91,10 +143,13 @@ function renderChatModelSelect(state: AppViewState) {
     state.chatLoading || state.chatSending || Boolean(state.chatRunId) || state.chatStream !== null;
   const disabled =
     !state.connected || busy || (state.chatModelsLoading && options.length === 0) || !state.client;
+  const prettyDefaultLabel = prettifyModelLabel(defaultLabel);
   const selectedLabel =
     currentOverride === ""
-      ? defaultLabel
-      : (options.find((entry) => entry.value === currentOverride)?.label ?? currentOverride);
+      ? prettyDefaultLabel
+      : prettifyModelLabel(
+          options.find((entry) => entry.value === currentOverride)?.label ?? currentOverride,
+        );
   return html`
     <label class="field chat-controls__session chat-controls__model">
       <select
@@ -107,13 +162,13 @@ function renderChatModelSelect(state: AppViewState) {
           await switchChatModel(state, next);
         }}
       >
-        <option value="" ?selected=${currentOverride === ""}>${defaultLabel}</option>
+        <option value="" ?selected=${currentOverride === ""}>${prettyDefaultLabel}</option>
         ${repeat(
           options,
           (entry) => entry.value,
           (entry) =>
             html`<option value=${entry.value} ?selected=${entry.value === currentOverride}>
-              ${entry.label}
+              ${prettifyModelLabel(entry.label)}
             </option>`,
         )}
       </select>

@@ -227,17 +227,24 @@ body {
 }
 
 /* Chat-control action icons (refresh, thinking, tool-calls, focus,
-   cron) — muted gray default, accent on hover/active. */
+   cron) — visible default surface, accent fill when active. */
 .chat-controls .btn--icon,
 .chat-controls .btn.btn--sm.btn--icon {
   width: 32px !important;
   height: 32px !important;
   border-radius: 8px !important;
-  border: 1px solid color-mix(in srgb, var(--border) 60%, transparent) !important;
-  background: transparent !important;
-  color: var(--muted) !important;
+  border: 1px solid color-mix(in srgb, var(--border-strong) 65%, transparent) !important;
+  background: color-mix(in srgb, var(--card) 70%, transparent) !important;
+  color: color-mix(in srgb, var(--muted) 80%, var(--text) 20%) !important;
   box-shadow: none !important;
   transition: color 150ms ease, background 150ms ease, border-color 150ms ease !important;
+}
+
+:root[data-theme-mode="light"] .chat-controls .btn--icon,
+:root[data-theme-mode="light"] .chat-controls .btn.btn--sm.btn--icon {
+  background: #ffffff !important;
+  border-color: color-mix(in srgb, var(--border) 90%, transparent) !important;
+  color: color-mix(in srgb, var(--muted) 70%, var(--text) 30%) !important;
 }
 
 .chat-controls .btn--icon svg {

@@ -658,7 +658,7 @@ export const en: TranslationMap = {
     onboardingDisabled: "Disabled during setup",
   },
   languages: {
-    en: "English",
+    en: "English (UK)",
     zhCN: "简体中文 (Simplified Chinese)",
     zhTW: "繁體中文 (Traditional Chinese)",
     ptBR: "Português (Brazilian Portuguese)",
