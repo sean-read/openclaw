@@ -1,7 +1,7 @@
 /*
  * Sean Read control UI layout repair.
- * Loaded last. Conservative: keep the improved visual theme, but stop overriding
- * the chat layout containers in ways that break OpenClaw's real DOM structure.
+ * Loaded last. Conservative ChatGPT-like dark mode: neutral charcoal surfaces,
+ * soft borders, no purple/blue gradients, and no forced chat layout widths.
  */
 
 :root {
@@ -11,45 +11,65 @@
   --color-accent: var(--accent);
   --bg-content: var(--bg-accent);
 
-  --accent: #7c5cff;
-  --accent-hover: #9478ff;
-  --accent-foreground: #ffffff;
-  --ring: #7c5cff;
+  --bg: #0f0f0f;
+  --bg-accent: #171717;
+  --bg-elevated: #1f1f1f;
+  --bg-hover: #2a2a2a;
+  --bg-muted: #191919;
+  --card: #171717;
+  --panel: #0f0f0f;
+  --panel-strong: #1f1f1f;
+  --popover: #1f1f1f;
+  --text: #ececec;
+  --text-strong: #ffffff;
+  --muted: #a6a6a6;
+  --border: rgba(255, 255, 255, 0.10);
+  --border-strong: rgba(255, 255, 255, 0.18);
+  --accent: #e8e8e8;
+  --accent-hover: #ffffff;
+  --accent-foreground: #0f0f0f;
+  --ring: #d0d0d0;
 }
 
 /* Visual polish only. Do not force shell widths/heights. */
 html,
 body,
 openclaw-app {
-  background: #090b10 !important;
+  background: #0f0f0f !important;
   color: var(--text) !important;
 }
 
 .shell-nav,
 .sidebar {
-  background: #0f131c !important;
-  border-right: 1px solid rgba(151, 163, 184, 0.16) !important;
+  background: #111111 !important;
+  border-right: 1px solid rgba(255, 255, 255, 0.10) !important;
 }
 
 .sidebar-shell__header,
 .sidebar-shell__footer {
-  border-color: rgba(151, 163, 184, 0.16) !important;
+  border-color: rgba(255, 255, 255, 0.10) !important;
 }
 
 .sidebar-brand__logo {
-  border-radius: 14px !important;
+  border-radius: 12px !important;
 }
 
 .nav-item {
-  border-radius: 14px !important;
+  border-radius: 12px !important;
+  color: #c7c7c7 !important;
+}
+
+.nav-item:hover {
+  background: rgba(255, 255, 255, 0.07) !important;
+  color: #ffffff !important;
 }
 
 .nav-item--active,
 .nav-item[aria-current="page"],
 .nav-item.is-active {
-  background: linear-gradient(135deg, #7c5cff, #2f80ed) !important;
+  background: #2f2f2f !important;
   color: #ffffff !important;
-  box-shadow: 0 12px 30px rgba(124, 92, 255, 0.22) !important;
+  box-shadow: none !important;
 }
 
 .nav-item--active .nav-item__icon,
@@ -61,14 +81,14 @@ openclaw-app {
 .topbar,
 .content-header,
 .chat-header {
-  background: #090b10 !important;
-  border-bottom: 1px solid rgba(151, 163, 184, 0.16) !important;
+  background: #0f0f0f !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.10) !important;
 }
 
 .topbar-search {
   border-radius: 999px !important;
-  background: rgba(255, 255, 255, 0.055) !important;
-  border: 1px solid rgba(151, 163, 184, 0.18) !important;
+  background: #1f1f1f !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
 }
 
 /* Critical chat layout reset. Let the original app own the actual positioning. */
@@ -92,28 +112,28 @@ openclaw-app {
 .agent-chat {
   min-width: 0 !important;
   overflow: hidden !important;
+  background: #0f0f0f !important;
 }
 
 .chat-thread {
   min-width: 0 !important;
   min-height: 0 !important;
   overflow-y: auto !important;
+  background: #0f0f0f !important;
 }
 
 /* Make the composer stable without changing its containing layout. */
 .agent-chat__input {
   box-sizing: border-box !important;
   border-radius: 24px !important;
-  background: #111722 !important;
-  border: 1px solid rgba(151, 163, 184, 0.24) !important;
-  box-shadow: 0 18px 55px rgba(0, 0, 0, 0.30) !important;
+  background: #1f1f1f !important;
+  border: 1px solid rgba(255, 255, 255, 0.14) !important;
+  box-shadow: none !important;
 }
 
 .agent-chat__input:focus-within {
-  border-color: rgba(124, 92, 255, 0.72) !important;
-  box-shadow:
-    0 18px 55px rgba(0, 0, 0, 0.32),
-    0 0 0 4px rgba(124, 92, 255, 0.16) !important;
+  border-color: rgba(255, 255, 255, 0.28) !important;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.06) !important;
 }
 
 .agent-chat__input > textarea {
@@ -121,49 +141,68 @@ openclaw-app {
 }
 
 .agent-chat__toolbar {
-  border-top: 1px solid rgba(151, 163, 184, 0.13) !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.10) !important;
 }
 
 /* Message styling that does not disturb layout. */
 .chat-group.user .chat-bubble {
-  background: linear-gradient(135deg, #7c5cff, #38bdf8) !important;
+  background: #2f2f2f !important;
   color: #ffffff !important;
-  border: 0 !important;
-  box-shadow: 0 12px 28px rgba(124, 92, 255, 0.22) !important;
+  border: 1px solid rgba(255, 255, 255, 0.10) !important;
+  box-shadow: none !important;
 }
 
 .chat-group.assistant .chat-bubble,
 .chat-group.other .chat-bubble,
 .chat-group:not(.user):not(.tool):not(.system) .chat-bubble {
-  background: rgba(17, 23, 34, 0.64) !important;
-  border: 1px solid rgba(151, 163, 184, 0.12) !important;
+  background: #171717 !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
   box-shadow: none !important;
 }
 
 .chat-avatar {
-  border-radius: 14px !important;
+  border-radius: 12px !important;
 }
 
 /* Buttons and inputs. */
 .btn,
 button.btn {
-  border-radius: 14px !important;
+  border-radius: 12px !important;
+  background: #1f1f1f !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  color: #ececec !important;
+  box-shadow: none !important;
+}
+
+.btn:hover:not(:disabled),
+button.btn:hover:not(:disabled) {
+  background: #2a2a2a !important;
+  border-color: rgba(255, 255, 255, 0.18) !important;
 }
 
 .chat-send-btn,
 .btn.primary,
 .btn--primary,
 .btn.is-primary {
-  background: linear-gradient(135deg, #7c5cff, #38bdf8) !important;
-  border: 0 !important;
-  color: #ffffff !important;
+  background: #ececec !important;
+  border: 1px solid #ececec !important;
+  color: #0f0f0f !important;
+  box-shadow: none !important;
+}
+
+.chat-send-btn:hover:not(:disabled),
+.btn.primary:hover:not(:disabled),
+.btn--primary:hover:not(:disabled),
+.btn.is-primary:hover:not(:disabled) {
+  background: #ffffff !important;
+  border-color: #ffffff !important;
 }
 
 .chat-controls .btn--icon.active,
 .chat-controls .btn--icon[aria-pressed="true"],
 .btn.active {
-  background: rgba(124, 92, 255, 0.22) !important;
-  border-color: rgba(124, 92, 255, 0.58) !important;
+  background: #2f2f2f !important;
+  border-color: rgba(255, 255, 255, 0.22) !important;
   color: #ffffff !important;
 }
 
@@ -173,7 +212,20 @@ button.btn {
 input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
 textarea,
 select {
-  border-radius: 14px !important;
+  border-radius: 12px !important;
+  background: #1f1f1f !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  color: #ececec !important;
+}
+
+.field input:focus,
+.field textarea:focus,
+.field select:focus,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  border-color: rgba(255, 255, 255, 0.28) !important;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.06) !important;
 }
 
 /* Generic card polish. */
@@ -182,12 +234,18 @@ select {
 .account-card,
 .cron-form-section,
 .cron-summary-item {
-  border-radius: 20px !important;
+  border-radius: 18px !important;
+  background: #171717 !important;
+  border: 1px solid rgba(255, 255, 255, 0.10) !important;
+  box-shadow: none !important;
 }
 
 /* Login polish, without altering post-login layout. */
 .login-gate__card {
-  border-radius: 28px !important;
+  border-radius: 24px !important;
+  background: #171717 !important;
+  border: 1px solid rgba(255, 255, 255, 0.10) !important;
+  box-shadow: none !important;
 }
 
 .login-gate__steps code,
