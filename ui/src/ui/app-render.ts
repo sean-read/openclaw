@@ -1430,11 +1430,11 @@ export function renderApp(state: AppViewState) {
                   const version = state.hello?.server?.version ?? "";
                   return version
                     ? html`
-                        <div class="sidebar-version" title=${`v${version}`}>
+                        <div class="sidebar-version" title=${`Build ${version}`}>
                           ${!navCollapsed
                             ? html`
-                                <span class="sidebar-version__label">${t("common.version")}</span>
-                                <span class="sidebar-version__text">v${version}</span>
+                                <span class="sidebar-version__label">Build</span>
+                                <span class="sidebar-version__text">${version}</span>
                                 ${renderSidebarConnectionStatus(state)}
                               `
                             : html` ${renderSidebarConnectionStatus(state)} `}
