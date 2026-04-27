@@ -13,6 +13,7 @@
 @import "./styles/login-polish.css";
 @import "./styles/chatgpt-clean.css";
 @import "./styles/light-mode-fix.css";
+@import "./styles/final-ui-fix.css";
 
 .cm-preview {
   --cm-mono: var(--mono);
