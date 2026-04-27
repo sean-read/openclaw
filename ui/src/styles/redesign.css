@@ -524,8 +524,15 @@ body .chat-compose,
 
 body .agent-chat__input,
 .agent-chat__input {
-  margin: 0 auto 20px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  width: 100% !important;
   max-width: 760px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  margin-top: 0 !important;
+  margin-bottom: 20px !important;
+  align-self: center !important;
   border-radius: 20px !important;
   background: var(--card) !important;
   border: 1px solid color-mix(in srgb, var(--border-strong) 70%, transparent) !important;
@@ -533,6 +540,11 @@ body .agent-chat__input,
     0 8px 28px -10px rgba(0, 0, 0, 0.45),
     0 2px 6px -2px rgba(0, 0, 0, 0.25) !important;
   transition: border-color 160ms ease, box-shadow 200ms ease !important;
+}
+
+/* Force the chat-main container to allow centered children */
+.chat-main {
+  align-items: stretch !important;
 }
 
 :root[data-theme-mode="light"] .agent-chat__input {
