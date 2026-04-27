@@ -297,19 +297,24 @@ body {
    6. Chat thread — centered column, calm spacing
    -------------------------------------------------------------- */
 
+body .chat-thread,
 .chat-thread {
   padding: 24px 32px !important;
   scroll-padding-bottom: 160px;
   background: transparent !important;
+  width: 100% !important;
+  max-width: none !important;
 }
 
+body .chat-thread-inner,
 .chat-thread-inner {
   max-width: 760px !important;
+  width: 100% !important;
   margin: 0 auto !important;
-  padding-top: 8px;
+  padding-top: 8px !important;
 }
 
-.agent-chat__input,
+body .chat-compose,
 .chat-compose {
   max-width: 760px !important;
   margin-left: auto !important;
@@ -317,10 +322,11 @@ body {
 }
 
 @media (max-width: 768px) {
+  body .chat-thread,
   .chat-thread {
     padding: 16px 16px 20px !important;
   }
-  .agent-chat__input,
+  body .chat-compose,
   .chat-compose {
     max-width: none !important;
     margin-left: 12px !important;
@@ -512,68 +518,127 @@ body {
 }
 
 /* --------------------------------------------------------------
-   10. Composer — clean rounded textarea
+   10. Composer — ChatGPT/Claude-style large rounded surface
+   Tall, prominent, with toolbar inside.
    -------------------------------------------------------------- */
 
+body .agent-chat__input,
 .agent-chat__input {
-  margin: 0 auto 16px !important;
-  border-radius: 14px !important;
+  margin: 0 auto 20px !important;
+  max-width: 760px !important;
+  border-radius: 20px !important;
   background: var(--card) !important;
-  border: 1px solid color-mix(in srgb, var(--border) 80%, transparent) !important;
-  box-shadow: none !important;
+  border: 1px solid color-mix(in srgb, var(--border-strong) 70%, transparent) !important;
+  box-shadow:
+    0 8px 28px -10px rgba(0, 0, 0, 0.45),
+    0 2px 6px -2px rgba(0, 0, 0, 0.25) !important;
+  transition: border-color 160ms ease, box-shadow 200ms ease !important;
 }
 
 :root[data-theme-mode="light"] .agent-chat__input {
   background: #ffffff !important;
-  border-color: color-mix(in srgb, var(--border) 90%, transparent) !important;
+  border-color: color-mix(in srgb, var(--border-strong) 80%, transparent) !important;
+  box-shadow:
+    0 8px 28px -10px rgba(40, 20, 10, 0.1),
+    0 2px 6px -2px rgba(40, 20, 10, 0.05) !important;
 }
 
 .agent-chat__input:focus-within {
-  border-color: color-mix(in srgb, var(--accent) 60%, var(--border-strong)) !important;
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent) !important;
+  border-color: color-mix(in srgb, var(--accent) 65%, var(--border-strong)) !important;
+  box-shadow:
+    0 8px 28px -10px rgba(0, 0, 0, 0.45),
+    0 0 0 3px color-mix(in srgb, var(--accent) 20%, transparent) !important;
 }
 
 .agent-chat__input > textarea {
-  padding: 14px 16px 10px;
-  font-size: 14.5px;
-  line-height: 1.5;
-  background: transparent;
+  padding: 18px 22px 14px !important;
+  min-height: 64px !important;
+  font-size: 15px !important;
+  line-height: 1.55 !important;
+  background: transparent !important;
   border: none !important;
   box-shadow: none !important;
   outline: none !important;
+  letter-spacing: -0.005em;
+}
+
+.agent-chat__input > textarea::placeholder {
+  color: color-mix(in srgb, var(--muted) 90%, var(--text) 10%);
 }
 
 .agent-chat__toolbar {
-  padding: 6px 10px;
-  border-top: 1px solid color-mix(in srgb, var(--border) 35%, transparent);
+  padding: 8px 12px !important;
+  border-top: 1px solid color-mix(in srgb, var(--border) 38%, transparent);
+}
+
+.agent-chat__toolbar-left,
+.agent-chat__toolbar-right {
+  gap: 4px !important;
 }
 
 .agent-chat__input-btn {
-  width: 30px;
-  height: 30px;
-  border-radius: 6px;
-  color: var(--muted);
+  width: 34px !important;
+  height: 34px !important;
+  border-radius: 8px !important;
+  color: var(--muted) !important;
+  background: transparent !important;
+  transition: color 150ms ease, background 150ms ease !important;
+}
+
+.agent-chat__input-btn svg {
+  width: 18px !important;
+  height: 18px !important;
 }
 
 .agent-chat__input-btn:hover:not(:disabled) {
-  color: var(--text-strong);
-  background: color-mix(in srgb, var(--card) 60%, transparent);
+  color: var(--text-strong) !important;
+  background: color-mix(in srgb, var(--card) 70%, transparent) !important;
 }
 
 .agent-chat__input-btn--active {
-  color: var(--accent);
-  background: color-mix(in srgb, var(--accent) 14%, transparent);
+  color: var(--accent) !important;
+  background: color-mix(in srgb, var(--accent) 14%, transparent) !important;
 }
 
+/* Send button — ChatGPT-style filled accent circle */
 .chat-send-btn {
-  width: 30px;
-  height: 30px;
-  border-radius: 6px;
-  color: var(--accent);
+  width: 34px !important;
+  height: 34px !important;
+  border-radius: 10px !important;
+  background: var(--accent) !important;
+  color: var(--accent-foreground) !important;
+  transition: background 150ms ease, transform 150ms ease !important;
+}
+
+.chat-send-btn svg {
+  width: 16px !important;
+  height: 16px !important;
 }
 
 .chat-send-btn:hover:not(:disabled) {
-  background: color-mix(in srgb, var(--accent) 14%, transparent);
+  background: color-mix(in srgb, var(--accent) 100%, black 8%) !important;
+  transform: translateY(-1px);
+}
+
+.chat-send-btn:disabled {
+  background: color-mix(in srgb, var(--card) 80%, transparent) !important;
+  color: var(--muted) !important;
+  opacity: 0.5;
+}
+
+.chat-send-btn--stop {
+  background: var(--danger) !important;
+  color: var(--destructive-foreground) !important;
+}
+
+@media (max-width: 768px) {
+  .agent-chat__input,
+  body .agent-chat__input {
+    max-width: none !important;
+    margin-left: 12px !important;
+    margin-right: 12px !important;
+    border-radius: 16px !important;
+  }
 }
 
 /* --------------------------------------------------------------
@@ -737,6 +802,164 @@ button.btn {
   min-height: 34px !important;
   font-size: 12px !important;
   border-radius: 7px !important;
+}
+
+/* --------------------------------------------------------------
+   X. Page-level surfaces — Overview, Channels, Sessions, etc.
+   These pages use generic .card, .card-title, .card-sub classes.
+   Polish them so every page reads as a well-spaced, modern app.
+   -------------------------------------------------------------- */
+
+.content,
+.content-inner,
+main {
+  padding: 28px 32px 40px;
+}
+
+/* Generic page heading. Overview/Channels/etc render an h1-style
+   block manually; the original styles are bare. Boost hierarchy. */
+.content > h1,
+.content h1.page-title,
+section > h1:first-child,
+.content > .page-title,
+.page > h1 {
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.15;
+  color: var(--text-strong);
+  margin: 0 0 6px;
+}
+
+.content > h1 + p,
+.content h1.page-title + p,
+.page > h1 + p,
+.content > .page-subtitle {
+  font-size: 14px;
+  color: var(--muted);
+  margin: 0 0 24px;
+  letter-spacing: -0.005em;
+}
+
+/* Card surface — the building block of every page panel. */
+.card {
+  background: color-mix(in srgb, var(--card) 80%, transparent);
+  border: 1px solid color-mix(in srgb, var(--border) 60%, transparent);
+  border-radius: 14px;
+  padding: 20px 22px;
+  box-shadow: 0 4px 14px -6px rgba(0, 0, 0, 0.35);
+  transition:
+    border-color 200ms ease,
+    box-shadow 200ms ease;
+}
+
+:root[data-theme-mode="light"] .card {
+  background: #ffffff;
+  border-color: color-mix(in srgb, var(--border) 80%, transparent);
+  box-shadow: 0 4px 14px -6px rgba(40, 20, 10, 0.06);
+}
+
+.card-title {
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.012em;
+  color: var(--text-strong);
+  margin: 0 0 4px;
+}
+
+.card-sub {
+  font-size: 13px;
+  color: var(--muted);
+  letter-spacing: -0.003em;
+  line-height: 1.5;
+  margin: 0 0 16px;
+}
+
+.section.grid,
+section.grid {
+  display: grid;
+  gap: 16px;
+}
+
+/* Field layout (form rows) */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.field > span:not(.btn):not(.mono) {
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.field input,
+.field select,
+.field textarea {
+  height: 38px;
+  padding: 0 12px;
+  border-radius: 8px;
+  border: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
+  background: color-mix(in srgb, var(--bg) 60%, var(--card) 40%);
+  color: var(--text);
+  font-size: 13px;
+  letter-spacing: -0.005em;
+}
+
+.field textarea {
+  height: auto;
+  min-height: 80px;
+  padding: 10px 12px;
+  line-height: 1.5;
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+  outline: none;
+  border-color: color-mix(in srgb, var(--accent) 60%, var(--border-strong));
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent);
+}
+
+/* Row layouts within cards */
+.row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* Generic buttons inside cards — refined */
+.card .btn,
+.card button.btn {
+  height: 36px;
+  padding: 0 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  border: 1px solid color-mix(in srgb, var(--border-strong) 70%, transparent);
+  background: color-mix(in srgb, var(--card) 60%, transparent);
+  color: var(--text);
+  cursor: pointer;
+  transition: background 150ms ease, border-color 150ms ease, color 150ms ease;
+}
+
+.card .btn:hover:not(:disabled),
+.card button.btn:hover:not(:disabled) {
+  border-color: color-mix(in srgb, var(--accent) 50%, var(--border-strong));
+  color: var(--text-strong);
+}
+
+/* Section dividers used between page blocks */
+.ov-section-divider {
+  height: 1px;
+  background: color-mix(in srgb, var(--border) 60%, transparent);
+  margin: 24px 0;
 }
 
 /* --------------------------------------------------------------
