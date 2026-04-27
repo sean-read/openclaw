@@ -236,9 +236,18 @@ body {
 }
 
 .chat-controls .btn--icon.active {
-  color: var(--accent) !important;
-  border-color: color-mix(in srgb, var(--accent) 40%, var(--border-strong)) !important;
-  background: color-mix(in srgb, var(--accent) 10%, transparent) !important;
+  color: var(--accent-foreground) !important;
+  border-color: var(--accent) !important;
+  background: var(--accent) !important;
+  box-shadow:
+    0 0 0 1px var(--accent),
+    0 4px 12px -3px color-mix(in srgb, var(--accent) 45%, transparent) !important;
+}
+
+.chat-controls .btn--icon.active:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--accent) 100%, black 8%) !important;
+  border-color: color-mix(in srgb, var(--accent) 100%, black 8%) !important;
+  color: var(--accent-foreground) !important;
 }
 
 .chat-controls .btn--icon:focus-visible {
@@ -299,7 +308,7 @@ body {
 
 body .chat-thread,
 .chat-thread {
-  padding: 24px 32px !important;
+  padding: 24px 32px 4px !important;
   scroll-padding-bottom: 160px;
   background: transparent !important;
   width: 100% !important;
@@ -531,7 +540,7 @@ body .agent-chat__input,
   margin-left: auto !important;
   margin-right: auto !important;
   margin-top: 0 !important;
-  margin-bottom: 20px !important;
+  margin-bottom: 12px !important;
   align-self: center !important;
   border-radius: 20px !important;
   background: var(--card) !important;
