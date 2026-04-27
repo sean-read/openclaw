@@ -12,6 +12,7 @@
 @import "./styles/browser-polish.css";
 @import "./styles/login-polish.css";
 @import "./styles/redesign.css";
+@import "./styles/ui-repair.css";
 
 .cm-preview {
   --cm-mono: var(--mono);
