@@ -1,5 +1,6 @@
 import { html } from "lit";
-import { repeat } from "lit/directives/repeat.js";
+import "../components/carapace-select.ts";
+import type { CarapaceSelectOption } from "../components/carapace-select.ts";
 import type { AppViewState } from "../app-view-state.ts";
 import { createChatModelOverride } from "../chat-model-ref.ts";
 import {
@@ -28,42 +29,29 @@ export function renderChatSessionSelect(
   const selectedSessionLabel =
     sessionGroups.flatMap((group) => group.options).find((entry) => entry.key === state.sessionKey)
       ?.label ?? state.sessionKey;
+  const sessionOptions: CarapaceSelectOption[] = sessionGroups.flatMap((group) =>
+    group.options.map((entry) => ({
+      value: entry.key,
+      label: entry.label,
+      title: entry.title,
+      group: group.label,
+    })),
+  );
   return html`
     <div class="chat-controls__session-row">
-      <label class="field chat-controls__session">
-        <select
-          .value=${state.sessionKey}
-          title=${selectedSessionLabel}
-          ?disabled=${!state.connected || sessionGroups.length === 0}
-          @change=${(e: Event) => {
-            const next = (e.target as HTMLSelectElement).value;
-            if (state.sessionKey === next) {
-              return;
-            }
-            onSwitchSession(state, next);
-          }}
-        >
-          ${repeat(
-            sessionGroups,
-            (group) => group.id,
-            (group) =>
-              html`<optgroup label=${group.label}>
-                ${repeat(
-                  group.options,
-                  (entry) => entry.key,
-                  (entry) =>
-                    html`<option
-                      value=${entry.key}
-                      title=${entry.title}
-                      ?selected=${entry.key === state.sessionKey}
-                    >
-                      ${entry.label}
-                    </option>`,
-                )}
-              </optgroup>`,
-          )}
-        </select>
-      </label>
+      <carapace-select
+        class="chat-controls__session"
+        .options=${sessionOptions}
+        .value=${state.sessionKey}
+        .title=${selectedSessionLabel}
+        aria-label="Session"
+        ?disabled=${!state.connected || sessionGroups.length === 0}
+        @change=${(e: CustomEvent<{ value: string }>) => {
+          const next = e.detail.value;
+          if (state.sessionKey === next) return;
+          onSwitchSession(state, next);
+        }}
+      ></carapace-select>
       ${modelSelect} ${thinkingSelect}
     </div>
   `;
@@ -95,29 +83,23 @@ function renderChatModelSelect(state: AppViewState) {
     currentOverride === ""
       ? defaultLabel
       : (options.find((entry) => entry.value === currentOverride)?.label ?? currentOverride);
+  const modelOptions: CarapaceSelectOption[] = [
+    { value: "", label: defaultLabel },
+    ...options.map((entry) => ({ value: entry.value, label: entry.label })),
+  ];
   return html`
-    <label class="field chat-controls__session chat-controls__model">
-      <select
-        data-chat-model-select="true"
-        aria-label="Chat model"
-        title=${selectedLabel}
-        ?disabled=${disabled}
-        @change=${async (e: Event) => {
-          const next = (e.target as HTMLSelectElement).value.trim();
-          await switchChatModel(state, next);
-        }}
-      >
-        <option value="" ?selected=${currentOverride === ""}>${defaultLabel}</option>
-        ${repeat(
-          options,
-          (entry) => entry.value,
-          (entry) =>
-            html`<option value=${entry.value} ?selected=${entry.value === currentOverride}>
-              ${entry.label}
-            </option>`,
-        )}
-      </select>
-    </label>
+    <carapace-select
+      class="chat-controls__model"
+      data-chat-model-select="true"
+      .options=${modelOptions}
+      .value=${currentOverride}
+      .title=${selectedLabel}
+      aria-label="Chat model"
+      ?disabled=${disabled}
+      @change=${async (e: CustomEvent<{ value: string }>) => {
+        await switchChatModel(state, e.detail.value.trim());
+      }}
+    ></carapace-select>
   `;
 }
 
@@ -244,29 +226,23 @@ export function renderChatThinkingSelect(state: AppViewState) {
     currentOverride === ""
       ? defaultLabel
       : (options.find((entry) => entry.value === currentOverride)?.label ?? currentOverride);
+  const thinkingOptions: CarapaceSelectOption[] = [
+    { value: "", label: defaultLabel },
+    ...options.map((entry) => ({ value: entry.value, label: entry.label })),
+  ];
   return html`
-    <label class="field chat-controls__session chat-controls__thinking-select">
-      <select
-        data-chat-thinking-select="true"
-        aria-label="Chat thinking level"
-        title=${selectedLabel}
-        ?disabled=${disabled}
-        @change=${async (e: Event) => {
-          const next = (e.target as HTMLSelectElement).value.trim();
-          await switchChatThinkingLevel(state, next);
-        }}
-      >
-        <option value="" ?selected=${currentOverride === ""}>${defaultLabel}</option>
-        ${repeat(
-          options,
-          (entry) => entry.value,
-          (entry) =>
-            html`<option value=${entry.value} ?selected=${entry.value === currentOverride}>
-              ${entry.label}
-            </option>`,
-        )}
-      </select>
-    </label>
+    <carapace-select
+      class="chat-controls__thinking-select"
+      data-chat-thinking-select="true"
+      .options=${thinkingOptions}
+      .value=${currentOverride}
+      .title=${selectedLabel}
+      aria-label="Chat thinking level"
+      ?disabled=${disabled}
+      @change=${async (e: CustomEvent<{ value: string }>) => {
+        await switchChatThinkingLevel(state, e.detail.value.trim());
+      }}
+    ></carapace-select>
   `;
 }
 
