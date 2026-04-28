@@ -10,6 +10,11 @@ import { clampText } from "../format.ts";
 import { resolveSafeExternalUrl } from "../open-external-url.ts";
 import { normalizeLowercaseStringOrEmpty } from "../string-coerce.ts";
 import type { SkillStatusEntry, SkillStatusReport } from "../types.ts";
+import {
+  filterVisibleSkills,
+  formatSkillName,
+  renderSkillIcon,
+} from "./skill-display.ts";
 import { groupSkills } from "./skills-grouping.ts";
 import {
   computeSkillMissing,
@@ -100,7 +105,7 @@ function skillStatusClass(skill: SkillStatusEntry): string {
 }
 
 export function renderSkills(props: SkillsProps) {
-  const skills = props.report?.skills ?? [];
+  const skills = filterVisibleSkills(props.report?.skills ?? []);
 
   const statusCounts: Record<SkillsStatusFilter, number> = {
     all: skills.length,
@@ -387,10 +392,10 @@ function renderSkill(skill: SkillStatusEntry, props: SkillsProps) {
   return html`
     <div class="list-item list-item-clickable" @click=${() => props.onDetailOpen(skill.skillKey)}>
       <div class="list-main">
-        <div class="list-title" style="display: flex; align-items: center; gap: 8px;">
+        <div class="list-title skill-row__title">
           <span class="statusDot ${dotClass}"></span>
-          ${skill.emoji ? html`<span>${skill.emoji}</span>` : nothing}
-          <span>${skill.name}</span>
+          ${renderSkillIcon(skill, 22)}
+          <span>${formatSkillName(skill.name)}</span>
         </div>
         <div class="list-sub">${clampText(skill.description, 140)}</div>
       </div>
@@ -439,12 +444,11 @@ function renderSkillDetail(skill: SkillStatusEntry, props: SkillsProps) {
       <div class="md-preview-dialog__panel">
         <div class="md-preview-dialog__header">
           <div
-            class="md-preview-dialog__title"
-            style="display: flex; align-items: center; gap: 8px;"
+            class="md-preview-dialog__title skill-row__title"
           >
             <span class="statusDot ${skillStatusClass(skill)}"></span>
-            ${skill.emoji ? html`<span style="font-size: 18px;">${skill.emoji}</span>` : nothing}
-            <span>${skill.name}</span>
+            ${renderSkillIcon(skill, 26)}
+            <span>${formatSkillName(skill.name)}</span>
           </div>
           <button
             class="btn btn--sm"

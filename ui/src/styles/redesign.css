@@ -315,6 +315,180 @@ select:focus-visible {
   box-shadow: var(--carapace-ring);
 }
 
+/* ------------------------------------------------------------
+   CHAT CONTROLS DROPDOWNS — compact, button-style trigger
+   The native select gets the same surface as a .btn ghost; the
+   popover is restyled where `appearance: base-select` is supported
+   (Chrome 130+, Edge 130+) so the menu matches the trigger.
+   ------------------------------------------------------------ */
+
+.chat-controls {
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.chat-controls__session,
+.chat-controls__model,
+.chat-controls__thinking {
+  min-width: 0;
+}
+
+.chat-controls__session { min-width: 0; max-width: 220px; }
+.chat-controls__model   { min-width: 0; max-width: 240px; }
+
+.chat-controls__session select,
+.chat-controls__model select,
+.chat-controls__thinking select {
+  height: 30px;
+  min-height: 30px;
+  padding: 0 28px 0 10px;
+  border: 1px solid color-mix(in srgb, var(--border) 75%, transparent);
+  border-radius: var(--radius-md);
+  background-color: color-mix(in srgb, var(--card) 88%, transparent);
+  background-position: right 8px center;
+  background-size: 12px 12px;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--text);
+  box-shadow: var(--carapace-shadow-line);
+  text-overflow: ellipsis;
+  transition:
+    border-color var(--duration-fast) ease,
+    background var(--duration-fast) ease,
+    box-shadow var(--duration-fast) ease;
+}
+
+.chat-controls__session select:hover,
+.chat-controls__model select:hover,
+.chat-controls__thinking select:hover {
+  border-color: color-mix(in srgb, var(--border-strong) 88%, transparent);
+  background-color: color-mix(in srgb, var(--bg-elevated) 86%, var(--card));
+}
+
+.chat-controls__session select:focus-visible,
+.chat-controls__model select:focus-visible,
+.chat-controls__thinking select:focus-visible {
+  border-color: color-mix(in srgb, var(--accent) 55%, var(--border-strong));
+  box-shadow: var(--carapace-shadow-line), var(--carapace-ring);
+}
+
+/* Hide field labels on the chat-controls — they take up vertical space */
+.chat-controls .field > span { display: none; }
+.chat-controls .field { display: inline-flex; }
+
+/* Modern customisable select (Chrome/Edge 130+) — make the
+   popover and options match button/popover styling so the open
+   menu reads as part of the same UI. Older browsers fall back to
+   the native popover. */
+@supports (appearance: base-select) {
+  .chat-controls__session select,
+  .chat-controls__model select,
+  .chat-controls__thinking select {
+    appearance: base-select;
+    -webkit-appearance: base-select;
+  }
+
+  .chat-controls__session select::picker(select),
+  .chat-controls__model select::picker(select),
+  .chat-controls__thinking select::picker(select) {
+    appearance: base-select;
+    border: 1px solid color-mix(in srgb, var(--border-strong) 70%, transparent);
+    border-radius: var(--radius-lg);
+    background: color-mix(in srgb, var(--popover, var(--card)) 94%, transparent);
+    box-shadow:
+      var(--carapace-shadow-line),
+      var(--carapace-shadow-popover);
+    padding: 6px;
+    min-width: 220px;
+    max-height: 360px;
+    backdrop-filter: blur(20px) saturate(1.7);
+    -webkit-backdrop-filter: blur(20px) saturate(1.7);
+  }
+
+  .chat-controls__session select option,
+  .chat-controls__model select option,
+  .chat-controls__thinking select option {
+    appearance: base-select;
+    padding: 7px 11px;
+    border-radius: var(--radius-md);
+    font-size: 13px;
+    color: var(--text);
+    background: transparent;
+  }
+
+  .chat-controls__session select option:hover,
+  .chat-controls__model select option:hover,
+  .chat-controls__thinking select option:hover,
+  .chat-controls__session select option:checked,
+  .chat-controls__model select option:checked,
+  .chat-controls__thinking select option:checked {
+    background: color-mix(in srgb, var(--accent) 12%, var(--bg-elevated));
+    color: var(--text-strong);
+  }
+
+  .chat-controls__session select optgroup,
+  .chat-controls__model select optgroup,
+  .chat-controls__thinking select optgroup {
+    appearance: base-select;
+    color: color-mix(in srgb, var(--accent) 60%, var(--muted));
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 8px 11px 4px;
+  }
+}
+
+/* ------------------------------------------------------------
+   SKILLS — neat row layout with brand icons
+   ------------------------------------------------------------ */
+
+.skill-row__title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: -0.005em;
+  min-width: 0;
+}
+
+.skill-row__title > span:not(.statusDot):not(.skill-icon) {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.skill-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--skill-icon-size, 22px);
+  height: var(--skill-icon-size, 22px);
+  flex-shrink: 0;
+  border-radius: 6px;
+  font-size: calc(var(--skill-icon-size, 22px) * 0.72);
+  line-height: 1;
+}
+
+.skill-icon--brand svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  border-radius: inherit;
+}
+
+.skill-icon--emoji {
+  background: color-mix(in srgb, var(--bg-elevated) 80%, transparent);
+  border: 1px solid color-mix(in srgb, var(--border) 60%, transparent);
+}
+
+.agent-skill-row .list-title,
+.list-item .list-title {
+  letter-spacing: -0.005em;
+}
+
 /* ============================================================
    CHAT — the main surface
    ============================================================ */

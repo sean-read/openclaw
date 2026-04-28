@@ -22,6 +22,11 @@ import {
 import type { SkillGroup } from "./skills-grouping.ts";
 import { groupSkills } from "./skills-grouping.ts";
 import {
+  filterVisibleSkills,
+  formatSkillName,
+  renderSkillIcon,
+} from "./skill-display.ts";
+import {
   computeSkillMissing,
   computeSkillReasons,
   renderSkillStatusChips,
@@ -687,7 +692,7 @@ export function renderAgentSkills(params: {
   const allowSet = new Set((allowlist ?? []).map((name) => name.trim()).filter(Boolean));
   const usingAllowlist = allowlist !== undefined;
   const reportReady = Boolean(params.report && params.activeAgentId === params.agentId);
-  const rawSkills = reportReady ? (params.report?.skills ?? []) : [];
+  const rawSkills = reportReady ? filterVisibleSkills(params.report?.skills ?? []) : [];
   const filter = normalizeLowercaseStringOrEmpty(params.filter);
   const filtered = filter
     ? rawSkills.filter((skill) =>
@@ -872,7 +877,9 @@ function renderAgentSkillRow(
   return html`
     <div class="list-item agent-skill-row">
       <div class="list-main">
-        <div class="list-title">${skill.emoji ? `${skill.emoji} ` : ""}${skill.name}</div>
+        <div class="list-title skill-row__title">
+          ${renderSkillIcon(skill, 22)}<span>${formatSkillName(skill.name)}</span>
+        </div>
         <div class="list-sub">${skill.description}</div>
         ${renderSkillStatusChips({ skill })}
         ${missing.length > 0

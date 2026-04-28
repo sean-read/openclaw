@@ -1191,8 +1191,8 @@ export function renderChat(props: ChatProps) {
                         }
                       }
                     }}
-                    title=${vs.sttRecording ? "Stop recording" : "Voice input"}
-                    aria-label=${vs.sttRecording ? "Stop recording" : "Voice input"}
+                    title=${vs.sttRecording ? "Stop dictation" : "Dictate"}
+                    aria-label=${vs.sttRecording ? "Stop dictation" : "Dictate"}
                     ?disabled=${!props.connected}
                   >
                     ${vs.sttRecording ? icons.micOff : icons.mic}
@@ -1206,8 +1206,8 @@ export function renderChat(props: ChatProps) {
                       ? "agent-chat__input-btn--talk"
                       : ""}"
                     @click=${props.onToggleRealtimeTalk}
-                    title=${props.realtimeTalkActive ? "Stop Talk" : "Start Talk"}
-                    aria-label=${props.realtimeTalkActive ? "Stop Talk" : "Start Talk"}
+                    title=${props.realtimeTalkActive ? "Stop voice" : "Use Voice"}
+                    aria-label=${props.realtimeTalkActive ? "Stop voice" : "Use Voice"}
                     ?disabled=${!props.connected}
                   >
                     ${props.realtimeTalkActive ? icons.volume2 : icons.radio}
