@@ -99,16 +99,7 @@ openclaw-app {
   box-shadow: 0 1px 0 color-mix(in srgb, white 6%, transparent);
 }
 
-@supports (backdrop-filter: blur(1px)) {
-  .topbar,
-  .sidebar,
-  .agent-chat__input,
-  .slash-menu,
-  .theme-orb__menu {
-    backdrop-filter: blur(18px) saturate(1.4);
-    -webkit-backdrop-filter: blur(18px) saturate(1.4);
-  }
-}
+/* backdrop-filter for topbar/sidebar/composer/popovers is owned by redesign.css */
 
 .topnav-shell {
   max-width: var(--polish-page-max);
@@ -260,22 +251,7 @@ openclaw-app {
   transform: translateY(-1px);
 }
 
-.btn.primary,
-.btn.cron-refresh-btn--loading {
-  background:
-    linear-gradient(180deg, color-mix(in srgb, white 18%, transparent), transparent 55%),
-    var(--accent);
-  border-color: color-mix(in srgb, var(--accent) 72%, white 10%);
-  box-shadow:
-    inset 0 1px 0 color-mix(in srgb, white 22%, transparent),
-    0 14px 30px color-mix(in srgb, var(--accent) 22%, transparent);
-}
-
-.btn.primary:hover:not(:disabled) {
-  box-shadow:
-    inset 0 1px 0 color-mix(in srgb, white 22%, transparent),
-    0 18px 38px color-mix(in srgb, var(--accent) 28%, transparent);
-}
+/* .btn.primary visuals owned by redesign.css */
 
 .btn--ghost,
 .agent-chat__input-btn,
@@ -363,34 +339,7 @@ openclaw-app {
   background: linear-gradient(to bottom, transparent, color-mix(in srgb, var(--bg-content) 86%, transparent) 24%, var(--bg-content) 100%);
 }
 
-.agent-chat__input {
-  margin: 0;
-  border-radius: 20px;
-  border-color: color-mix(in srgb, var(--border-strong) 58%, transparent);
-  background:
-    linear-gradient(180deg, color-mix(in srgb, white 5%, transparent), transparent 54%),
-    color-mix(in srgb, var(--card) 88%, var(--bg) 12%);
-  box-shadow: var(--polish-shadow-panel);
-  overflow: hidden;
-}
-
-.agent-chat__input:focus-within {
-  border-color: color-mix(in srgb, var(--ring) 58%, var(--border-strong));
-  box-shadow:
-    var(--polish-shadow-panel),
-    0 0 0 3px color-mix(in srgb, var(--ring) 18%, transparent);
-}
-
-.agent-chat__input > textarea {
-  min-height: 54px;
-  padding: 15px 16px 10px;
-}
-
-.agent-chat__toolbar {
-  min-height: 44px;
-  padding: 7px 11px;
-  border-top-color: color-mix(in srgb, var(--border) 64%, transparent);
-}
+/* .agent-chat__input + textarea + toolbar visuals owned by redesign.css */
 
 .agent-chat__input-btn,
 .agent-chat__toolbar .btn--ghost,
@@ -494,42 +443,8 @@ code,
   color: var(--text);
 }
 
-.login-gate {
-  background:
-    radial-gradient(circle at 50% 0%, color-mix(in srgb, var(--accent) 14%, transparent), transparent 32rem),
-    var(--bg);
-}
-
-.login-gate__card {
-  border-radius: 24px;
-  border-color: var(--polish-card-border-strong);
-  background:
-    linear-gradient(180deg, color-mix(in srgb, white 5%, transparent), transparent 55%),
-    var(--polish-surface);
-  box-shadow: var(--polish-shadow-panel);
-}
-
-::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
-}
-
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-::-webkit-scrollbar-thumb {
-  min-height: 42px;
-  border: 3px solid transparent;
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--accent) 26%, var(--border-strong) 74%);
-  background-clip: padding-box;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: color-mix(in srgb, var(--accent) 42%, var(--border-strong) 58%);
-  background-clip: padding-box;
-}
+/* .login-gate / .login-gate__card visuals owned by login-polish.css + redesign.css */
+/* Scrollbar styling owned by redesign.css */
 
 * {
   scrollbar-width: thin;
