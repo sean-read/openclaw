@@ -222,9 +222,17 @@ function resolveChatThinkingSelectState(state: AppViewState): ChatThinkingSelect
       : "off");
   return {
     currentOverride,
-    defaultLabel: `Default (${defaultLevel})`,
+    defaultLabel: `Default (${titleCaseLevel(defaultLevel)})`,
     options: buildThinkingOptions(levels, currentOverride),
   };
+}
+
+function titleCaseLevel(value: string): string {
+  if (!value) return value;
+  return value
+    .split(/[-_\s]+/g)
+    .map((part) => (part ? part[0].toUpperCase() + part.slice(1) : part))
+    .join(" ");
 }
 
 export function renderChatThinkingSelect(state: AppViewState) {

@@ -317,9 +317,9 @@ select:focus-visible {
 
 /* ------------------------------------------------------------
    CHAT CONTROLS DROPDOWNS — compact, button-style trigger
-   The native select gets the same surface as a .btn ghost; the
-   popover is restyled where `appearance: base-select` is supported
-   (Chrome 130+, Edge 130+) so the menu matches the trigger.
+   Keep `appearance: none` so the trigger is fully ours; the
+   browser draws the native popover (no `base-select` because the
+   spec is uneven across builds and was rendering deformed).
    ------------------------------------------------------------ */
 
 .chat-controls {
@@ -333,28 +333,35 @@ select:focus-visible {
   min-width: 0;
 }
 
-.chat-controls__session { min-width: 0; max-width: 220px; }
-.chat-controls__model   { min-width: 0; max-width: 240px; }
+.chat-controls__session { max-width: 220px; }
+.chat-controls__model   { max-width: 240px; }
 
 .chat-controls__session select,
 .chat-controls__model select,
 .chat-controls__thinking select {
+  appearance: none;
+  -webkit-appearance: none;
   height: 30px;
   min-height: 30px;
+  line-height: 28px;
   padding: 0 28px 0 10px;
   border: 1px solid color-mix(in srgb, var(--border) 75%, transparent);
   border-radius: var(--radius-md);
   background-color: color-mix(in srgb, var(--card) 88%, transparent);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23a1a1aa' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
   background-position: right 8px center;
   background-size: 12px 12px;
   font-size: 12.5px;
   font-weight: 500;
   color: var(--text);
   box-shadow: var(--carapace-shadow-line);
+  cursor: pointer;
   text-overflow: ellipsis;
+  white-space: nowrap;
   transition:
     border-color var(--duration-fast) ease,
-    background var(--duration-fast) ease,
+    background-color var(--duration-fast) ease,
     box-shadow var(--duration-fast) ease;
 }
 
@@ -369,74 +376,28 @@ select:focus-visible {
 .chat-controls__model select:focus-visible,
 .chat-controls__thinking select:focus-visible {
   border-color: color-mix(in srgb, var(--accent) 55%, var(--border-strong));
+  outline: none;
   box-shadow: var(--carapace-shadow-line), var(--carapace-ring);
 }
 
 /* Hide field labels on the chat-controls — they take up vertical space */
 .chat-controls .field > span { display: none; }
-.chat-controls .field { display: inline-flex; }
+.chat-controls .field { display: inline-flex; align-items: center; }
 
-/* Modern customisable select (Chrome/Edge 130+) — make the
-   popover and options match button/popover styling so the open
-   menu reads as part of the same UI. Older browsers fall back to
-   the native popover. */
-@supports (appearance: base-select) {
-  .chat-controls__session select,
-  .chat-controls__model select,
-  .chat-controls__thinking select {
-    appearance: base-select;
-    -webkit-appearance: base-select;
-  }
-
-  .chat-controls__session select::picker(select),
-  .chat-controls__model select::picker(select),
-  .chat-controls__thinking select::picker(select) {
-    appearance: base-select;
-    border: 1px solid color-mix(in srgb, var(--border-strong) 70%, transparent);
-    border-radius: var(--radius-lg);
-    background: color-mix(in srgb, var(--popover, var(--card)) 94%, transparent);
-    box-shadow:
-      var(--carapace-shadow-line),
-      var(--carapace-shadow-popover);
-    padding: 6px;
-    min-width: 220px;
-    max-height: 360px;
-    backdrop-filter: blur(20px) saturate(1.7);
-    -webkit-backdrop-filter: blur(20px) saturate(1.7);
-  }
-
-  .chat-controls__session select option,
-  .chat-controls__model select option,
-  .chat-controls__thinking select option {
-    appearance: base-select;
-    padding: 7px 11px;
-    border-radius: var(--radius-md);
-    font-size: 13px;
-    color: var(--text);
-    background: transparent;
-  }
-
-  .chat-controls__session select option:hover,
-  .chat-controls__model select option:hover,
-  .chat-controls__thinking select option:hover,
-  .chat-controls__session select option:checked,
-  .chat-controls__model select option:checked,
-  .chat-controls__thinking select option:checked {
-    background: color-mix(in srgb, var(--accent) 12%, var(--bg-elevated));
-    color: var(--text-strong);
-  }
-
-  .chat-controls__session select optgroup,
-  .chat-controls__model select optgroup,
-  .chat-controls__thinking select optgroup {
-    appearance: base-select;
-    color: color-mix(in srgb, var(--accent) 60%, var(--muted));
-    font-size: 10.5px;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    padding: 8px 11px 4px;
-  }
+/* Pretty-case the dropdown text so labels arriving from the
+   gateway as `off`, `low`, `medium`, `high` (or model strings
+   like `sonnet-4.6`) display Title-Cased. The trailing token
+   override below keeps version numbers like `4.6` intact. */
+.chat-controls__session select,
+.chat-controls__model select,
+.chat-controls__thinking select,
+.chat-controls__session select option,
+.chat-controls__model select option,
+.chat-controls__thinking select option,
+.chat-controls__session select optgroup,
+.chat-controls__model select optgroup,
+.chat-controls__thinking select optgroup {
+  text-transform: capitalize;
 }
 
 /* ------------------------------------------------------------
