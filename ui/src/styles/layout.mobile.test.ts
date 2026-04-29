@@ -42,6 +42,16 @@ describe("mobile navigation drawer styles", () => {
     expect(css).toContain(".sidebar--collapsed .sidebar-shell__body {\n  scrollbar-width: none;\n  padding-right: 0;");
     expect(css).toContain(".sidebar--collapsed .sidebar-shell__body::-webkit-scrollbar {\n  display: none;");
   });
+
+  it("keeps collapsed sidebar controls centred on one rail", () => {
+    const css = readStyle("redesign.css");
+
+    expect(css).toContain(".sidebar--collapsed .sidebar-shell__header {\n  justify-content: center;");
+    expect(css).toContain(".sidebar--collapsed .sidebar-shell__body,\n.sidebar--collapsed .sidebar-shell__footer {\n  align-items: center;");
+    expect(css).toContain(".sidebar--collapsed .nav-section__items,\n.sidebar--collapsed .sidebar-utility-group {\n  align-items: center;\n  justify-items: center;");
+    expect(css).toContain(".sidebar--collapsed .nav-item {\n  justify-content: center;\n  width: 44px;");
+    expect(css).toContain(".sidebar--collapsed .nav-collapse-toggle,\n.sidebar--collapsed .sidebar-version {\n  width: 44px;\n  height: 44px;");
+  });
 });
 
 describe("chat control layering and alignment", () => {

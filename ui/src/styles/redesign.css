@@ -4462,7 +4462,80 @@ nav.shell-nav {
   padding: 4px var(--space-3);
 }
 
-/* Topbar — sharper breadcrumb, refined search trigger */
+.sidebar--collapsed .sidebar-shell {
+  padding: 12px 8px 10px;
+}
+
+.sidebar--collapsed .sidebar-shell__header {
+  justify-content: center;
+  align-items: center;
+  gap: 0;
+  padding: 0 0 16px;
+}
+
+.sidebar--collapsed .sidebar-shell__body,
+.sidebar--collapsed .sidebar-shell__footer {
+  align-items: center;
+}
+
+.sidebar--collapsed .sidebar-shell__footer {
+  padding: 8px 0 2px;
+}
+
+.sidebar--collapsed .sidebar-nav,
+.sidebar--collapsed .nav-section,
+.sidebar--collapsed .nav-section__items,
+.sidebar--collapsed .sidebar-utility-group {
+  width: 100%;
+}
+
+.sidebar--collapsed .nav-section {
+  margin-bottom: 16px;
+}
+
+.sidebar--collapsed .nav-section__items,
+.sidebar--collapsed .sidebar-utility-group {
+  align-items: center;
+  justify-items: center;
+}
+
+.sidebar--collapsed .nav-item {
+  justify-content: center;
+  width: 44px;
+  min-height: 44px;
+  padding: 0;
+  margin: 0 auto;
+  gap: 0;
+  flex: 0 0 auto;
+  border-radius: var(--radius-lg);
+}
+
+.sidebar--collapsed .nav-collapse-toggle,
+.sidebar--collapsed .sidebar-version {
+  width: 44px;
+  height: 44px;
+  min-height: 44px;
+  padding: 0;
+  margin-inline: auto;
+  justify-content: center;
+  flex: 0 0 auto;
+}
+
+.sidebar--collapsed .nav-item.active::before,
+.sidebar--collapsed .nav-item--active::before,
+.sidebar--collapsed .nav-item[aria-current="page"]::before {
+  left: 8px;
+  top: 10px;
+  bottom: 10px;
+  width: 3px;
+  border-radius: var(--radius-full);
+}
+
+.sidebar--collapsed .sidebar-version__status {
+  margin-left: 0;
+}
+
+/* Topbar - sharper breadcrumb, refined search trigger */
 
 .topnav-shell {
   display: flex;
