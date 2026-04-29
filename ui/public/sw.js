@@ -1,7 +1,7 @@
 // OpenClaw Control – Service Worker
 // Handles offline caching and push notifications.
 
-const CACHE_NAME = "openclaw-control-v8-carapace-system";
+const CACHE_NAME = "openclaw-control-v9-carapace-tabs";
 
 // Minimal app-shell files to precache.
 const PRECACHE_URLS = ["./"];
