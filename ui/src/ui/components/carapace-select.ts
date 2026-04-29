@@ -45,13 +45,18 @@ export class CarapaceSelect extends LitElement {
       font-family: inherit;
     }
 
+    :host([data-open]) {
+      z-index: var(--carapace-select-open-z, 2200);
+    }
+
     button.cs-trigger {
       display: inline-flex;
       align-items: center;
       gap: 6px;
       width: 100%;
       min-width: 0;
-      height: 30px;
+      height: var(--carapace-select-height, 30px);
+      min-height: var(--carapace-select-height, 30px);
       padding: 0 8px 0 10px;
       border: 1px solid color-mix(in srgb, var(--border) 75%, transparent);
       border-radius: var(--radius-md, 12px);
@@ -130,7 +135,7 @@ export class CarapaceSelect extends LitElement {
       box-shadow:
         inset 0 1px 0 color-mix(in srgb, white 6%, transparent),
         0 24px 56px color-mix(in srgb, black 36%, transparent);
-      z-index: 1000;
+      z-index: var(--carapace-select-popover-z, 2200);
       animation: cs-fade 120ms ease;
       backdrop-filter: blur(20px) saturate(1.7);
       -webkit-backdrop-filter: blur(20px) saturate(1.7);
@@ -268,6 +273,7 @@ export class CarapaceSelect extends LitElement {
 
   private openMenu = () => {
     this.open = true;
+    this.toggleAttribute("data-open", true);
     const idx = this.options.findIndex((opt) => opt.value === this.value);
     this.activeIndex = idx >= 0 ? idx : 0;
     this.updateComplete.then(() => {
@@ -278,6 +284,7 @@ export class CarapaceSelect extends LitElement {
 
   private close = () => {
     this.open = false;
+    this.toggleAttribute("data-open", false);
     this.activeIndex = -1;
   };
 

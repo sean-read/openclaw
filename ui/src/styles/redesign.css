@@ -1900,11 +1900,73 @@ nav.shell-nav {
 }
 
 /* Chat-controls dropdowns are handled by carapace-select */
+.content--chat .content-header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) max-content;
+  position: relative;
+  z-index: 80;
+  align-items: center;
+  overflow: visible;
+}
+
+.content--chat .content-header > div:first-child,
+.content--chat .page-meta,
+.content--chat .chat-controls,
+.content--chat .chat-controls__session-row {
+  overflow: visible;
+}
+
+.content--chat .content-header > div:first-child {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.content--chat .page-meta {
+  align-items: center;
+  justify-self: end;
+  width: auto;
+}
+
 .chat-controls {
   display: flex;
   align-items: center;
   gap: var(--space-2);
   flex-wrap: wrap;
+}
+
+.content--chat .chat-controls,
+.content--chat .chat-controls__session-row {
+  align-items: center;
+}
+
+.content--chat .chat-controls__session-row {
+  flex-wrap: nowrap;
+}
+
+.content--chat .chat-controls {
+  flex-wrap: nowrap;
+  justify-content: flex-end;
+}
+
+.content--chat carapace-select {
+  --carapace-select-height: 34px;
+  --carapace-select-open-z: 2200;
+  --carapace-select-popover-z: 2200;
+}
+
+.content--chat .chat-controls .btn--icon {
+  width: 34px;
+  min-width: 34px;
+  height: 34px;
+  min-height: 34px !important;
+  border-radius: var(--radius-md);
+}
+
+.content--chat .chat-controls__separator {
+  display: inline-flex;
+  align-items: center;
+  height: 34px;
+  margin: 0 2px;
 }
 
 .chat-controls__session  { max-width: 240px; }
