@@ -2239,9 +2239,30 @@ nav.shell-nav {
   border-radius: inherit;
 }
 
+.skill-icon--brand {
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--skill-icon-accent, var(--accent)) 30%, transparent),
+    0 8px 18px color-mix(in srgb, var(--skill-icon-accent, var(--accent)) 14%, transparent);
+}
+
 .skill-icon--emoji {
   background: color-mix(in srgb, var(--bg-elevated) 80%, transparent);
   border: 1px solid color-mix(in srgb, var(--border) 60%, transparent);
+}
+
+.skill-icon--monogram {
+  background:
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--accent) 34%, var(--bg-elevated)),
+      color-mix(in srgb, var(--text) 14%, var(--bg-elevated))
+    );
+  border: 1px solid color-mix(in srgb, var(--accent) 30%, var(--border));
+  color: var(--text-strong);
+  font-size: calc(var(--skill-icon-size, 22px) * 0.42);
+  font-weight: 750;
+  letter-spacing: 0;
+  text-transform: uppercase;
 }
 
 .agent-skills-group { margin-bottom: var(--space-3); }
