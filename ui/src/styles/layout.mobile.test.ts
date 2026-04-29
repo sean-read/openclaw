@@ -27,6 +27,13 @@ describe("mobile navigation drawer styles", () => {
     expect(css).toContain(".content > *,\n.topbar");
     expect(css).toContain(".content--chat .content-header");
   });
+
+  it("keeps the topbar drawer toggle hidden until the drawer breakpoint", () => {
+    const css = readStyle("redesign.css");
+
+    expect(css).toContain(".topbar-nav-toggle {\n  width: 34px;\n  height: 34px;\n  display: none;");
+    expect(css).toContain("@media (max-width: 1100px) {\n  .topbar-nav-toggle {\n    display: inline-flex;");
+  });
 });
 
 describe("chat control layering and alignment", () => {

@@ -4466,7 +4466,7 @@ nav.shell-nav {
 .topbar-nav-toggle {
   width: 34px;
   height: 34px;
-  display: inline-flex;
+  display: none;
   align-items: center;
   justify-content: center;
   border: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
@@ -4479,6 +4479,12 @@ nav.shell-nav {
 .topbar-nav-toggle:hover {
   border-color: color-mix(in srgb, var(--border-strong) 88%, transparent);
   background: color-mix(in srgb, var(--bg-elevated) 86%, var(--card));
+}
+
+@media (max-width: 1100px) {
+  .topbar-nav-toggle {
+    display: inline-flex;
+  }
 }
 
 .dashboard-header__breadcrumb {
