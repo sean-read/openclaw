@@ -1,5 +1,6 @@
 import { html, nothing } from "lit";
 import { t } from "../../i18n/index.ts";
+import { renderSelect } from "../components/select-helper.ts";
 import type {
   AgentIdentityResult,
   AgentsFilesListResult,
@@ -149,24 +150,24 @@ export function renderAgents(props: AgentsProps) {
       <section class="agents-toolbar">
         <div class="agents-toolbar-row">
           <div class="agents-control-select">
-            <select
-              class="agents-select"
-              .value=${selectedId ?? ""}
-              ?disabled=${props.loading || agents.length === 0}
-              @change=${(e: Event) => props.onSelectAgent((e.target as HTMLSelectElement).value)}
-            >
-              ${agents.length === 0
-                ? html` <option value="">No agents</option> `
-                : agents.map(
-                    (agent) => html`
-                      <option value=${agent.id} ?selected=${agent.id === selectedId}>
-                        ${normalizeAgentLabel(agent)}${agentBadgeText(agent.id, defaultId)
+            ${renderSelect({
+              value: selectedId ?? "",
+              options:
+                agents.length === 0
+                  ? [{ value: "", label: "No agents" }]
+                  : agents.map((agent) => ({
+                      value: agent.id,
+                      label: `${normalizeAgentLabel(agent)}${
+                        agentBadgeText(agent.id, defaultId)
                           ? ` (${agentBadgeText(agent.id, defaultId)})`
-                          : ""}
-                      </option>
-                    `,
-                  )}
-            </select>
+                          : ""
+                      }`,
+                    })),
+              onChange: (v) => props.onSelectAgent(v),
+              disabled: props.loading || agents.length === 0,
+              ariaLabel: "Selected agent",
+              className: "agents-select",
+            })}
           </div>
           <div class="agents-toolbar-actions">
             ${selectedAgent

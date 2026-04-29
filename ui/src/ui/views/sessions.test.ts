@@ -89,22 +89,27 @@ describe("sessions view", () => {
     );
     await Promise.resolve();
 
-    const thinking = container.querySelector("tbody select") as HTMLSelectElement | null;
+    const thinking = container.querySelector("tbody carapace-select") as
+      | (HTMLElement & { value: string; options: { value: string; label: string }[] })
+      | null;
     expect(thinking?.value).toBe("adaptive");
-    expect(Array.from(thinking?.options ?? []).map((option) => option.value)).toEqual([
+    expect((thinking?.options ?? []).map((option) => option.value)).toEqual([
       "",
       "off",
       "adaptive",
       "max",
     ]);
-    expect(
-      Array.from(thinking?.options ?? [])
-        .find((option) => option.value === "max")
-        ?.textContent?.trim(),
-    ).toBe("maximum");
+    expect((thinking?.options ?? []).find((option) => option.value === "max")?.label).toBe(
+      "maximum",
+    );
 
-    thinking!.value = "max";
-    thinking!.dispatchEvent(new Event("change", { bubbles: true }));
+    thinking!.dispatchEvent(
+      new CustomEvent("change", {
+        detail: { value: "max" },
+        bubbles: true,
+        composed: true,
+      }),
+    );
 
     expect(onPatch).toHaveBeenCalledWith("agent:main:main", { thinkingLevel: "max" });
   });
@@ -129,16 +134,19 @@ describe("sessions view", () => {
     );
     await Promise.resolve();
 
-    const thinking = container.querySelector("tbody select") as HTMLSelectElement | null;
+    const thinking = container.querySelector("tbody carapace-select") as
+      | (HTMLElement & { value: string; options: { value: string; label: string }[] })
+      | null;
     expect(thinking?.value).toBe("low");
-    expect(
-      Array.from(thinking?.options ?? [])
-        .find((option) => option.value === "low")
-        ?.textContent?.trim(),
-    ).toBe("on");
+    expect((thinking?.options ?? []).find((option) => option.value === "low")?.label).toBe("on");
 
-    thinking!.value = "low";
-    thinking!.dispatchEvent(new Event("change", { bubbles: true }));
+    thinking!.dispatchEvent(
+      new CustomEvent("change", {
+        detail: { value: "low" },
+        bubbles: true,
+        composed: true,
+      }),
+    );
 
     expect(onPatch).toHaveBeenCalledWith("agent:main:main", { thinkingLevel: "low" });
   });
@@ -162,16 +170,18 @@ describe("sessions view", () => {
     );
     await Promise.resolve();
 
-    const selects = container.querySelectorAll("select");
-    const fast = selects[1] as HTMLSelectElement | undefined;
-    const verbose = selects[2] as HTMLSelectElement | undefined;
-    const reasoning = selects[3] as HTMLSelectElement | undefined;
+    const selects = container.querySelectorAll("carapace-select") as unknown as Array<
+      HTMLElement & { value: string; options: { value: string; label: string }[] }
+    >;
+    const fast = selects[1];
+    const verbose = selects[2];
+    const reasoning = selects[3];
     expect(fast?.value).toBe("on");
     expect(verbose?.value).toBe("full");
-    expect(Array.from(verbose?.options ?? []).some((option) => option.value === "full")).toBe(true);
+    expect((verbose?.options ?? []).some((option) => option.value === "full")).toBe(true);
     expect(reasoning?.value).toBe("custom-mode");
     expect(
-      Array.from(reasoning?.options ?? []).some((option) => option.value === "custom-mode"),
+      (reasoning?.options ?? []).some((option) => option.value === "custom-mode"),
     ).toBe(true);
 
     const onSelectPage = vi.fn();

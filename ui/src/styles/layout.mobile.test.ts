@@ -44,3 +44,14 @@ describe("chat control layering and alignment", () => {
     expect(select).toContain("var(--carapace-select-popover-z, 2200)");
   });
 });
+
+describe("chat composer position", () => {
+  it("keeps the composer close to the bottom edge without changing control size", () => {
+    const css = readStyle("redesign.css");
+
+    expect(css).toContain(".content--chat {\n  padding-bottom: var(--space-3);");
+    expect(css).toContain("padding-bottom: var(--space-2);");
+    expect(css).toContain("padding: var(--space-3) 0 2px;");
+    expect(css).toContain("margin: 0 var(--space-2) 4px;");
+  });
+});

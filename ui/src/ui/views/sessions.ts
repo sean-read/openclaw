@@ -1,5 +1,6 @@
 import { html, nothing } from "lit";
 import { t } from "../../i18n/index.ts";
+import { renderSelect } from "../components/select-helper.ts";
 import { formatRelativeTimestamp } from "../format.ts";
 import { icons } from "../icons.ts";
 import { pathForTab } from "../navigation.ts";
@@ -412,14 +413,15 @@ export function renderSessions(props: SessionsProps) {
                   of ${totalRows} row${totalRows === 1 ? "" : "s"}
                 </div>
                 <div class="data-table-pagination__controls">
-                  <select
-                    style="height: 32px; padding: 0 8px; font-size: 13px; border-radius: var(--radius-md); border: 1px solid var(--border); background: var(--card);"
-                    .value=${String(props.pageSize)}
-                    @change=${(e: Event) =>
-                      props.onPageSizeChange(Number((e.target as HTMLSelectElement).value))}
-                  >
-                    ${PAGE_SIZES.map((s) => html`<option value=${s}>${s} per page</option>`)}
-                  </select>
+                  ${renderSelect({
+                    value: String(props.pageSize),
+                    options: PAGE_SIZES.map((s) => ({
+                      value: String(s),
+                      label: `${s} per page`,
+                    })),
+                    onChange: (v) => props.onPageSizeChange(Number(v)),
+                    ariaLabel: "Page size",
+                  })}
                   <button ?disabled=${page <= 0} @click=${() => props.onPageChange(page - 1)}>
                     Previous
                   </button>
@@ -554,74 +556,49 @@ function renderRows(row: GatewaySessionRow, props: SessionsProps) {
         </div>
       </td>
       <td>
-        <select
-          ?disabled=${props.loading}
-          style="padding: 6px 10px; font-size: 13px; border: 1px solid var(--border); border-radius: var(--radius-sm); min-width: 90px;"
-          @change=${(e: Event) => {
-            const value = (e.target as HTMLSelectElement).value;
-            props.onPatch(row.key, {
-              thinkingLevel: resolveThinkLevelPatchValue(value),
-            });
-          }}
-        >
-          ${thinkLevels.map(
-            (level) =>
-              html`<option value=${level.value} ?selected=${thinking === level.value}>
-                ${level.label}
-              </option>`,
-          )}
-        </select>
+        ${renderSelect({
+          value: thinking,
+          options: thinkLevels.map((level) => ({ value: level.value, label: level.label })),
+          onChange: (value) =>
+            props.onPatch(row.key, { thinkingLevel: resolveThinkLevelPatchValue(value) }),
+          disabled: props.loading,
+          ariaLabel: "Thinking level",
+          className: "sessions-cell-select",
+        })}
       </td>
       <td>
-        <select
-          ?disabled=${props.loading}
-          style="padding: 6px 10px; font-size: 13px; border: 1px solid var(--border); border-radius: var(--radius-sm); min-width: 90px;"
-          @change=${(e: Event) => {
-            const value = (e.target as HTMLSelectElement).value;
-            props.onPatch(row.key, { fastMode: value === "" ? null : value === "on" });
-          }}
-        >
-          ${fastLevels.map(
-            (level) =>
-              html`<option value=${level.value} ?selected=${fastMode === level.value}>
-                ${level.label}
-              </option>`,
-          )}
-        </select>
+        ${renderSelect({
+          value: fastMode,
+          options: fastLevels.map((level) => ({ value: level.value, label: level.label })),
+          onChange: (value) =>
+            props.onPatch(row.key, { fastMode: value === "" ? null : value === "on" }),
+          disabled: props.loading,
+          ariaLabel: "Fast mode",
+          className: "sessions-cell-select",
+        })}
       </td>
       <td>
-        <select
-          ?disabled=${props.loading}
-          style="padding: 6px 10px; font-size: 13px; border: 1px solid var(--border); border-radius: var(--radius-sm); min-width: 90px;"
-          @change=${(e: Event) => {
-            const value = (e.target as HTMLSelectElement).value;
-            props.onPatch(row.key, { verboseLevel: value || null });
-          }}
-        >
-          ${verboseLevels.map(
-            (level) =>
-              html`<option value=${level.value} ?selected=${verbose === level.value}>
-                ${level.label}
-              </option>`,
-          )}
-        </select>
+        ${renderSelect({
+          value: verbose,
+          options: verboseLevels.map((level) => ({ value: level.value, label: level.label })),
+          onChange: (value) => props.onPatch(row.key, { verboseLevel: value || null }),
+          disabled: props.loading,
+          ariaLabel: "Verbose level",
+          className: "sessions-cell-select",
+        })}
       </td>
       <td>
-        <select
-          ?disabled=${props.loading}
-          style="padding: 6px 10px; font-size: 13px; border: 1px solid var(--border); border-radius: var(--radius-sm); min-width: 90px;"
-          @change=${(e: Event) => {
-            const value = (e.target as HTMLSelectElement).value;
-            props.onPatch(row.key, { reasoningLevel: value || null });
-          }}
-        >
-          ${reasoningLevels.map(
-            (level) =>
-              html`<option value=${level} ?selected=${reasoning === level}>
-                ${level || "inherit"}
-              </option>`,
-          )}
-        </select>
+        ${renderSelect({
+          value: reasoning,
+          options: reasoningLevels.map((level) => ({
+            value: level,
+            label: level || "inherit",
+          })),
+          onChange: (value) => props.onPatch(row.key, { reasoningLevel: value || null }),
+          disabled: props.loading,
+          ariaLabel: "Reasoning level",
+          className: "sessions-cell-select",
+        })}
       </td>
     </tr>`,
     ...(isExpanded

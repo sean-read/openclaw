@@ -1,5 +1,6 @@
 import { html, nothing } from "lit";
 import { t } from "../../i18n/index.ts";
+import { renderSelect } from "../components/select-helper.ts";
 import { extractQueryTerms, filterSessionsByQuery } from "../usage-helpers.ts";
 import {
   buildAggregatesFromSessions,
@@ -593,19 +594,17 @@ export function renderUsage(props: UsageProps) {
                   filterActions.onEndDateChange((e.target as HTMLInputElement).value)}
               />
             </div>
-            <select
-              class="usage-select"
-              title=${t("usage.filters.timeZone")}
-              aria-label=${t("usage.filters.timeZone")}
-              .value=${filters.timeZone}
-              @change=${(e: Event) =>
-                filterActions.onTimeZoneChange(
-                  (e.target as HTMLSelectElement).value as "local" | "utc",
-                )}
-            >
-              <option value="local">${t("usage.filters.timeZoneLocal")}</option>
-              <option value="utc">${t("usage.filters.timeZoneUtc")}</option>
-            </select>
+            ${renderSelect({
+              value: filters.timeZone,
+              options: [
+                { value: "local", label: t("usage.filters.timeZoneLocal") },
+                { value: "utc", label: t("usage.filters.timeZoneUtc") },
+              ],
+              onChange: (v) => filterActions.onTimeZoneChange(v as "local" | "utc"),
+              title: t("usage.filters.timeZone"),
+              ariaLabel: t("usage.filters.timeZone"),
+              className: "usage-select",
+            })}
             <div class="chart-toggle">
               <button
                 class="btn btn--sm toggle-btn ${isTokenMode ? "active" : ""}"
