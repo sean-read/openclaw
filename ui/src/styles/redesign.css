@@ -4245,6 +4245,17 @@ nav.shell-nav {
   padding-right: 4px;
 }
 
+.sidebar--collapsed .sidebar-shell__body {
+  scrollbar-width: none;
+  padding-right: 0;
+}
+
+.sidebar--collapsed .sidebar-shell__body::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
 .sidebar-shell__footer {
   padding-top: var(--space-3);
   border-top: 1px solid color-mix(in srgb, var(--border) 50%, transparent);

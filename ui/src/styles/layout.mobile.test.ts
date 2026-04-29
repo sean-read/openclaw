@@ -34,6 +34,14 @@ describe("mobile navigation drawer styles", () => {
     expect(css).toContain(".topbar-nav-toggle {\n  width: 34px;\n  height: 34px;\n  display: none;");
     expect(css).toContain("@media (max-width: 1100px) {\n  .topbar-nav-toggle {\n    display: inline-flex;");
   });
+
+  it("hides the collapsed rail scrollbar without disabling overflow", () => {
+    const css = readStyle("redesign.css");
+
+    expect(css).toContain(".sidebar-shell__body {\n  flex: 1 1 auto;\n  min-height: 0;\n  overflow-y: auto;");
+    expect(css).toContain(".sidebar--collapsed .sidebar-shell__body {\n  scrollbar-width: none;\n  padding-right: 0;");
+    expect(css).toContain(".sidebar--collapsed .sidebar-shell__body::-webkit-scrollbar {\n  display: none;");
+  });
 });
 
 describe("chat control layering and alignment", () => {
