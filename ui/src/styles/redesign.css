@@ -4122,6 +4122,377 @@ nav.shell-nav {
 }
 
 /* ============================================================
+   [DRAMATIC OVERHAUL] — bold typography, motion, alignment
+   --------------------------------------------------------------
+   These rules push the visual language well past the legacy
+   baseline so the redesign reads as new at first glance.
+   Bigger type, generous spacing, ambient texture, smooth motion,
+   strict alignment helpers.
+   ============================================================ */
+
+/* Bigger, bolder typography across the app */
+.page-title,
+.page-header__title,
+.dashboard-header__breadcrumb-current {
+  font-size: 28px !important;
+  font-weight: 700;
+  letter-spacing: -0.022em;
+  line-height: 1.1;
+}
+
+.card-title,
+.cfg-section__title,
+.cfg-form__title,
+.config-section-card__title,
+.cron-form-section__title,
+.dreams-advanced__section-title,
+.usage-section-title,
+.account-card-title,
+.cqc-header__title {
+  font-size: 17px !important;
+  font-weight: 660;
+  letter-spacing: -0.014em;
+  color: var(--text-strong);
+}
+
+.card-sub,
+.cfg-section__sub,
+.cfg-form__sub,
+.config-section-card__desc,
+.cron-form-section__sub,
+.dreams-advanced__section-description {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+/* Stronger eyebrow/label pattern across all tabs */
+.dreams-advanced__eyebrow,
+.field > span,
+.stat-label,
+.cron-summary-label {
+  font-size: 10.5px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.09em !important;
+  text-transform: uppercase !important;
+  color: color-mix(in srgb, var(--accent) 55%, var(--muted) 45%) !important;
+}
+
+/* Page entry animation — subtle fade-up so the new look reads */
+@keyframes carapace-page-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.content > *,
+.shell-nav,
+.topbar {
+  animation: carapace-page-in 280ms var(--carapace-ease-out) both;
+}
+
+.content > *:nth-child(1) { animation-delay: 0ms; }
+.content > *:nth-child(2) { animation-delay: 40ms; }
+.content > *:nth-child(3) { animation-delay: 80ms; }
+.content > *:nth-child(4) { animation-delay: 120ms; }
+.content > *:nth-child(5) { animation-delay: 160ms; }
+
+/* More visible ambient texture behind the app */
+openclaw-app::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(color-mix(in srgb, var(--accent) 4%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--accent) 4%, transparent) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(0, 0, 0, 0.35), transparent 70%);
+  opacity: 0.7;
+}
+
+:root[data-theme-mode="light"] openclaw-app::after {
+  background-image:
+    linear-gradient(rgba(15, 23, 42, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(15, 23, 42, 0.04) 1px, transparent 1px);
+}
+
+/* Topbar — taller, more present, with a confident accent under-line */
+.topbar {
+  min-height: 56px !important;
+  padding: 0 var(--space-4);
+  border-bottom: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
+  position: relative;
+}
+
+.topbar::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    color-mix(in srgb, var(--accent) 35%, transparent) 35%,
+    color-mix(in srgb, var(--accent) 65%, white 35%) 50%,
+    color-mix(in srgb, var(--accent) 35%, transparent) 65%,
+    transparent 100%
+  );
+  opacity: 0.6;
+}
+
+/* Sidebar gets a subtle gradient and a strong active state */
+.shell-nav,
+.sidebar,
+nav.shell-nav {
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--bg-elevated) 22%, var(--bg) 78%),
+      var(--bg) 60%
+    ) !important;
+}
+
+/* Force consistent alignment across primary flex containers */
+.row,
+.cron-summary-strip,
+.agents-toolbar,
+.agents-toolbar-row,
+.config-actions,
+.content-header,
+.page-header,
+.cron-summary-strip__left,
+.cron-summary-strip__actions,
+.config-actions__buttons,
+.config-actions__left,
+.config-actions__right,
+.agents-toolbar-actions,
+.dreams-advanced__header,
+.dreams-advanced__section-header,
+.dreams-advanced__section-toolbar,
+.config-section-card__header,
+.cqc-header,
+.cqc-steps,
+.data-table-toolbar,
+.account-card-header,
+.cmd-palette__footer,
+.chip-row,
+.chat-controls,
+.chat-controls__session-row,
+.agent-tools-header,
+.agent-tools-header__intro,
+.agent-tools-header__actions,
+.agent-tools-buttons,
+.agent-tools-facts,
+.agent-tool-summary__title-row,
+.agent-tool-summary__badges,
+.agent-tools-runtime,
+.agent-tools-runtime-chip,
+.agent-tool-details-strip,
+.agent-file-header,
+.agent-file-actions,
+.account-count {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+/* Buttons + form controls share a consistent baseline (40px) so
+   they line up in toolbars and beside selects. */
+.btn,
+.btn--primary,
+.btn.is-primary,
+.btn.primary,
+.field input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
+.field select,
+.btn--icon {
+  min-height: 38px !important;
+}
+
+.btn--sm,
+.btn.btn--sm,
+.cfg-input--sm {
+  min-height: 30px !important;
+  padding: 0 12px !important;
+  font-size: 12px !important;
+}
+
+/* Tighter bullet spacing in lists used in agents/dreams panels */
+.list,
+.agent-skills-groups,
+.dreams-advanced__list,
+.account-card-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Strong card hover lift */
+.card,
+.stat,
+.account-card,
+.config-section-card,
+.cron-form-section,
+.dreams-advanced__section,
+.usage-overview-card,
+.usage-left-card,
+.context-breakdown-card,
+.cost-breakdown,
+.daily-chart,
+.agent-tool-card,
+.agent-tools-group {
+  transition:
+    border-color 180ms ease,
+    background 180ms ease,
+    box-shadow 220ms ease,
+    transform 180ms var(--carapace-ease-out);
+}
+
+.card:hover,
+.stat:hover,
+.account-card:hover,
+.config-section-card:hover,
+.dreams-advanced__section:hover {
+  transform: translateY(-1px);
+  border-color: color-mix(in srgb, var(--accent) 28%, var(--border-strong)) !important;
+  box-shadow:
+    var(--carapace-shadow-line),
+    var(--carapace-shadow-1),
+    0 0 0 1px color-mix(in srgb, var(--accent) 14%, transparent) inset !important;
+}
+
+/* Make every "close/delete" icon button clearly destructive on hover */
+.chip-remove:hover,
+.cfg-tag__remove:hover,
+.cfg-array__item-remove:hover,
+.cfg-map__item-remove:hover,
+.chat-attachment__remove:hover,
+.chat-attachment-remove:hover {
+  background: var(--danger) !important;
+  color: white !important;
+  transform: scale(1.05);
+}
+
+/* Stronger focus ring on every focusable interactive element */
+.btn:focus-visible,
+.btn--primary:focus-visible,
+.btn.primary:focus-visible,
+.btn--ghost:focus-visible,
+.btn--icon:focus-visible,
+.cfg-toggle input:focus-visible + .cfg-toggle__track,
+.field input:focus-visible,
+.field textarea:focus-visible,
+.field select:focus-visible,
+.agent-chat__input:focus-within,
+.cmd-palette__input:focus,
+[role="tab"]:focus-visible,
+.agent-tab:focus-visible,
+.config-top-tab:focus-visible {
+  outline: none !important;
+  box-shadow:
+    var(--carapace-shadow-line),
+    0 0 0 3px color-mix(in srgb, var(--accent) 38%, transparent) !important;
+}
+
+/* Confident tab-bar lift */
+.agent-tabs,
+.config-top-tabs {
+  border-color: color-mix(in srgb, var(--border) 80%, transparent) !important;
+  box-shadow: var(--carapace-shadow-line), 0 1px 2px color-mix(in srgb, black 12%, transparent);
+}
+
+/* Strong "primary" button gradient with subtle glow */
+.btn--primary,
+.btn.is-primary,
+.btn.primary {
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--accent) 100%, white 6%) 0%,
+    var(--accent) 60%,
+    color-mix(in srgb, var(--accent) 100%, black 8%) 100%
+  ) !important;
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, white 18%, transparent),
+    0 6px 16px -4px color-mix(in srgb, var(--accent) 38%, transparent),
+    0 0 0 1px color-mix(in srgb, var(--accent) 50%, black 8%) !important;
+}
+
+.btn--primary:hover:not(:disabled),
+.btn.is-primary:hover:not(:disabled),
+.btn.primary:hover:not(:disabled) {
+  transform: translateY(-1px) !important;
+  filter: brightness(1.04);
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, white 22%, transparent),
+    0 12px 28px -4px color-mix(in srgb, var(--accent) 50%, transparent),
+    0 0 0 1px color-mix(in srgb, var(--accent) 60%, black 8%) !important;
+}
+
+/* The "+" / add buttons across cfg-* and dreams-* feel actionable */
+.cfg-array__add,
+.cfg-map__add {
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  padding: 8px 12px !important;
+  border-style: dashed !important;
+}
+
+/* Ensure form rows align left content + right meta cleanly */
+.cfg-toggle-row__content,
+.list-main {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.list-meta,
+.cfg-toggle {
+  flex-shrink: 0;
+}
+
+/* Dialog / modal shadow gets serious depth */
+dialog,
+.md-preview-dialog {
+  box-shadow:
+    var(--carapace-shadow-line),
+    0 30px 80px color-mix(in srgb, black 50%, transparent),
+    0 0 0 1px color-mix(in srgb, white 4%, transparent) !important;
+}
+
+/* Hero gradient on the page-header for tabs that opt-in */
+.page-header.has-hero,
+.content > .page-header.has-hero {
+  padding: var(--space-5) var(--space-5) var(--space-4);
+  border-radius: var(--radius-xl);
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--accent) 12%, transparent), transparent 50%),
+    color-mix(in srgb, var(--card) 92%, transparent);
+  border: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
+  box-shadow: var(--carapace-shadow-line);
+  margin-bottom: var(--space-4);
+}
+
+/* Reduced motion override */
+@media (prefers-reduced-motion: reduce) {
+  .content > *,
+  .shell-nav,
+  .topbar {
+    animation: none !important;
+  }
+
+  .card:hover,
+  .stat:hover,
+  .account-card:hover,
+  .config-section-card:hover,
+  .dreams-advanced__section:hover,
+  .btn--primary:hover:not(:disabled),
+  .btn.primary:hover:not(:disabled) {
+    transform: none !important;
+  }
+}
+
+/* ============================================================
    [MOBILE] — responsive tightening
    ============================================================ */
 
