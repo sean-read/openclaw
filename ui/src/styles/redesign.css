@@ -4185,7 +4185,6 @@ nav.shell-nav {
 }
 
 .content > *,
-.shell-nav,
 .topbar {
   animation: carapace-page-in 280ms var(--carapace-ease-out) both;
 }
@@ -4476,7 +4475,6 @@ dialog,
 /* Reduced motion override */
 @media (prefers-reduced-motion: reduce) {
   .content > *,
-  .shell-nav,
   .topbar {
     animation: none !important;
   }
@@ -4502,6 +4500,10 @@ dialog,
 
 @media (max-width: 768px) {
   .content { padding: var(--space-3); }
+  .content-header,
+  .content--chat .content-header {
+    display: none;
+  }
   .card { padding: var(--space-4); border-radius: var(--radius-md); }
   .agent-chat__welcome { padding: var(--space-7) var(--space-4); }
   .agent-chat__welcome h2 { font-size: var(--text-2xl); }
