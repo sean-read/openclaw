@@ -385,14 +385,19 @@ describe("chat session controls", () => {
     const container = document.createElement("div");
     render(renderChatSessionSelect(state), container);
 
-    const modelSelect = container.querySelector<HTMLSelectElement>(
-      'select[data-chat-model-select="true"]',
+    const modelSelect = container.querySelector<HTMLElement & { value: string }>(
+      'carapace-select[data-chat-model-select="true"]',
     );
     expect(modelSelect).not.toBeNull();
     expect(modelSelect?.value).toBe("");
 
-    modelSelect!.value = "openai/gpt-5-mini";
-    modelSelect!.dispatchEvent(new Event("change", { bubbles: true }));
+    modelSelect!.dispatchEvent(
+      new CustomEvent("change", {
+        detail: { value: "openai/gpt-5-mini" },
+        bubbles: true,
+        composed: true,
+      }),
+    );
 
     expect(request).toHaveBeenCalledWith("sessions.patch", {
       key: "main",
@@ -418,13 +423,18 @@ describe("chat session controls", () => {
     const container = document.createElement("div");
     render(renderChatSessionSelect(state), container);
 
-    const modelSelect = container.querySelector<HTMLSelectElement>(
-      'select[data-chat-model-select="true"]',
+    const modelSelect = container.querySelector<HTMLElement & { value: string }>(
+      'carapace-select[data-chat-model-select="true"]',
     );
     expect(modelSelect).not.toBeNull();
 
-    modelSelect!.value = "openai/gpt-5-mini";
-    modelSelect!.dispatchEvent(new Event("change", { bubbles: true }));
+    modelSelect!.dispatchEvent(
+      new CustomEvent("change", {
+        detail: { value: "openai/gpt-5-mini" },
+        bubbles: true,
+        composed: true,
+      }),
+    );
     await flushTasks();
     expect(request).toHaveBeenCalledWith("tools.effective", {
       agentId: "main",
@@ -438,14 +448,19 @@ describe("chat session controls", () => {
     const container = document.createElement("div");
     render(renderChatSessionSelect(state), container);
 
-    const modelSelect = container.querySelector<HTMLSelectElement>(
-      'select[data-chat-model-select="true"]',
+    const modelSelect = container.querySelector<HTMLElement & { value: string }>(
+      'carapace-select[data-chat-model-select="true"]',
     );
     expect(modelSelect).not.toBeNull();
     expect(modelSelect?.value).toBe("openai/gpt-5-mini");
 
-    modelSelect!.value = "";
-    modelSelect!.dispatchEvent(new Event("change", { bubbles: true }));
+    modelSelect!.dispatchEvent(
+      new CustomEvent("change", {
+        detail: { value: "" },
+        bubbles: true,
+        composed: true,
+      }),
+    );
 
     expect(request).toHaveBeenCalledWith("sessions.patch", {
       key: "main",
@@ -463,8 +478,8 @@ describe("chat session controls", () => {
     const container = document.createElement("div");
     render(renderChatSessionSelect(state), container);
 
-    const modelSelect = container.querySelector<HTMLSelectElement>(
-      'select[data-chat-model-select="true"]',
+    const modelSelect = container.querySelector<HTMLElement & { disabled: boolean }>(
+      'carapace-select[data-chat-model-select="true"]',
     );
     expect(modelSelect).not.toBeNull();
     expect(modelSelect?.disabled).toBe(true);
@@ -475,18 +490,23 @@ describe("chat session controls", () => {
     const container = document.createElement("div");
     render(renderChatSessionSelect(state), container);
 
-    const modelSelect = container.querySelector<HTMLSelectElement>(
-      'select[data-chat-model-select="true"]',
+    const modelSelect = container.querySelector<HTMLElement & { value: string }>(
+      'carapace-select[data-chat-model-select="true"]',
     );
     expect(modelSelect).not.toBeNull();
 
-    modelSelect!.value = "openai/gpt-5-mini";
-    modelSelect!.dispatchEvent(new Event("change", { bubbles: true }));
+    modelSelect!.dispatchEvent(
+      new CustomEvent("change", {
+        detail: { value: "openai/gpt-5-mini" },
+        bubbles: true,
+        composed: true,
+      }),
+    );
     await flushTasks();
     render(renderChatSessionSelect(state), container);
 
-    const rerendered = container.querySelector<HTMLSelectElement>(
-      'select[data-chat-model-select="true"]',
+    const rerendered = container.querySelector<HTMLElement & { value: string }>(
+      'carapace-select[data-chat-model-select="true"]',
     );
     expect(rerendered?.value).toBe("openai/gpt-5-mini");
   });
@@ -507,18 +527,16 @@ describe("chat session controls", () => {
     const container = document.createElement("div");
     render(renderChatSessionSelect(state), container);
 
-    const thinkingSelect = container.querySelector<HTMLSelectElement>(
-      'select[data-chat-thinking-select="true"]',
-    );
-    const options = [...(thinkingSelect?.options ?? [])].map((option) => option.value);
+    const thinkingSelect = container.querySelector<
+      HTMLElement & { options: { value: string; label: string }[] }
+    >('carapace-select[data-chat-thinking-select="true"]');
+    const options = (thinkingSelect?.options ?? []).map((option) => option.value);
 
     expect(options).toContain("adaptive");
     expect(options).toContain("xhigh");
     expect(options).toContain("max");
     expect(
-      [...(thinkingSelect?.options ?? [])]
-        .find((option) => option.value === "max")
-        ?.textContent?.trim(),
+      (thinkingSelect?.options ?? []).find((option) => option.value === "max")?.label,
     ).toBe("maximum");
   });
 });
