@@ -1345,26 +1345,40 @@ nav.shell-nav {
 
 /* Avatar */
 .chat-avatar {
-  width: 32px;
-  height: 32px;
+  width: 36px;
+  height: 36px;
   border-radius: var(--radius-md);
   background: color-mix(in srgb, var(--card) 92%, transparent);
   border: 1px solid color-mix(in srgb, var(--border) 75%, transparent);
-  box-shadow: var(--carapace-shadow-line);
+  box-shadow:
+    var(--carapace-shadow-line),
+    0 0 0 4px color-mix(in srgb, var(--accent) 5%, transparent);
   display: grid;
   place-items: center;
   font-weight: 700;
-  font-size: 12px;
+  font-size: 13px;
   flex-shrink: 0;
   align-self: flex-start;
   color: var(--muted);
+  overflow: hidden;
+}
+
+img.chat-avatar {
+  display: block;
+  object-fit: cover;
+  object-position: center;
 }
 
 .chat-avatar.assistant {
   background:
-    radial-gradient(circle at 30% 25%, color-mix(in srgb, var(--accent) 16%, transparent), transparent 70%),
+    radial-gradient(circle at 30% 25%, color-mix(in srgb, var(--accent) 22%, transparent), transparent 70%),
     color-mix(in srgb, var(--card) 92%, transparent);
   color: color-mix(in srgb, var(--accent) 80%, var(--text-strong));
+  border-color: color-mix(in srgb, var(--accent) 24%, transparent);
+  box-shadow:
+    var(--carapace-shadow-line),
+    0 0 0 4px color-mix(in srgb, var(--accent) 7%, transparent),
+    0 4px 12px -4px color-mix(in srgb, var(--accent) 24%, transparent);
 }
 
 .chat-avatar.user {
@@ -1373,6 +1387,7 @@ nav.shell-nav {
   border-color: color-mix(in srgb, var(--accent) 60%, black 16%);
   box-shadow:
     var(--carapace-shadow-line),
+    0 0 0 4px color-mix(in srgb, var(--accent) 8%, transparent),
     0 4px 12px color-mix(in srgb, var(--accent) 26%, transparent);
 }
 
@@ -4443,15 +4458,15 @@ nav.shell-nav {
 .nav-item[aria-current="page"]::before {
   content: "";
   position: absolute;
-  left: -3px;
-  top: 6px;
-  bottom: 6px;
+  left: 4px;
+  top: 7px;
+  bottom: 7px;
   width: 3px;
   border-radius: 2px;
   background: var(--accent);
   box-shadow:
     0 0 8px color-mix(in srgb, var(--accent) 70%, transparent),
-    0 0 16px color-mix(in srgb, var(--accent) 35%, transparent);
+    0 0 14px color-mix(in srgb, var(--accent) 30%, transparent);
 }
 
 .sidebar-version {
@@ -4500,6 +4515,7 @@ nav.shell-nav {
 }
 
 .sidebar--collapsed .nav-item {
+  position: relative;
   justify-content: center;
   width: 44px;
   min-height: 44px;
@@ -4508,6 +4524,20 @@ nav.shell-nav {
   gap: 0;
   flex: 0 0 auto;
   border-radius: var(--radius-lg);
+  border: 1px solid transparent;
+}
+
+.sidebar--collapsed .nav-item__text {
+  display: none;
+}
+
+.sidebar--collapsed .nav-item.active,
+.sidebar--collapsed .nav-item--active,
+.sidebar--collapsed .nav-item[aria-current="page"] {
+  background:
+    radial-gradient(circle at 30% 30%, color-mix(in srgb, var(--accent) 22%, transparent), transparent 75%),
+    color-mix(in srgb, var(--accent) 14%, transparent) !important;
+  border-color: color-mix(in srgb, var(--accent) 28%, transparent);
 }
 
 .sidebar--collapsed .nav-collapse-toggle,
@@ -4521,14 +4551,12 @@ nav.shell-nav {
   flex: 0 0 auto;
 }
 
+/* In collapsed mode, drop the side rail and use the rounded
+   accent halo instead — it reads cleaner at icon-only width */
 .sidebar--collapsed .nav-item.active::before,
 .sidebar--collapsed .nav-item--active::before,
 .sidebar--collapsed .nav-item[aria-current="page"]::before {
-  left: 8px;
-  top: 10px;
-  bottom: 10px;
-  width: 3px;
-  border-radius: var(--radius-full);
+  display: none;
 }
 
 .sidebar--collapsed .sidebar-version__status {
@@ -4720,9 +4748,24 @@ nav.shell-nav {
 }
 
 .chat-controls .btn--icon.active {
-  background: color-mix(in srgb, var(--accent) 14%, transparent);
-  border-color: color-mix(in srgb, var(--accent) 38%, transparent);
-  color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 8%, transparent);
+  border-color: color-mix(in srgb, var(--accent) 32%, transparent);
+  color: color-mix(in srgb, var(--accent) 60%, var(--text-strong) 40%);
+  position: relative;
+}
+
+/* Subtle dot indicator on active icon buttons rather than a full coral fill —
+   reads as "on" without overwhelming the toolbar when several are active. */
+.chat-controls .btn--icon.active::after {
+  content: "";
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 6px color-mix(in srgb, var(--accent) 70%, transparent);
 }
 
 /* Chat header right-actions cluster (chat-header__right inside content-header) */
@@ -5126,6 +5169,199 @@ dialog,
   .btn.primary:hover:not(:disabled) {
     transform: none !important;
   }
+}
+
+/* ============================================================
+   [DEEPER REFINEMENT] — chat thread feel + UI consistency
+   --------------------------------------------------------------
+   Final layer of polish: better chat hierarchy, calmer toolbar,
+   tighter alignment, subtle motion. Applied last.
+   ============================================================ */
+
+/* Assistant sender row — show name + timestamp ABOVE message text
+   so the conversation reads like a thread (Slack/Discord-style). */
+.chat-group:not(.user) .chat-group-messages > .chat-sender-name,
+.chat-group.assistant .chat-group-messages > .chat-sender-name {
+  font-size: 12.5px;
+  font-weight: 660;
+  color: var(--text-strong);
+  letter-spacing: -0.005em;
+  margin-bottom: 2px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.chat-group:not(.user) .chat-group-messages > .chat-sender-name::after {
+  content: "";
+  display: inline-block;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--ok) 70%, transparent);
+  box-shadow: 0 0 6px color-mix(in srgb, var(--ok) 70%, transparent);
+}
+
+/* Chat group: ensure even spacing between avatar and content */
+.chat-group {
+  gap: 14px !important;
+}
+
+/* Message fade-in on render — subtle, not distracting */
+.chat-bubble {
+  animation: carapace-msg-in 240ms var(--carapace-ease-out) both;
+}
+
+@keyframes carapace-msg-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* User-message footer (timestamp + actions) cleaner spacing */
+.chat-group.user .chat-group-footer {
+  margin-top: 4px;
+  font-size: 10.5px;
+  color: var(--muted);
+  letter-spacing: 0.02em;
+}
+
+/* User bubble: slightly tighter padding, a touch less coral-glow */
+.chat-line.user .chat-bubble,
+.chat-group.user .chat-bubble {
+  padding: 10px 14px;
+  font-size: 14px;
+  line-height: 1.55;
+  box-shadow:
+    var(--carapace-shadow-line),
+    0 4px 14px -4px color-mix(in srgb, var(--accent) 22%, transparent);
+}
+
+/* Topbar logo/breadcrumb spacing */
+.dashboard-header__breadcrumb {
+  gap: 8px;
+  padding: 0 0 0 4px;
+}
+
+.dashboard-header__breadcrumb a,
+.dashboard-header__breadcrumb-link {
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 13px;
+  transition: color var(--carapace-d-fast) ease;
+}
+
+.dashboard-header__breadcrumb a:hover {
+  color: var(--text);
+}
+
+/* Refresh button (the standalone refresh icon outside the .active group) */
+.chat-controls .btn--icon[title*="efresh"],
+.chat-controls .btn--icon[aria-label*="efresh"] {
+  border-color: color-mix(in srgb, var(--border) 70%, transparent);
+}
+
+/* Toolbar separator (vertical pipe between groups of buttons) */
+.chat-controls__separator {
+  width: 1px;
+  height: 18px;
+  background: color-mix(in srgb, var(--border) 70%, transparent);
+  margin: 0 4px;
+}
+
+/* Page title gradient shimmer under it */
+.page-title {
+  position: relative;
+}
+
+/* Stats / cards: subtle accent glow on the active/featured one */
+.stat[data-featured],
+.card[data-featured] {
+  border-color: color-mix(in srgb, var(--accent) 40%, var(--border-strong)) !important;
+  box-shadow:
+    var(--carapace-shadow-line),
+    0 0 0 1px color-mix(in srgb, var(--accent) 30%, transparent) inset,
+    0 8px 28px -6px color-mix(in srgb, var(--accent) 22%, transparent);
+}
+
+/* Form labels: keep consistent height with eyebrow style */
+.field > span,
+.cqc-field__label,
+.cfg-field__label {
+  min-height: 16px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Input hover state more present */
+.field input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):hover,
+.field textarea:hover,
+.field select:hover {
+  border-color: color-mix(in srgb, var(--accent) 22%, var(--border-strong) 78%);
+  background: color-mix(in srgb, var(--bg-elevated) 72%, var(--bg) 28%);
+}
+
+/* Tighter alignment in topbar nav (logo, breadcrumb, search, status) */
+.topnav-shell {
+  gap: 14px;
+}
+
+.topbar-status {
+  margin-left: auto;
+}
+
+/* Composer attachment area / file thumbs spacing */
+.chat-attachments-preview {
+  padding: 8px 10px;
+  gap: 8px;
+  border-top: 1px solid color-mix(in srgb, var(--border) 40%, transparent);
+}
+
+/* Theme orb refinement (the appearance picker in the topbar) */
+.theme-orb__trigger {
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  border: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
+  background: color-mix(in srgb, var(--card) 88%, transparent);
+}
+
+.theme-orb__trigger:hover {
+  border-color: color-mix(in srgb, var(--accent) 35%, var(--border));
+  background: color-mix(in srgb, var(--bg-elevated) 86%, var(--card));
+}
+
+/* Subtle accent on h1/h2 headings inside chat text (rendered markdown) */
+.chat-text h1,
+.chat-text h2,
+.chat-text h3 {
+  margin-top: 0.85em;
+  margin-bottom: 0.4em;
+  letter-spacing: -0.018em;
+  color: var(--text-strong);
+}
+
+/* Better table rendering inside markdown */
+.chat-text table {
+  border-collapse: separate;
+  border-spacing: 0;
+  width: auto;
+  border: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  margin: 0.6em 0;
+}
+
+.chat-text th {
+  padding: 6px 10px;
+  font-size: 11px;
+  background: color-mix(in srgb, var(--bg-elevated) 60%, transparent);
+}
+
+.chat-text td {
+  padding: 6px 10px;
+  font-size: 13px;
+  border-top: 1px solid color-mix(in srgb, var(--border) 60%, transparent);
 }
 
 /* ============================================================
