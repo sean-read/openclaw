@@ -6724,6 +6724,606 @@ dialog[open],
 }
 
 /* ============================================================
+   [SIDEBAR EXTRAS] — utility group, version chip, mobile drawer
+   ============================================================ */
+
+.sidebar-utility-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-top: 4px;
+}
+
+.sidebar-utility-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 32px;
+  padding: 0 10px;
+  border-radius: 8px;
+  color: var(--muted);
+  font-size: 12.5px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: background var(--carapace-d-fast) ease, color var(--carapace-d-fast) ease;
+}
+
+.sidebar-utility-link:hover {
+  background: color-mix(in srgb, var(--bg-elevated) 60%, transparent);
+  color: var(--text);
+}
+
+.nav-item--external .nav-item__external-icon {
+  margin-left: auto;
+  opacity: 0.5;
+}
+
+.sidebar-version {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.sidebar-version__label {
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--accent) 50%, var(--muted) 50%);
+}
+
+.sidebar-version__text {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.04em;
+}
+
+.sidebar-version__status {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: auto;
+}
+
+/* Mobile drawer backdrop */
+.shell-nav-backdrop {
+  position: fixed;
+  inset: 0;
+  background: color-mix(in srgb, black 50%, transparent);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 50;
+  animation: cs-fade 200ms ease both;
+}
+
+@keyframes cs-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ============================================================
+   [PINNED MESSAGES + CHAT SEARCH]
+   ============================================================ */
+
+.agent-chat__pinned {
+  margin: 0 var(--space-2) var(--space-3);
+  border: 1px solid color-mix(in srgb, var(--accent) 28%, transparent);
+  border-radius: var(--radius-lg);
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--accent) 8%, transparent), transparent 60%),
+    color-mix(in srgb, var(--card) 92%, transparent);
+  box-shadow: var(--carapace-shadow-line);
+  overflow: hidden;
+}
+
+.agent-chat__pinned-toggle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 8px var(--space-3);
+  border: none;
+  background: transparent;
+  color: var(--text);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  cursor: pointer;
+  text-align: left;
+}
+
+.agent-chat__pinned-toggle::before {
+  content: "📌";
+  font-size: 14px;
+  opacity: 0.8;
+}
+
+.agent-chat__pinned-toggle:hover {
+  background: color-mix(in srgb, var(--accent) 4%, transparent);
+}
+
+.agent-chat__pinned-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  border-top: 1px solid color-mix(in srgb, var(--accent) 18%, transparent);
+}
+
+.agent-chat__pinned-item {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: var(--space-2);
+  align-items: baseline;
+  padding: 8px var(--space-3);
+  font-size: var(--text-xs);
+  cursor: pointer;
+  transition: background var(--carapace-d-fast) ease;
+}
+
+.agent-chat__pinned-item:hover {
+  background: color-mix(in srgb, var(--accent) 5%, transparent);
+}
+
+.agent-chat__pinned-role {
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-size: 10px;
+  color: color-mix(in srgb, var(--accent) 50%, var(--muted) 50%);
+}
+
+.agent-chat__pinned-text {
+  color: var(--text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  line-height: var(--leading-snug);
+}
+
+/* Chat search bar (in-thread search) */
+.agent-chat__search-bar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 8px var(--space-3);
+  background: color-mix(in srgb, var(--card) 92%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--border) 60%, transparent);
+  backdrop-filter: blur(20px) saturate(1.5);
+  -webkit-backdrop-filter: blur(20px) saturate(1.5);
+}
+
+.agent-chat__search-bar input {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+/* ============================================================
+   [CHAT QUEUE] — pending message queue (steered prompts etc.)
+   ============================================================ */
+
+.chat-queue {
+  margin: 0 var(--space-2) var(--space-3);
+  border: 1px solid color-mix(in srgb, var(--accent-2, var(--info)) 30%, transparent);
+  border-radius: var(--radius-lg);
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--accent-2, var(--info)) 6%, transparent), transparent 60%),
+    color-mix(in srgb, var(--card) 92%, transparent);
+  box-shadow: var(--carapace-shadow-line);
+  padding: var(--space-3);
+}
+
+.chat-queue__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.chat-queue__item {
+  display: flex;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--bg-elevated) 50%, transparent);
+}
+
+.chat-queue__main {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.chat-queue__title {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--text-strong);
+}
+
+.chat-queue__text {
+  font-size: 12.5px;
+  color: var(--muted);
+  line-height: var(--leading-snug);
+  margin-top: 2px;
+}
+
+.chat-queue__actions {
+  display: flex;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.chat-queue__badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 7px;
+  border-radius: var(--radius-full);
+  background: color-mix(in srgb, var(--accent-2, var(--info)) 14%, transparent);
+  color: color-mix(in srgb, var(--accent-2, var(--info)) 30%, var(--text-strong));
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.chat-queue__steer,
+.chat-queue__remove {
+  padding: 4px 10px;
+  font-size: 11px;
+}
+
+/* ============================================================
+   [CHAT CONTEXT NOTICE] — context warning above thread
+   ============================================================ */
+
+.context-notice {
+  margin: 8px auto;
+  padding: 8px 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: var(--radius-full);
+  background: color-mix(in srgb, var(--warn) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--warn) 32%, transparent);
+  color: color-mix(in srgb, var(--warn) 30%, var(--text));
+  font-size: 12.5px;
+  font-weight: 540;
+  align-self: center;
+}
+
+.context-notice__icon {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+.context-notice__detail {
+  font-variant-numeric: tabular-nums;
+  font-family: var(--mono);
+  font-size: 11.5px;
+}
+
+/* ============================================================
+   [STATUS DOTS] — variants used in qs and dreams
+   ============================================================ */
+
+.qs-status-dot,
+.dreams__status-dot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--muted);
+  flex-shrink: 0;
+}
+
+.qs-status-dot--ok,
+[data-status="ok"] .qs-status-dot { background: var(--ok); box-shadow: 0 0 6px color-mix(in srgb, var(--ok) 60%, transparent); }
+.qs-status-dot--warn,
+[data-status="warn"] .qs-status-dot { background: var(--warn); box-shadow: 0 0 6px color-mix(in srgb, var(--warn) 60%, transparent); }
+.qs-status-dot--danger,
+[data-status="danger"] .qs-status-dot { background: var(--danger); box-shadow: 0 0 6px color-mix(in srgb, var(--danger) 60%, transparent); }
+
+/* QS toggle (quick settings switch) */
+.qs-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: background var(--carapace-d-fast) ease;
+}
+
+.qs-toggle:hover {
+  background: var(--carapace-hover-wash);
+}
+
+.qs-toggle__track {
+  position: relative;
+  width: 32px;
+  height: 18px;
+  border-radius: var(--radius-full);
+  background: color-mix(in srgb, var(--bg-elevated) 70%, transparent);
+  border: 1px solid color-mix(in srgb, var(--border-strong) 50%, transparent);
+  transition: background var(--carapace-d-fast) ease, border-color var(--carapace-d-fast) ease;
+  flex-shrink: 0;
+}
+
+.qs-toggle__track::before {
+  content: "";
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--text);
+  transition: transform var(--carapace-d-fast) var(--carapace-ease-out);
+}
+
+.qs-toggle[aria-pressed="true"] .qs-toggle__track,
+.qs-toggle[data-on="true"] .qs-toggle__track,
+input:checked + .qs-toggle__track {
+  background: var(--accent);
+  border-color: color-mix(in srgb, var(--accent) 70%, black 14%);
+}
+
+.qs-toggle[aria-pressed="true"] .qs-toggle__track::before,
+.qs-toggle[data-on="true"] .qs-toggle__track::before,
+input:checked + .qs-toggle__track::before {
+  transform: translateX(14px);
+  background: var(--accent-foreground);
+}
+
+/* ============================================================
+   [MD-PREVIEW DIALOG] — full polish
+   ============================================================ */
+
+.md-preview-dialog__panel {
+  display: flex;
+  flex-direction: column;
+  width: min(720px, 92vw);
+  max-height: 88vh;
+}
+
+.md-preview-dialog__panel.fullscreen {
+  width: 96vw;
+  height: 92vh;
+  max-height: none;
+}
+
+.md-preview-dialog__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-5);
+  border-bottom: 1px solid color-mix(in srgb, var(--border) 60%, transparent);
+}
+
+.md-preview-dialog__header-main {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.md-preview-dialog__title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.md-preview-dialog__title {
+  font-size: var(--text-xl);
+  font-weight: 660;
+  color: var(--text-strong);
+  letter-spacing: -0.014em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.md-preview-dialog__path {
+  font-size: 11px;
+  color: var(--muted);
+  word-break: break-all;
+}
+
+.md-preview-dialog__meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 2px;
+}
+
+.md-preview-dialog__actions {
+  display: flex;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.md-preview-icon-btn,
+.btn.md-preview-icon-btn {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border-radius: 8px;
+}
+
+.md-preview-dialog__body {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  padding: var(--space-5);
+  font-size: var(--text-md);
+  line-height: var(--leading-normal);
+}
+
+/* ============================================================
+   [CHAT ATTACHMENTS] — composer thumb strip
+   ============================================================ */
+
+.chat-attachments-preview {
+  display: flex;
+  gap: 8px;
+  padding: 8px 10px 4px;
+  flex-wrap: wrap;
+  border-top: 1px solid color-mix(in srgb, var(--border) 40%, transparent);
+}
+
+.chat-attachment-thumb {
+  position: relative;
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
+  background: color-mix(in srgb, var(--bg-elevated) 60%, transparent);
+}
+
+.chat-attachment-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.chat-attachment-remove {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  width: 18px;
+  height: 18px;
+  border: none;
+  border-radius: 50%;
+  background: color-mix(in srgb, black 70%, transparent);
+  color: white;
+  font-size: 11px;
+  line-height: 1;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity var(--carapace-d-fast) ease, background var(--carapace-d-fast) ease;
+}
+
+.chat-attachment-thumb:hover .chat-attachment-remove {
+  opacity: 1;
+}
+
+.chat-attachment-remove:hover {
+  background: var(--danger);
+}
+
+/* ============================================================
+   [CRON FILTER DROPDOWN]
+   ============================================================ */
+
+.cron-filter-dropdown {
+  position: relative;
+}
+
+.cron-filter-dropdown__trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.cron-filter-dropdown__panel {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  z-index: 50;
+  min-width: 220px;
+  max-height: 320px;
+  overflow-y: auto;
+  padding: 6px;
+  border: 1px solid color-mix(in srgb, var(--border-strong) 70%, transparent);
+  border-radius: var(--radius-lg);
+  background: color-mix(in srgb, var(--popover, var(--card)) 94%, transparent);
+  box-shadow: var(--carapace-shadow-line), var(--carapace-shadow-popover);
+  backdrop-filter: blur(20px) saturate(1.5);
+  -webkit-backdrop-filter: blur(20px) saturate(1.5);
+  animation: cs-fade 120ms ease both;
+}
+
+.cron-filter-dropdown__list {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.cron-filter-dropdown__option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: var(--text-sm);
+  transition: background var(--carapace-d-fast) ease;
+}
+
+.cron-filter-dropdown__option:hover,
+.cron-filter-dropdown__option[aria-selected="true"] {
+  background: color-mix(in srgb, var(--accent) 12%, var(--bg-elevated));
+}
+
+.cron-filter-dropdown__details {
+  padding: 6px 10px;
+  font-size: 11px;
+  color: var(--muted);
+  border-top: 1px solid color-mix(in srgb, var(--border) 60%, transparent);
+  margin-top: 4px;
+}
+
+.cron-filter-search input {
+  background: color-mix(in srgb, var(--bg-elevated) 50%, transparent);
+}
+
+/* ============================================================
+   [CONNECTION STATUS] — animated indicator
+   ============================================================ */
+
+.statusDot.live,
+.statusDot.connected {
+  background: var(--ok);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--ok) 22%, transparent);
+  animation: cs-pulse-status 2.5s ease-in-out infinite;
+}
+
+@keyframes cs-pulse-status {
+  0%, 100% { box-shadow: 0 0 0 3px color-mix(in srgb, var(--ok) 22%, transparent); }
+  50%      { box-shadow: 0 0 0 6px color-mix(in srgb, var(--ok) 12%, transparent); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .statusDot.live,
+  .statusDot.connected {
+    animation: none !important;
+  }
+}
+
+/* ============================================================
+   [GENERIC FOCUS] — every focusable element gets a clean ring
+   ============================================================ */
+
+button:focus-visible:not(.btn):not(.btn--icon),
+a:focus-visible,
+[role="button"]:focus-visible,
+[tabindex="0"]:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--accent) 60%, transparent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ============================================================
    [PRINT] — minimal, calm
    ============================================================ */
 
