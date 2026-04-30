@@ -6198,6 +6198,589 @@ dialog[open],
 }
 
 /* ============================================================
+   [OVERVIEW TAB] — full polish on ov-* classes
+   ============================================================ */
+
+.ov-cards,
+.ov-bottom-grid {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.ov-cards {
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+}
+
+.ov-bottom-grid {
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-4);
+}
+
+@media (max-width: 900px) {
+  .ov-bottom-grid { grid-template-columns: 1fr; }
+}
+
+.ov-card {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: var(--space-4);
+  border: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
+  border-radius: var(--radius-lg);
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--accent) 3%, transparent), transparent 60%),
+    color-mix(in srgb, var(--card) 92%, transparent);
+  box-shadow: var(--carapace-shadow-line);
+  transition:
+    border-color var(--carapace-d-fast) ease,
+    transform var(--carapace-d-fast) var(--carapace-ease-out),
+    box-shadow var(--carapace-d-base) ease;
+}
+
+.ov-card:hover {
+  transform: translateY(-1px);
+  border-color: color-mix(in srgb, var(--accent) 32%, var(--border-strong));
+  box-shadow: var(--carapace-shadow-line), var(--carapace-shadow-1);
+}
+
+.ov-card__label {
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--accent) 50%, var(--muted) 50%);
+}
+
+.ov-card__value {
+  font-size: 26px;
+  font-weight: 680;
+  letter-spacing: -0.018em;
+  color: var(--text-strong);
+  font-variant-numeric: tabular-nums;
+  line-height: 1.1;
+  margin-top: 2px;
+}
+
+.ov-card__hint {
+  margin-top: 4px;
+  font-size: var(--text-xs);
+  color: var(--muted);
+  line-height: var(--leading-snug);
+}
+
+.ov-count-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+  background: color-mix(in srgb, var(--accent) 14%, transparent);
+  color: color-mix(in srgb, var(--accent) 32%, var(--text-strong));
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Attention list (alerts on overview) */
+.ov-attention {
+  padding: var(--space-4);
+}
+
+.ov-attention-body {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+}
+
+.ov-attention-icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  color: var(--warn);
+  margin-top: 2px;
+}
+
+.ov-attention-title {
+  font-weight: 660;
+  color: var(--text-strong);
+  font-size: var(--text-sm);
+}
+
+.ov-attention-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+}
+
+.ov-attention-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.ov-attention-link:hover {
+  text-decoration: underline;
+}
+
+/* Event log */
+.ov-event-log {
+  padding: var(--space-4);
+}
+
+.ov-event-log-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+.ov-event-log-entry {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  align-items: baseline;
+  gap: var(--space-2);
+  padding: 6px 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--border) 40%, transparent);
+  font-size: var(--text-xs);
+}
+
+.ov-event-log-entry:last-child {
+  border-bottom: none;
+}
+
+.ov-event-log-ts {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.ov-event-log-name {
+  font-weight: 600;
+  color: color-mix(in srgb, var(--accent) 28%, var(--text-strong));
+  font-family: var(--mono);
+}
+
+.ov-event-log-payload {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+  word-break: break-word;
+}
+
+/* Log tail */
+.ov-log-tail {
+  padding: var(--space-4);
+}
+
+.ov-log-tail-content {
+  font-family: var(--mono);
+  font-size: 11.5px;
+  line-height: 1.55;
+  max-height: 320px;
+  overflow-y: auto;
+  background: color-mix(in srgb, var(--bg) 80%, var(--bg-muted));
+  border: 1px solid color-mix(in srgb, var(--border) 60%, transparent);
+  border-radius: var(--radius-md);
+  padding: var(--space-3);
+}
+
+.ov-log-refresh {
+  margin-top: var(--space-2);
+}
+
+/* Recent activity */
+.ov-recent__list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.ov-recent__row {
+  display: grid;
+  grid-template-columns: 1fr max-content max-content;
+  align-items: center;
+  gap: var(--space-3);
+  padding: 8px var(--space-3);
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  color: inherit;
+  transition: background var(--carapace-d-fast) ease;
+}
+
+.ov-recent__row:hover {
+  background: color-mix(in srgb, var(--accent) 6%, transparent);
+}
+
+.ov-recent__title {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--text-strong);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ov-recent__key {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  color: var(--muted);
+}
+
+.ov-recent__model {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--accent) 8%, var(--bg-elevated));
+  color: color-mix(in srgb, var(--accent) 30%, var(--text));
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.ov-recent__time {
+  font-size: var(--text-xs);
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.ov-section-divider {
+  height: 1px;
+  background: color-mix(in srgb, var(--border) 60%, transparent);
+  margin: var(--space-3) 0;
+}
+
+.ov-expandable-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  border: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
+  border-radius: var(--radius-sm);
+  background: color-mix(in srgb, var(--card) 90%, transparent);
+  color: var(--muted);
+  font-size: var(--text-xs);
+  cursor: pointer;
+}
+
+.ov-expandable-toggle:hover {
+  border-color: color-mix(in srgb, var(--accent) 35%, var(--border));
+  color: var(--text);
+}
+
+/* ============================================================
+   [LOGS TAB] — log-row, log-message, blur-digits
+   ============================================================ */
+
+.log-row {
+  display: grid;
+  grid-template-columns: max-content max-content 1fr;
+  gap: var(--space-2);
+  padding: 6px var(--space-3);
+  border-bottom: 1px solid color-mix(in srgb, var(--border) 30%, transparent);
+  font-family: var(--mono);
+  font-size: 11.5px;
+  line-height: 1.5;
+  align-items: baseline;
+}
+
+.log-row:hover {
+  background: color-mix(in srgb, var(--bg-elevated) 50%, transparent);
+}
+
+.log-row.danger,
+.log-row[data-level="error"] {
+  background: color-mix(in srgb, var(--danger) 4%, transparent);
+  border-color: color-mix(in srgb, var(--danger) 24%, transparent);
+}
+
+.log-row.warn,
+.log-row[data-level="warn"] {
+  background: color-mix(in srgb, var(--warn) 4%, transparent);
+}
+
+.log-message {
+  color: var(--text);
+  word-break: break-word;
+  white-space: pre-wrap;
+}
+
+.log-row.danger .log-message { color: color-mix(in srgb, var(--danger) 24%, var(--text)); }
+.log-row.warn .log-message   { color: color-mix(in srgb, var(--warn) 24%, var(--text)); }
+
+/* Blur-digits — privacy mask for token counts etc. */
+.blur-digits {
+  filter: blur(4px);
+  user-select: none;
+  transition: filter var(--carapace-d-base) ease;
+}
+
+.blur-digits:hover,
+.blur-digits:focus-within {
+  filter: blur(0);
+}
+
+/* ============================================================
+   [CHANNEL CARDS] — channel config (slack/discord/etc.)
+   ============================================================ */
+
+.account-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  border-radius: var(--radius-lg);
+  border: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
+  background: color-mix(in srgb, var(--card) 92%, transparent);
+  transition:
+    border-color var(--carapace-d-fast) ease,
+    transform var(--carapace-d-fast) var(--carapace-ease-out);
+}
+
+.account-card:hover {
+  transform: translateY(-1px);
+  border-color: color-mix(in srgb, var(--accent) 32%, var(--border-strong));
+}
+
+.account-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.account-card-title {
+  font-size: var(--text-md);
+  font-weight: 660;
+  color: var(--text-strong);
+  letter-spacing: -0.005em;
+}
+
+.account-card-id {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+  word-break: break-all;
+}
+
+.account-card-status,
+.status-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.account-card-error {
+  padding: 6px 10px;
+  border-radius: var(--radius-sm);
+  background: color-mix(in srgb, var(--danger) 10%, transparent);
+  border: 1px solid color-mix(in srgb, var(--danger) 32%, transparent);
+  color: color-mix(in srgb, var(--danger) 24%, var(--text));
+  font-size: var(--text-xs);
+  line-height: var(--leading-snug);
+}
+
+.account-count {
+  font-size: var(--text-xs);
+  color: var(--muted);
+  letter-spacing: 0.04em;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Generic form-field used in some channel forms */
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-field .label,
+.form-field label {
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--accent) 55%, var(--muted) 45%);
+}
+
+/* QR codes wrapper */
+.qr-wrap {
+  display: inline-flex;
+  padding: var(--space-3);
+  background: white;
+  border-radius: var(--radius-md);
+  border: 1px solid color-mix(in srgb, var(--border-strong) 60%, transparent);
+  box-shadow: var(--carapace-shadow-line);
+}
+
+/* Monospace utility — used for IDs, hashes, etc. */
+.monospace,
+.mono {
+  font-family: var(--mono);
+  letter-spacing: 0;
+  word-break: break-all;
+}
+
+/* ============================================================
+   [LIGHT MODE PARITY] — adjustments where dark-only colors hurt
+   ============================================================ */
+
+:root[data-theme-mode="light"] {
+  --carapace-hover-wash: color-mix(in srgb, var(--accent) 4%, var(--bg-elevated) 96%);
+}
+
+:root[data-theme-mode="light"] .topbar {
+  background: color-mix(in srgb, var(--bg-content) 90%, white 10%);
+  border-bottom-color: color-mix(in srgb, var(--border) 100%, transparent);
+}
+
+:root[data-theme-mode="light"] .shell-nav,
+:root[data-theme-mode="light"] .sidebar,
+:root[data-theme-mode="light"] nav.shell-nav {
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, white 60%, var(--bg-content) 40%),
+    var(--bg-content) 70%
+  ) !important;
+  border-right-color: color-mix(in srgb, var(--border) 100%, transparent);
+}
+
+:root[data-theme-mode="light"] .nav-item.active,
+:root[data-theme-mode="light"] .nav-item--active,
+:root[data-theme-mode="light"] .nav-item[aria-current="page"] {
+  background:
+    linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--accent) 14%, transparent),
+      color-mix(in srgb, var(--accent) 3%, transparent) 90%
+    ) !important;
+  border-color: color-mix(in srgb, var(--accent) 24%, transparent);
+}
+
+:root[data-theme-mode="light"] .card,
+:root[data-theme-mode="light"] .stat,
+:root[data-theme-mode="light"] .ov-card,
+:root[data-theme-mode="light"] .config-section-card,
+:root[data-theme-mode="light"] .cron-form-section,
+:root[data-theme-mode="light"] .account-card {
+  background: white;
+  border-color: color-mix(in srgb, var(--border) 100%, transparent);
+  box-shadow:
+    var(--carapace-shadow-line),
+    0 1px 2px rgba(15, 23, 42, 0.04);
+}
+
+:root[data-theme-mode="light"] .nav-item {
+  color: color-mix(in srgb, var(--text) 88%, var(--muted) 12%);
+}
+
+:root[data-theme-mode="light"] .agent-chat__input {
+  background: white;
+  border-color: color-mix(in srgb, var(--border-strong) 100%, transparent);
+}
+
+@supports (backdrop-filter: blur(1px)) {
+  :root[data-theme-mode="light"] .agent-chat__input {
+    background: color-mix(in srgb, white 88%, transparent);
+  }
+}
+
+:root[data-theme-mode="light"] .chat-thread {
+  background:
+    radial-gradient(900px 480px at 50% -10%, color-mix(in srgb, var(--accent) 3%, transparent), transparent 70%);
+}
+
+:root[data-theme-mode="light"] .code-block-wrapper,
+:root[data-theme-mode="light"] .chat-text :where(pre) {
+  background: color-mix(in srgb, var(--bg-content) 92%, white 8%);
+  border-color: color-mix(in srgb, var(--border) 100%, transparent);
+}
+
+:root[data-theme-mode="light"] .chat-text :where(:not(pre) > code) {
+  background: color-mix(in srgb, var(--accent) 8%, white 92%);
+  color: color-mix(in srgb, var(--accent) 50%, black 50%);
+  border-color: color-mix(in srgb, var(--accent) 20%, transparent);
+}
+
+:root[data-theme-mode="light"] .skeleton::after,
+:root[data-theme-mode="light"] .skeleton-line::after,
+:root[data-theme-mode="light"] .skeleton-stat::after {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    color-mix(in srgb, var(--accent) 16%, transparent) 50%,
+    transparent 100%
+  );
+}
+
+/* ============================================================
+   [PRINT] — minimal, calm
+   ============================================================ */
+
+@media print {
+  .topbar,
+  .shell-nav,
+  .sidebar,
+  .chat-compose,
+  .chat-controls,
+  .agent-chat__input,
+  .chat-bubble-actions,
+  .chat-group-footer button {
+    display: none !important;
+  }
+
+  body, .content, .chat-thread {
+    background: white !important;
+    color: black !important;
+  }
+
+  .chat-bubble {
+    background: white !important;
+    color: black !important;
+    border: 1px solid #ccc !important;
+    box-shadow: none !important;
+  }
+
+  .chat-line.user .chat-bubble,
+  .chat-group.user .chat-bubble {
+    background: #f5f5f5 !important;
+    color: black !important;
+    border-color: #999 !important;
+  }
+}
+
+/* ============================================================
+   [HIGH-CONTRAST] — ensure focus rings and borders are visible
+   ============================================================ */
+
+@media (prefers-contrast: more) {
+  :root {
+    --border: rgba(255, 255, 255, 0.42);
+    --border-strong: rgba(255, 255, 255, 0.62);
+  }
+
+  :root[data-theme-mode="light"] {
+    --border: rgba(15, 23, 42, 0.42);
+    --border-strong: rgba(15, 23, 42, 0.62);
+  }
+
+  *:focus-visible {
+    outline: 2px solid var(--accent) !important;
+    outline-offset: 2px !important;
+  }
+}
+
+/* ============================================================
    [MOBILE] — responsive tightening
    ============================================================ */
 
