@@ -4477,78 +4477,186 @@ img.chat-avatar {
   padding: 4px var(--space-3);
 }
 
+/* ============================================================
+   COLLAPSED SIDEBAR — strict icon column, perfectly centered.
+   Every flex/grid container in this branch is forced to a 56px
+   wide single-column layout so icons line up vertically without
+   any drift from leftover labels/chevrons/scrollbars.
+   ============================================================ */
+
+.sidebar.sidebar--collapsed,
+.shell-nav.sidebar--collapsed {
+  width: 56px !important;
+  min-width: 56px !important;
+  max-width: 56px !important;
+}
+
 .sidebar--collapsed .sidebar-shell {
-  padding: 12px 8px 10px;
+  width: 56px;
+  padding: 12px 0 10px;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.sidebar--collapsed .sidebar-shell__header,
+.sidebar--collapsed .sidebar-shell__body,
+.sidebar--collapsed .sidebar-shell__footer {
+  width: 56px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0;
+  border: none;
+  gap: 4px;
+}
+
+.sidebar--collapsed .sidebar-shell__body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding: 4px 0;
+  gap: 12px;
+}
+
+.sidebar--collapsed .sidebar-shell__body::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
 }
 
 .sidebar--collapsed .sidebar-shell__header {
+  padding-bottom: 4px;
+}
+
+.sidebar--collapsed .sidebar-shell__footer {
+  padding-top: 8px;
+  border-top: 1px solid color-mix(in srgb, var(--border) 40%, transparent);
+  gap: 4px;
+}
+
+/* Hide brand text in collapsed; the logo alone marks the brand. */
+.sidebar--collapsed .sidebar-brand__copy {
+  display: none;
+}
+
+.sidebar--collapsed .sidebar-brand {
   justify-content: center;
-  align-items: center;
-  gap: 0;
-  padding: 0 0 16px;
 }
 
-.sidebar--collapsed .sidebar-shell__body,
-.sidebar--collapsed .sidebar-shell__footer {
-  align-items: center;
-}
-
-.sidebar--collapsed .sidebar-shell__footer {
-  padding: 8px 0 2px;
-}
-
+/* Section structure: stack centered items, hide labels/chevrons */
 .sidebar--collapsed .sidebar-nav,
 .sidebar--collapsed .nav-section,
 .sidebar--collapsed .nav-section__items,
 .sidebar--collapsed .sidebar-utility-group {
-  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  width: 56px;
+  margin: 0;
+  padding: 0;
+  gap: 4px;
 }
 
 .sidebar--collapsed .nav-section {
-  margin-bottom: 16px;
+  margin-bottom: 12px;
 }
 
-.sidebar--collapsed .nav-section__items,
-.sidebar--collapsed .sidebar-utility-group {
-  align-items: center;
-  justify-items: center;
+.sidebar--collapsed .nav-section__label,
+.sidebar--collapsed .nav-section__chevron,
+.sidebar--collapsed .nav-section__label-text {
+  display: none !important;
 }
 
-.sidebar--collapsed .nav-item {
-  position: relative;
-  justify-content: center;
-  width: 44px;
-  min-height: 44px;
-  padding: 0;
-  margin: 0 auto;
-  gap: 0;
-  flex: 0 0 auto;
-  border-radius: var(--radius-lg);
-  border: 1px solid transparent;
-}
-
-.sidebar--collapsed .nav-item__text {
+.sidebar--collapsed .nav-section--collapsed .nav-section__items {
   display: none;
 }
 
+/* Hide secondary text on every nav-item in collapsed state */
+.sidebar--collapsed .nav-item__text,
+.sidebar--collapsed .nav-item__external-icon,
+.sidebar--collapsed .sidebar-utility-link span:not(.nav-item__icon) {
+  display: none !important;
+}
+
+/* The actual icon button. Every item is 40x40, centered in the
+   56px column with 8px breathing room on each side. */
+.sidebar--collapsed .nav-item,
+.sidebar--collapsed .sidebar-utility-link,
+.sidebar--collapsed .nav-collapse-toggle {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px !important;
+  height: 40px !important;
+  min-height: 40px !important;
+  padding: 0 !important;
+  margin: 0 auto !important;
+  gap: 0 !important;
+  flex: 0 0 auto !important;
+  border-radius: 12px !important;
+  border: 1px solid transparent;
+  box-sizing: border-box;
+}
+
+.sidebar--collapsed .nav-item__icon,
+.sidebar--collapsed .sidebar-utility-link .nav-item__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  padding: 0;
+  flex: 0 0 auto;
+}
+
+.sidebar--collapsed .nav-item__icon svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* Active item: rounded accent halo (no side rail) */
 .sidebar--collapsed .nav-item.active,
 .sidebar--collapsed .nav-item--active,
 .sidebar--collapsed .nav-item[aria-current="page"] {
   background:
-    radial-gradient(circle at 30% 30%, color-mix(in srgb, var(--accent) 22%, transparent), transparent 75%),
-    color-mix(in srgb, var(--accent) 14%, transparent) !important;
-  border-color: color-mix(in srgb, var(--accent) 28%, transparent);
+    radial-gradient(circle at 30% 30%, color-mix(in srgb, var(--accent) 26%, transparent), transparent 75%),
+    color-mix(in srgb, var(--accent) 16%, transparent) !important;
+  border-color: color-mix(in srgb, var(--accent) 36%, transparent) !important;
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, white 8%, transparent),
+    0 0 0 4px color-mix(in srgb, var(--accent) 6%, transparent);
 }
 
-.sidebar--collapsed .nav-collapse-toggle,
+.sidebar--collapsed .nav-item:hover:not(.active):not(.nav-item--active):not([aria-current="page"]) {
+  background: color-mix(in srgb, var(--bg-elevated) 60%, transparent) !important;
+  border-color: color-mix(in srgb, var(--border) 50%, transparent);
+}
+
+/* Version chip in collapsed: just the status dot, centered */
 .sidebar--collapsed .sidebar-version {
-  width: 44px;
-  height: 44px;
-  min-height: 44px;
+  width: 40px;
+  height: 28px;
+  margin: 0 auto;
   padding: 0;
-  margin-inline: auto;
+  display: flex;
+  align-items: center;
   justify-content: center;
-  flex: 0 0 auto;
+}
+
+.sidebar--collapsed .sidebar-version__label,
+.sidebar--collapsed .sidebar-version__text {
+  display: none;
+}
+
+.sidebar--collapsed .sidebar-version__status {
+  margin: 0;
 }
 
 /* In collapsed mode, drop the side rail and use the rounded
