@@ -86,6 +86,7 @@ const FIELD_PLACEHOLDERS: Record<string, string> = {
   "gateway.remote.sshTarget": "user@host",
   "gateway.controlUi.basePath": "/openclaw",
   "gateway.controlUi.root": "dist/control-ui",
+  "gateway.controlUi.canonicalChatPageUrl": "http://127.0.0.1:18789/chat?session=main",
   "gateway.controlUi.allowedOrigins": "https://control.example.com",
   "gateway.push.apns.relay.baseUrl": "https://relay.example.com",
   "channels.mattermost.baseUrl": "https://chat.example.com",

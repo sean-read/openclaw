@@ -340,6 +340,7 @@ See [Plugins](/tools/plugin).
     controlUi: {
       enabled: true,
       basePath: "/openclaw",
+      // canonicalChatPageUrl: "http://127.0.0.1:18789/chat?session=main",
       // root: "dist/control-ui",
       // embedSandbox: "scripts", // strict | scripts | trusted
       // allowExternalEmbedUrls: false, // dangerous: allow absolute external http(s) embed URLs
@@ -404,6 +405,8 @@ See [Plugins](/tools/plugin).
   lock out a different origin.
 - `tailscale.mode`: `serve` (tailnet only, loopback bind) or `funnel` (public, requires auth).
 - `controlUi.allowedOrigins`: explicit browser-origin allowlist for Gateway WebSocket connects. Required when browser clients are expected from non-loopback origins.
+- `controlUi.canonicalChatPageUrl`: optional absolute URL for redirecting the
+  Control UI root and `/chat` page to one canonical browser chat URL.
 - `controlUi.dangerouslyAllowHostHeaderOriginFallback`: dangerous mode that enables Host-header origin fallback for deployments that intentionally rely on Host-header origin policy.
 - `remote.transport`: `ssh` (default) or `direct` (ws/wss). For `direct`, `remote.url` must be `ws://` or `wss://`.
 - `OPENCLAW_ALLOW_INSECURE_PRIVATE_WS=1`: client-side process-environment

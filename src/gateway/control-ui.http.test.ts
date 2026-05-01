@@ -5,6 +5,7 @@ import os from "node:os";
 import path from "node:path";
 import { describe, expect, it, vi } from "vitest";
 import { resolveStateDir } from "../config/paths.js";
+import type { OpenClawConfig } from "../config/types.openclaw.js";
 import { approveDevicePairing, requestDevicePairing } from "../infra/device-pairing.js";
 import { resolvePreferredOpenClawTmpDir } from "../infra/tmp-openclaw-dir.js";
 import type { ResolvedGatewayAuth } from "./auth.js";
@@ -56,17 +57,20 @@ describe("handleControlUiHttpRequest", () => {
     rootPath: string;
     basePath?: string;
     rootKind?: "resolved" | "bundled";
+    headers?: IncomingMessage["headers"];
+    config?: OpenClawConfig;
   }) {
-    const { res, end } = makeMockHttpResponse();
+    const { res, end, setHeader } = makeMockHttpResponse();
     const handled = await handleControlUiHttpRequest(
-      { url: params.url, method: params.method } as IncomingMessage,
+      { url: params.url, method: params.method, headers: params.headers ?? {} } as IncomingMessage,
       res,
       {
         ...(params.basePath ? { basePath: params.basePath } : {}),
+        ...(params.config ? { config: params.config } : {}),
         root: { kind: params.rootKind ?? "resolved", path: params.rootPath },
       },
     );
-    return { res, end, handled };
+    return { res, end, setHeader, handled };
   }
 
   async function runBootstrapConfigRequest(params: {
@@ -311,6 +315,87 @@ describe("handleControlUiHttpRequest", () => {
         expect(String(csp)).toContain("frame-ancestors 'none'");
         expect(String(csp)).toContain("script-src 'self'");
         expect(String(csp)).not.toContain("script-src 'self' 'unsafe-inline'");
+      },
+    });
+  });
+
+  it("redirects configured chat page aliases to the canonical chat page URL", async () => {
+    await withControlUiRoot({
+      fn: async (tmp) => {
+        const config: OpenClawConfig = {
+          gateway: {
+            controlUi: {
+              canonicalChatPageUrl: "http://127.0.0.1:18789/chat?session=main",
+            },
+          },
+        };
+        for (const request of [
+          { url: "/", host: "127.0.0.1:18789" },
+          { url: "/chat", host: "127.0.0.1:18789" },
+          { url: "/chat?session=other", host: "localhost:18789" },
+          { url: "/chat?session=main", host: "[::1]:18789" },
+        ]) {
+          const { res, setHeader, handled } = await runControlUiRequest({
+            url: request.url,
+            method: "GET",
+            rootPath: tmp,
+            headers: { host: request.host },
+            config,
+          });
+
+          expect(handled).toBe(true);
+          expect(res.statusCode).toBe(302);
+          expect(setHeader).toHaveBeenCalledWith(
+            "Location",
+            "http://127.0.0.1:18789/chat?session=main",
+          );
+        }
+      },
+    });
+  });
+
+  it("serves the configured canonical chat page URL without redirecting", async () => {
+    await withControlUiRoot({
+      fn: async (tmp) => {
+        const { res, end } = await runControlUiRequest({
+          url: "/chat?session=main",
+          method: "GET",
+          rootPath: tmp,
+          headers: { host: "127.0.0.1:18789" },
+          config: {
+            gateway: {
+              controlUi: {
+                canonicalChatPageUrl: "http://127.0.0.1:18789/chat?session=main",
+              },
+            },
+          },
+        });
+
+        expect(res.statusCode).toBe(200);
+        expect(String(end.mock.calls[0]?.[0] ?? "")).toBe("<html></html>\n");
+      },
+    });
+  });
+
+  it("does not apply the canonical chat page URL to non-chat routes", async () => {
+    await withControlUiRoot({
+      fn: async (tmp) => {
+        const { res, end } = await runControlUiRequest({
+          url: "/overview",
+          method: "GET",
+          rootPath: tmp,
+          headers: { host: "localhost:18789" },
+          config: {
+            gateway: {
+              controlUi: {
+                canonicalChatPageUrl: "http://127.0.0.1:18789/chat?session=main",
+              },
+            },
+          },
+        });
+
+        expect(res.statusCode).toBe(200);
+        expect(String(end.mock.calls[0]?.[0] ?? "")).toBe("<html></html>\n");
       },
     });
   });

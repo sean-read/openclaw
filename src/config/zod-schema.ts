@@ -133,8 +133,12 @@ const HttpUrlSchema = z
   .string()
   .url()
   .refine((value) => {
-    const protocol = new URL(value).protocol;
-    return protocol === "http:" || protocol === "https:";
+    try {
+      const protocol = new URL(value).protocol;
+      return protocol === "http:" || protocol === "https:";
+    } catch {
+      return false;
+    }
   }, "Expected http:// or https:// URL");
 
 const ResponsesEndpointUrlFetchShape = {
@@ -724,6 +728,7 @@ export const OpenClawSchema = z
             enabled: z.boolean().optional(),
             basePath: z.string().optional(),
             root: z.string().optional(),
+            canonicalChatPageUrl: HttpUrlSchema.optional(),
             embedSandbox: z
               .union([z.literal("strict"), z.literal("scripts"), z.literal("trusted")])
               .optional(),

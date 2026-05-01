@@ -87,6 +87,8 @@ export type GatewayControlUiConfig = {
   basePath?: string;
   /** Optional filesystem root for Control UI assets (defaults to dist/control-ui). */
   root?: string;
+  /** Optional absolute URL that canonicalises the browser chat page. */
+  canonicalChatPageUrl?: string;
   /**
    * Embed sandbox mode for hosted Control UI previews.
    * - strict: no script execution inside embeds

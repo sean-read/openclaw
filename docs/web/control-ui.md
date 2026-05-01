@@ -21,6 +21,22 @@ If the Gateway is running on the same computer, open:
 
 If the page fails to load, start the Gateway first: `openclaw gateway`.
 
+To collapse local chat page aliases to one browser URL, set:
+
+```json5
+{
+  gateway: {
+    controlUi: {
+      canonicalChatPageUrl: "http://127.0.0.1:18789/chat?session=main",
+    },
+  },
+}
+```
+
+When set, the Gateway redirects the Control UI root and `/chat` page to that
+absolute URL. API routes, health probes, assets, and other Control UI pages are
+unchanged.
+
 Auth is supplied during the WebSocket handshake via:
 
 - `connect.params.auth.token`

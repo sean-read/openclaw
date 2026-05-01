@@ -169,6 +169,70 @@ function applyControlUiSecurityHeaders(res: ServerResponse) {
   res.setHeader("Referrer-Policy", "no-referrer");
 }
 
+function firstHeaderValue(value: string | string[] | undefined): string | undefined {
+  return Array.isArray(value) ? value[0] : value;
+}
+
+function resolveConfiguredCanonicalChatPageUrl(config: OpenClawConfig | undefined): URL | null {
+  const raw = config?.gateway?.controlUi?.canonicalChatPageUrl?.trim();
+  if (!raw) {
+    return null;
+  }
+  try {
+    const parsed = new URL(raw);
+    return parsed.protocol === "http:" || parsed.protocol === "https:" ? parsed : null;
+  } catch {
+    return null;
+  }
+}
+
+function isControlUiChatPagePath(pathname: string, basePath: string): boolean {
+  const rootPath = basePath ? `${basePath}/` : "/";
+  const chatPath = basePath ? `${basePath}/chat` : "/chat";
+  return pathname === rootPath || pathname === chatPath;
+}
+
+function resolveRequestUrlForCanonicalComparison(
+  req: IncomingMessage,
+  url: URL,
+  canonicalUrl: URL,
+): URL | null {
+  const host = firstHeaderValue(req.headers.host)?.trim();
+  if (!host) {
+    return null;
+  }
+  const forwardedProto = firstHeaderValue(req.headers["x-forwarded-proto"])
+    ?.split(",")[0]
+    ?.trim()
+    ?.toLowerCase();
+  const protocol =
+    forwardedProto === "http" || forwardedProto === "https"
+      ? `${forwardedProto}:`
+      : canonicalUrl.protocol;
+  try {
+    return new URL(`${protocol}//${host}${url.pathname}${url.search}`);
+  } catch {
+    return null;
+  }
+}
+
+function resolveCanonicalChatPageRedirect(params: {
+  req: IncomingMessage;
+  url: URL;
+  basePath: string;
+  config?: OpenClawConfig;
+}): string | null {
+  const canonicalUrl = resolveConfiguredCanonicalChatPageUrl(params.config);
+  if (!canonicalUrl || !isControlUiChatPagePath(params.url.pathname, params.basePath)) {
+    return null;
+  }
+  const requestUrl = resolveRequestUrlForCanonicalComparison(params.req, params.url, canonicalUrl);
+  if (requestUrl && requestUrl.href === canonicalUrl.href) {
+    return null;
+  }
+  return canonicalUrl.href;
+}
+
 function sendJson(res: ServerResponse, status: number, body: unknown) {
   res.statusCode = status;
   res.setHeader("Content-Type", "application/json; charset=utf-8");
@@ -747,6 +811,19 @@ export async function handleControlUiHttpRequest(
     applyControlUiSecurityHeaders(res);
     res.statusCode = 302;
     res.setHeader("Location", route.location);
+    res.end();
+    return true;
+  }
+  const canonicalChatRedirect = resolveCanonicalChatPageRedirect({
+    req,
+    url,
+    basePath,
+    config: opts?.config,
+  });
+  if (canonicalChatRedirect) {
+    applyControlUiSecurityHeaders(res);
+    res.statusCode = 302;
+    res.setHeader("Location", canonicalChatRedirect);
     res.end();
     return true;
   }

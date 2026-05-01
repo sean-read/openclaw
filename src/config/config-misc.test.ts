@@ -213,6 +213,37 @@ describe("gateway.controlUi.allowExternalEmbedUrls", () => {
   });
 });
 
+describe("gateway.controlUi.canonicalChatPageUrl", () => {
+  it("accepts absolute http and https URLs", () => {
+    for (const url of [
+      "http://127.0.0.1:18789/chat?session=main",
+      "https://gateway.example.com/chat?session=main",
+    ]) {
+      const result = OpenClawSchema.safeParse({
+        gateway: {
+          controlUi: {
+            canonicalChatPageUrl: url,
+          },
+        },
+      });
+      expect(result.success).toBe(true);
+    }
+  });
+
+  it("rejects relative or non-http URLs", () => {
+    for (const url of ["/chat?session=main", "ws://127.0.0.1:18789/chat"]) {
+      const result = OpenClawSchema.safeParse({
+        gateway: {
+          controlUi: {
+            canonicalChatPageUrl: url,
+          },
+        },
+      });
+      expect(result.success).toBe(false);
+    }
+  });
+});
+
 describe("plugins.entries.*.hooks", () => {
   it("accepts boolean values", () => {
     const result = OpenClawSchema.safeParse({

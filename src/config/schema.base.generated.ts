@@ -21180,6 +21180,13 @@ export const GENERATED_BASE_CONFIG_SCHEMA: BaseConfigSchemaResponse = {
                 description:
                   "Optional filesystem root for Control UI assets (defaults to dist/control-ui).",
               },
+              canonicalChatPageUrl: {
+                type: "string",
+                format: "uri",
+                title: "Canonical Chat Page URL",
+                description:
+                  "Absolute URL used to redirect the Control UI root and /chat page to one canonical browser chat URL. Leave unset to allow normal host and path aliases.",
+              },
               embedSandbox: {
                 anyOf: [
                   {
@@ -24925,6 +24932,12 @@ export const GENERATED_BASE_CONFIG_SCHEMA: BaseConfigSchemaResponse = {
       label: "Control UI Assets Root",
       help: "Optional filesystem root for Control UI assets (defaults to dist/control-ui).",
       placeholder: "dist/control-ui",
+      tags: ["network"],
+    },
+    "gateway.controlUi.canonicalChatPageUrl": {
+      label: "Canonical Chat Page URL",
+      help: "Absolute URL used to redirect the Control UI root and /chat page to one canonical browser chat URL. Leave unset to allow normal host and path aliases.",
+      placeholder: "http://127.0.0.1:18789/chat?session=main",
       tags: ["network"],
     },
     "gateway.controlUi.embedSandbox": {
