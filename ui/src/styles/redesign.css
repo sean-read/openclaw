@@ -4642,12 +4642,13 @@ img.chat-avatar {
 /* Version chip in collapsed: just the status dot, centered */
 .sidebar--collapsed .sidebar-version {
   width: 40px;
-  height: 28px;
+  height: 40px;
   margin: 0 auto;
   padding: 0;
   display: flex;
   align-items: center;
   justify-content: center;
+  box-sizing: border-box;
 }
 
 .sidebar--collapsed .sidebar-version__label,
