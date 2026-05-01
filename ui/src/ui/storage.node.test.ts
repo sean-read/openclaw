@@ -239,6 +239,48 @@ describe("loadSettings default gateway URL derivation", () => {
     });
   });
 
+  it("starts with expanded navigation even when a previous session collapsed it", async () => {
+    setTestLocation({
+      protocol: "https:",
+      host: "gateway.example:8443",
+      pathname: "/",
+    });
+
+    const gwUrl = expectedGatewayUrl("");
+    const scopedKey = `openclaw.control.settings.v1:${gwUrl}`;
+    localStorage.setItem(
+      scopedKey,
+      JSON.stringify({
+        gatewayUrl: gwUrl,
+        theme: "claw",
+        themeMode: "system",
+        chatFocusMode: false,
+        chatShowThinking: true,
+        chatShowToolCalls: true,
+        splitRatio: 0.6,
+        navCollapsed: true,
+        navWidth: 220,
+        navGroupsCollapsed: {},
+        borderRadius: 50,
+        sessionsByGateway: {
+          [gwUrl]: {
+            sessionKey: "main",
+            lastActiveSessionKey: "main",
+          },
+        },
+      }),
+    );
+
+    const loaded = loadSettings();
+    expect(loaded).toMatchObject({
+      gatewayUrl: gwUrl,
+      navCollapsed: false,
+    });
+
+    saveSettings({ ...loaded, navCollapsed: true });
+    expect(JSON.parse(localStorage.getItem(scopedKey) ?? "{}").navCollapsed).toBe(false);
+  });
+
   it("does not reuse a session token for a different gatewayUrl", async () => {
     setTestLocation({
       protocol: "https:",

@@ -251,8 +251,7 @@ export function loadSettings(): UiSettings {
         parsed.splitRatio <= 0.7
           ? parsed.splitRatio
           : defaults.splitRatio,
-      navCollapsed:
-        typeof parsed.navCollapsed === "boolean" ? parsed.navCollapsed : defaults.navCollapsed,
+      navCollapsed: defaults.navCollapsed,
       navWidth:
         typeof parsed.navWidth === "number" && parsed.navWidth >= 200 && parsed.navWidth <= 400
           ? parsed.navWidth
@@ -382,7 +381,7 @@ function persistSettings(next: UiSettings) {
     chatShowThinking: next.chatShowThinking,
     chatShowToolCalls: next.chatShowToolCalls,
     splitRatio: next.splitRatio,
-    navCollapsed: next.navCollapsed,
+    navCollapsed: false,
     navWidth: next.navWidth,
     navGroupsCollapsed: next.navGroupsCollapsed,
     borderRadius: next.borderRadius,
