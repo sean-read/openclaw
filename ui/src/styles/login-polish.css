@@ -6,7 +6,7 @@
   place-items: center;
   min-height: 100vh;
   min-height: 100dvh;
-  padding: clamp(20px, 4vw, 64px);
+  padding: clamp(20px, 4vw, 40px);
   overflow: hidden;
   background:
     radial-gradient(circle at 18% 12%, color-mix(in srgb, var(--accent) 22%, transparent), transparent 34rem),
@@ -35,11 +35,8 @@
   position: relative;
   z-index: 1;
   width: min(440px, 100%);
-  max-height: calc(100dvh - 48px);
-  max-height: calc(100vh - 48px);
   padding: 0;
-  overflow-y: auto;
-  overflow-x: hidden;
+  overflow: hidden;
   border: 1px solid color-mix(in srgb, var(--border-strong) 74%, transparent);
   border-radius: 28px;
   background:
@@ -70,15 +67,15 @@
 
 .login-gate__header {
   margin: 0;
-  padding: clamp(18px, 3vw, 26px) clamp(20px, 4vw, 28px) 14px;
+  padding: clamp(14px, 2.5vw, 20px) clamp(20px, 4vw, 28px) 12px;
   text-align: left;
   border-bottom: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
 }
 
 .login-gate__logo {
-  width: 40px;
-  height: 40px;
-  margin: 0 0 12px;
+  width: 34px;
+  height: 34px;
+  margin: 0 0 10px;
   border-radius: 12px;
   box-shadow:
     0 12px 24px color-mix(in srgb, var(--accent) 18%, transparent),
@@ -111,8 +108,8 @@
 }
 
 .login-gate__form {
-  gap: 12px;
-  padding: 18px clamp(20px, 4vw, 28px) 16px;
+  gap: 10px;
+  padding: 14px clamp(20px, 4vw, 28px) 14px;
 }
 
 .login-gate .field {
@@ -225,7 +222,7 @@
 
 .login-gate__help {
   margin: 0;
-  padding: 16px clamp(20px, 4vw, 28px) clamp(18px, 3vw, 24px);
+  padding: 0;
   border-top: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
   background:
     linear-gradient(180deg, color-mix(in srgb, var(--bg-elevated) 18%, transparent), transparent),
@@ -233,8 +230,49 @@
 }
 
 .login-gate__help-title {
-  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 12px clamp(20px, 4vw, 28px);
+  margin: 0;
   color: var(--text-strong);
+  font-size: 12px;
+  font-weight: 720;
+  letter-spacing: 0.055em;
+  text-transform: uppercase;
+  cursor: pointer;
+  list-style: none;
+  user-select: none;
+}
+
+.login-gate__help-title::-webkit-details-marker {
+  display: none;
+}
+
+.login-gate__help-title::after {
+  content: "";
+  display: inline-block;
+  width: 0;
+  height: 0;
+  margin-left: auto;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 5px solid currentColor;
+  opacity: 0.5;
+  transition: transform 160ms ease;
+}
+
+details[open] .login-gate__help-title::after {
+  transform: rotate(180deg);
+}
+
+.login-gate__help ol,
+.login-gate__help .login-gate__docs {
+  padding-inline: clamp(20px, 4vw, 28px);
+}
+
+.login-gate__help .login-gate__docs {
+  padding-bottom: clamp(14px, 2.5vw, 20px);
 }
 
 .login-gate__steps {

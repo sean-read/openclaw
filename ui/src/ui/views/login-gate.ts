@@ -116,8 +116,8 @@ export function renderLoginGate(state: AppViewState) {
               <div>${state.lastError}</div>
             </div>`
           : ""}
-        <div class="login-gate__help">
-          <div class="login-gate__help-title">How to connect</div>
+        <details class="login-gate__help">
+          <summary class="login-gate__help-title">How to connect</summary>
           <ol class="login-gate__steps">
             <li>
               Start the gateway on your host machine:${renderConnectCommand("openclaw gateway run")}
@@ -134,7 +134,7 @@ export function renderLoginGate(state: AppViewState) {
               >Read the docs</a
             >
           </div>
-        </div>
+        </details>
       </div>
     </div>
   `;
