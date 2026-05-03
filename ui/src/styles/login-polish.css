@@ -26,176 +26,270 @@
   mask-image: radial-gradient(circle at 50% 36%, rgba(0, 0, 0, 0.72), transparent 72%);
 }
 
-.login-gate__theme {
-  top: 22px;
-  right: 22px;
-}
+/* ── Card ─────────────────────────────────────────────── */
 
 .login-gate__card {
   position: relative;
   z-index: 1;
-  width: min(560px, 100%);
+  width: min(520px, 100%);
   padding: 0;
   overflow: hidden;
-  border: 1px solid color-mix(in srgb, var(--border-strong) 74%, transparent);
-  border-radius: 28px;
-  background:
-    linear-gradient(180deg, color-mix(in srgb, white 7%, transparent), transparent 45%),
-    color-mix(in srgb, var(--card) 88%, var(--bg) 12%);
+  border: 1px solid color-mix(in srgb, var(--border-strong) 60%, transparent);
+  border-radius: 20px;
+  background: color-mix(in srgb, var(--card) 92%, var(--bg) 8%);
   box-shadow:
-    inset 0 1px 0 color-mix(in srgb, white 12%, transparent),
-    0 32px 90px color-mix(in srgb, black 42%, transparent),
-    0 0 0 1px color-mix(in srgb, white 4%, transparent);
+    inset 0 1px 0 color-mix(in srgb, white 10%, transparent),
+    0 24px 64px color-mix(in srgb, black 36%, transparent);
 }
 
 @supports (backdrop-filter: blur(1px)) {
   .login-gate__card {
-    background:
-      linear-gradient(180deg, color-mix(in srgb, white 8%, transparent), transparent 44%),
-      color-mix(in srgb, var(--card) 78%, transparent);
-    backdrop-filter: blur(24px) saturate(1.35);
-    -webkit-backdrop-filter: blur(24px) saturate(1.35);
+    background: color-mix(in srgb, var(--card) 80%, transparent);
+    backdrop-filter: blur(24px) saturate(1.3);
+    -webkit-backdrop-filter: blur(24px) saturate(1.3);
   }
 }
 
+/* accent top bar */
 .login-gate__card::before {
   content: "";
   display: block;
-  height: 6px;
-  background: linear-gradient(90deg, var(--accent), color-mix(in srgb, var(--accent-2) 84%, white 16%), var(--accent));
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent), color-mix(in srgb, var(--accent-2) 80%, white 20%), var(--accent));
 }
 
+/* ── Header ───────────────────────────────────────────── */
+
 .login-gate__header {
-  margin: 0;
-  padding: clamp(14px, 2.5vw, 20px) clamp(20px, 4vw, 28px) 12px;
-  text-align: left;
-  border-bottom: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 20px 24px 16px;
+  margin: 0;           /* reset components.css margin-bottom: 24px */
+  text-align: left;    /* reset components.css text-align: center */
+  border-bottom: 1px solid color-mix(in srgb, var(--border) 50%, transparent);
 }
 
 .login-gate__logo {
-  width: 34px;
-  height: 34px;
-  margin: 0 0 10px;
-  border-radius: 12px;
-  box-shadow:
-    0 12px 24px color-mix(in srgb, var(--accent) 18%, transparent),
-    inset 0 1px 0 color-mix(in srgb, white 18%, transparent);
+  width: 38px;
+  height: 38px;
+  flex-shrink: 0;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--accent) 22%, transparent);
 }
 
 .login-gate__title {
   color: var(--text-strong);
-  font-size: clamp(20px, 2.6vw, 24px);
-  font-weight: 780;
-  line-height: 1.1;
-  letter-spacing: -0.04em;
-}
-
-.login-gate__title::after {
-  content: "";
-  display: block;
-  width: 44px;
-  height: 2px;
-  margin-top: 10px;
-  border-radius: 999px;
-  background: linear-gradient(90deg, var(--accent), color-mix(in srgb, var(--accent-2) 78%, white 22%));
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
 }
 
 .login-gate__sub {
-  margin-top: 10px;
-  color: color-mix(in srgb, var(--muted) 86%, var(--text) 14%);
-  font-size: 13px;
-  line-height: 1.5;
+  margin-top: 2px;
+  color: var(--muted);
+  font-size: 12.5px;
 }
+
+/* ── Form ─────────────────────────────────────────────── */
 
 .login-gate__form {
+  display: flex;
+  flex-direction: column;
   gap: 10px;
-  padding: 14px clamp(20px, 4vw, 28px) 14px;
+  padding: 20px 24px 16px;
 }
 
-.login-gate .field {
+/* Primary URL + Connect row */
+.login-gate__url-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
   gap: 8px;
+  align-items: center;
 }
 
-.login-gate .field span,
-.login-gate__help-title {
-  color: color-mix(in srgb, var(--muted) 84%, var(--text) 16%);
-  font-size: 12px;
-  font-weight: 720;
-  letter-spacing: 0.055em;
-  text-transform: uppercase;
-}
-
-.login-gate .field input,
-.login-gate__secret-row input {
-  min-height: 38px;
-  padding: 0 12px;
-  border: 1px solid color-mix(in srgb, var(--border-strong) 62%, transparent);
-  border-radius: 12px;
-  background:
-    linear-gradient(180deg, color-mix(in srgb, white 5%, transparent), transparent 55%),
-    color-mix(in srgb, var(--bg-elevated) 58%, var(--bg) 42%);
+.login-gate__url-input {
+  width: 100%;
+  box-sizing: border-box;
+  height: 40px;
+  padding: 0 14px;
+  border: 1.5px solid var(--border-strong);
+  border-radius: 10px;
+  background: var(--bg-elevated, var(--bg));
   color: var(--text-strong);
-  font-size: 15px;
-  box-shadow:
-    inset 0 1px 0 color-mix(in srgb, white 8%, transparent),
-    0 10px 28px color-mix(in srgb, black 12%, transparent);
+  font-size: 14px;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 120ms ease, box-shadow 120ms ease;
 }
 
-.login-gate .field input:hover,
-.login-gate__secret-row input:hover {
-  border-color: color-mix(in srgb, var(--border-strong) 88%, transparent);
+.login-gate__url-input::placeholder {
+  color: var(--muted);
+  opacity: 0.7;
 }
 
-.login-gate .field input:focus,
-.login-gate__secret-row input:focus {
-  border-color: color-mix(in srgb, var(--ring) 78%, transparent);
-  box-shadow:
-    var(--focus-glow),
-    inset 0 1px 0 color-mix(in srgb, white 10%, transparent);
-}
-
-.login-gate__secret-row {
-  gap: 10px;
-}
-
-.login-gate__secret-row .btn--icon {
-  width: 38px;
-  min-width: 38px;
-  height: 38px;
-  border-radius: 12px;
+.login-gate__url-input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent);
 }
 
 .login-gate__connect {
-  min-height: 40px;
-  margin-top: 4px;
-  border-radius: 12px;
+  height: 40px;
+  padding: 0 20px;
+  flex-shrink: 0;
+  border-radius: 10px;
   font-size: 14px;
-  font-weight: 760;
-  letter-spacing: -0.01em;
+  font-weight: 650;
+  white-space: nowrap;
+}
+
+/* ── Advanced disclosure ──────────────────────────────── */
+
+.login-gate__advanced {
+  border: 1px solid color-mix(in srgb, var(--border) 50%, transparent);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.login-gate__advanced-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 9px 14px;
+  color: var(--muted);
+  font-size: 12.5px;
+  font-weight: 560;
+  cursor: pointer;
+  user-select: none;
+  list-style: none;
+  transition: color 120ms ease, background 120ms ease;
+}
+
+.login-gate__advanced-toggle::-webkit-details-marker {
+  display: none;
+}
+
+.login-gate__advanced-toggle::after {
+  content: "";
+  display: inline-block;
+  width: 0;
+  height: 0;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 5px solid currentColor;
+  opacity: 0.6;
+  transition: transform 160ms ease;
+}
+
+details[open] .login-gate__advanced-toggle {
+  color: var(--text);
+  border-bottom: 1px solid color-mix(in srgb, var(--border) 50%, transparent);
+}
+
+details[open] .login-gate__advanced-toggle::after {
+  transform: rotate(180deg);
+}
+
+.login-gate__advanced-toggle:hover {
+  color: var(--text);
+  background: color-mix(in srgb, var(--bg-elevated) 40%, transparent);
+}
+
+.login-gate__advanced-body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px 14px;
+}
+
+/* Secret input rows (token / password) */
+.login-gate__secret-row {
+  display: flex;
+  gap: 8px;
+}
+
+.login-gate__secret-row input {
+  flex: 1;
+  min-width: 0;
+  height: 36px;
+  padding: 0 12px;
+  border: 1px solid color-mix(in srgb, var(--border-strong) 55%, transparent);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--bg-elevated) 60%, var(--bg) 40%);
+  color: var(--text-strong);
+  font-size: 13.5px;
+  outline: none;
+  transition: border-color 120ms ease, box-shadow 120ms ease;
+}
+
+.login-gate__secret-row input:focus {
+  border-color: color-mix(in srgb, var(--ring) 80%, transparent);
+  box-shadow: var(--focus-glow);
+}
+
+.login-gate__secret-row .btn--icon {
+  width: 36px;
+  min-width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  border-radius: 8px;
+}
+
+/* Inline error */
+.login-gate__error {
+  padding: 10px 14px;
+  border: 1px solid color-mix(in srgb, var(--danger) 35%, transparent);
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--danger-subtle) 60%, transparent);
+  color: color-mix(in srgb, var(--danger) 90%, white 10%);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+/* ── Footer ───────────────────────────────────────────── */
+
+.login-gate__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 24px;
+  border-top: 1px solid color-mix(in srgb, var(--border) 50%, transparent);
+  background: color-mix(in srgb, var(--bg-elevated) 20%, transparent);
+}
+
+.login-gate__footer-link {
+  color: var(--muted);
+  font-size: 12.5px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 120ms ease;
+}
+
+.login-gate__footer-link:hover {
+  color: var(--accent);
 }
 
 .login-gate__demo-link {
   display: inline-flex;
-  align-self: center;
-  margin-top: 6px;
-  padding: 6px 10px;
+  align-items: center;
+  padding: 5px 10px;
   border: none;
+  border-radius: 7px;
   background: transparent;
   color: var(--muted);
   font-size: 12.5px;
   font-weight: 500;
-  letter-spacing: -0.005em;
   cursor: pointer;
-  border-radius: 8px;
-  transition:
-    color 120ms ease,
-    background 120ms ease;
+  transition: color 120ms ease, background 120ms ease;
 }
 
 .login-gate__demo-link:hover {
   color: var(--accent);
   background: color-mix(in srgb, var(--accent) 8%, transparent);
 }
+
+/* ── Demo shell ───────────────────────────────────────── */
 
 .app-shell--demo {
   display: flex;
@@ -209,124 +303,7 @@
   height: 100%;
 }
 
-.login-gate > .login-gate__card > .callout.danger {
-  margin: 0 clamp(24px, 5vw, 44px) 22px !important;
-  padding: 14px 16px;
-  border-radius: 16px;
-  border-color: color-mix(in srgb, var(--danger) 42%, transparent);
-  background:
-    linear-gradient(180deg, color-mix(in srgb, var(--danger) 10%, transparent), transparent),
-    color-mix(in srgb, var(--danger-subtle) 70%, var(--card) 30%);
-  color: color-mix(in srgb, var(--danger) 88%, white 12%);
-}
-
-.login-gate__help {
-  margin: 0;
-  padding: 0;
-  border-top: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
-  background:
-    linear-gradient(180deg, color-mix(in srgb, var(--bg-elevated) 18%, transparent), transparent),
-    color-mix(in srgb, var(--bg) 24%, transparent);
-}
-
-.login-gate__help-title {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 12px clamp(20px, 4vw, 28px);
-  margin: 0;
-  color: var(--text-strong);
-  font-size: 12px;
-  font-weight: 720;
-  letter-spacing: 0.055em;
-  text-transform: uppercase;
-  cursor: pointer;
-  list-style: none;
-  user-select: none;
-}
-
-.login-gate__help-title::-webkit-details-marker {
-  display: none;
-}
-
-.login-gate__help-title::after {
-  content: "";
-  display: inline-block;
-  width: 0;
-  height: 0;
-  margin-left: auto;
-  border-left: 4px solid transparent;
-  border-right: 4px solid transparent;
-  border-top: 5px solid currentColor;
-  opacity: 0.5;
-  transition: transform 160ms ease;
-}
-
-details[open] .login-gate__help-title::after {
-  transform: rotate(180deg);
-}
-
-.login-gate__help ol,
-.login-gate__help .login-gate__docs {
-  padding-inline: clamp(20px, 4vw, 28px);
-}
-
-.login-gate__help .login-gate__docs {
-  padding-bottom: clamp(14px, 2.5vw, 20px);
-}
-
-.login-gate__steps {
-  display: grid;
-  gap: 12px;
-  margin: 0;
-  padding-left: 24px;
-  color: color-mix(in srgb, var(--muted) 88%, var(--text) 12%);
-  font-size: 13px;
-  line-height: 1.55;
-}
-
-.login-gate__steps li::marker {
-  color: var(--accent);
-  font-weight: 700;
-}
-
-.login-gate__command {
-  min-height: 46px;
-  margin-top: 8px;
-  border-color: color-mix(in srgb, var(--border-strong) 58%, transparent);
-  border-radius: 14px;
-  background: color-mix(in srgb, var(--bg) 72%, black 28%);
-  box-shadow: inset 0 1px 0 color-mix(in srgb, white 7%, transparent);
-}
-
-.login-gate__command code,
-.login-gate__steps code {
-  color: var(--text-strong);
-  font-family: var(--mono);
-}
-
-.login-gate__docs {
-  margin-top: 16px;
-  font-size: 13px;
-}
-
-.login-gate__docs a {
-  display: inline-flex;
-  align-items: center;
-  min-height: 34px;
-  padding: 0 12px;
-  border: 1px solid color-mix(in srgb, var(--accent) 28%, transparent);
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--accent) 10%, transparent);
-  color: var(--accent);
-  font-weight: 650;
-  text-decoration: none;
-}
-
-.login-gate__docs a:hover {
-  border-color: color-mix(in srgb, var(--accent) 46%, transparent);
-  background: color-mix(in srgb, var(--accent) 15%, transparent);
-}
+/* ── Light mode ───────────────────────────────────────── */
 
 :root[data-theme-mode="light"] .login-gate {
   background:
@@ -335,27 +312,29 @@ details[open] .login-gate__help-title::after {
     linear-gradient(135deg, color-mix(in srgb, var(--bg-content) 80%, white 20%), var(--bg-content));
 }
 
-:root[data-theme-mode="light"] .login-gate__command {
-  background: color-mix(in srgb, var(--bg-elevated) 82%, var(--bg) 18%);
-}
+/* ── Mobile ───────────────────────────────────────────── */
 
-@media (max-width: 680px) {
+@media (max-width: 600px) {
   .login-gate {
-    padding: 14px;
+    padding: 12px;
   }
 
   .login-gate__card {
-    border-radius: 22px;
+    border-radius: 16px;
   }
 
   .login-gate__header,
   .login-gate__form,
-  .login-gate__help {
-    padding-inline: 20px;
+  .login-gate__footer {
+    padding-inline: 16px;
   }
 
-  .login-gate__secret-row .btn--icon {
-    width: 48px;
-    min-width: 48px;
+  .login-gate__url-row {
+    flex-direction: column;
+  }
+
+  .login-gate__connect {
+    width: 100%;
+    justify-content: center;
   }
 }
