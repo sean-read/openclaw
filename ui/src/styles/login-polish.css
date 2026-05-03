@@ -34,7 +34,7 @@
 .login-gate__card {
   position: relative;
   z-index: 1;
-  width: min(440px, 100%);
+  width: min(560px, 100%);
   padding: 0;
   overflow: hidden;
   border: 1px solid color-mix(in srgb, var(--border-strong) 74%, transparent);
