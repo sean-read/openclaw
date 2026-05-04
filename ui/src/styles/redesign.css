@@ -8618,12 +8618,25 @@ img.chat-avatar {
 
 /* Hide the redundant gear avatar on tool/system rows — the tool
    card already shows its own icon + name, no need for a second
-   "tool" indicator on the left. */
-.chat-group.tool > .chat-avatar,
-.chat-group.system > .chat-avatar,
-.chat-line.tool > .chat-avatar,
-.chat-line.system > .chat-avatar {
+   "tool" indicator on the left. Bulletproof selectors. */
+.chat-group.tool .chat-avatar.tool,
+.chat-group.system .chat-avatar.tool,
+.chat-group.tool .chat-avatar.system,
+.chat-group.system .chat-avatar.system,
+.chat-line.tool .chat-avatar.tool,
+.chat-line.system .chat-avatar.system,
+.chat-group.tool > img.chat-avatar,
+.chat-group.system > img.chat-avatar,
+.chat-group.tool > div.chat-avatar,
+.chat-group.system > div.chat-avatar {
   display: none !important;
+  visibility: hidden !important;
+  width: 0 !important;
+  height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  flex: 0 0 0 !important;
 }
 
 .chat-group.tool,
@@ -8825,21 +8838,53 @@ img.chat-avatar {
 
 .chat-tool-card__action-icon svg { width: 14px; height: 14px; }
 
-/* Tools-summary chevron (collapsed state) */
+/* Tools-summary — quiet inline disclosure, NOT a box */
 .chat-tools-summary {
-  padding: 6px 10px !important;
-  font-size: 12px;
-  font-weight: 540;
-  color: var(--muted);
-  border-radius: 8px;
-  background: color-mix(in srgb, var(--bg-elevated) 50%, transparent);
-  border: 1px solid color-mix(in srgb, var(--border) 50%, transparent);
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.085em !important;
+  text-transform: uppercase !important;
+  color: color-mix(in srgb, var(--accent) 50%, var(--muted) 50%) !important;
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  cursor: pointer;
+  list-style: none;
+  user-select: none;
+}
+
+.chat-tools-summary::-webkit-details-marker { display: none !important; }
+
+.chat-tools-summary::before {
+  content: "▸";
+  font-size: 9px !important;
+  color: var(--accent);
+  opacity: 0.7;
+  transition: transform 140ms ease;
+  width: 10px;
+  text-align: center;
+}
+
+details[open] > .chat-tools-summary::before {
+  transform: rotate(90deg);
 }
 
 .chat-tools-summary:hover {
-  background: color-mix(in srgb, var(--accent) 8%, var(--bg-elevated));
-  border-color: color-mix(in srgb, var(--accent) 35%, var(--border));
-  color: var(--text);
+  color: var(--accent) !important;
+  background: transparent !important;
+}
+
+/* Each <details> wrapping the inner block: no border, just padding-left for the marker */
+.chat-tool-card details {
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  background: transparent !important;
 }
 
 /* Tool group footer — quieter timestamp + context chip */
