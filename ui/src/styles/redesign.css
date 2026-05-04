@@ -8609,6 +8609,302 @@ img.chat-avatar {
 .chat-tool-card__icon { color: var(--accent); opacity: 0.9; }
 
 /* ============================================================
+   [TOOL MESSAGE CLEANUP] — consolidate the disconnected boxes
+   --------------------------------------------------------------
+   Tool messages were rendering as: separate gear avatar + nested
+   bordered blocks inside a tool card, all looking visually
+   disconnected. This collapses them into one unified card.
+   ============================================================ */
+
+/* Hide the redundant gear avatar on tool/system rows — the tool
+   card already shows its own icon + name, no need for a second
+   "tool" indicator on the left. */
+.chat-group.tool > .chat-avatar,
+.chat-group.system > .chat-avatar,
+.chat-line.tool > .chat-avatar,
+.chat-line.system > .chat-avatar {
+  display: none !important;
+}
+
+.chat-group.tool,
+.chat-group.system,
+.chat-line.tool,
+.chat-line.system {
+  /* The card now spans the full row width without an avatar offset */
+  padding-left: 0;
+}
+
+/* Tighten the bubble that wraps the tool card */
+.chat-bubble--tool-shell,
+.chat-line.tool .chat-bubble,
+.chat-line.system .chat-bubble {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
+
+/* TOOL CARD — single confident container */
+.chat-tool-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border: 1px solid color-mix(in srgb, var(--border) 65%, transparent) !important;
+  border-radius: 14px !important;
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--accent) 6%, transparent), transparent 40%),
+    color-mix(in srgb, var(--card) 92%, transparent) !important;
+  padding: 12px 14px !important;
+  margin: 0 !important;
+  box-shadow: inset 0 1px 0 color-mix(in srgb, white 5%, transparent);
+  transition: border-color 160ms ease, background 160ms ease;
+}
+
+.chat-tool-card:hover {
+  border-color: color-mix(in srgb, var(--accent) 36%, var(--border-strong) 64%) !important;
+}
+
+.chat-tool-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin: 0 !important;
+  min-width: 0;
+}
+
+.chat-tool-card__title {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  font-family: var(--mono);
+  font-size: 12.5px;
+  font-weight: 660;
+  color: color-mix(in srgb, var(--accent) 30%, var(--text-strong));
+  letter-spacing: -0.005em;
+}
+
+.chat-tool-card__icon {
+  display: inline-flex;
+  width: 22px;
+  height: 22px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--accent) 14%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent) 28%, transparent);
+  color: var(--accent);
+  flex-shrink: 0;
+}
+
+.chat-tool-card__icon svg {
+  width: 13px;
+  height: 13px;
+}
+
+.chat-tool-card__detail {
+  font-size: 12px;
+  color: var(--muted);
+  font-family: var(--mono);
+  margin-top: -4px;
+}
+
+/* TOOL CARD INNER BLOCKS — sub-tier, not standalone cards */
+.chat-tool-card__block {
+  margin: 0 !important;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  border: none;
+  background: transparent;
+}
+
+.chat-tool-card__block-header {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0 !important;
+  padding: 0;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.085em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--accent) 50%, var(--muted) 50%);
+}
+
+.chat-tool-card__block-icon {
+  width: 12px;
+  height: 12px;
+  color: var(--accent);
+  opacity: 0.85;
+}
+
+.chat-tool-card__block-icon svg {
+  width: 11px;
+  height: 11px;
+}
+
+.chat-tool-card__block-label {
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.085em;
+  text-transform: uppercase;
+  color: inherit;
+}
+
+.chat-tool-card__block-content,
+.chat-tool-card__block-preview,
+.chat-tool-card__block-empty {
+  margin: 0 !important;
+  padding: 10px 12px !important;
+  border: 1px solid color-mix(in srgb, var(--border) 50%, transparent) !important;
+  border-radius: 10px !important;
+  background: color-mix(in srgb, var(--bg) 60%, var(--bg-muted) 40%) !important;
+  font-family: var(--mono);
+  font-size: 12px !important;
+  line-height: 1.55 !important;
+  color: var(--text);
+  white-space: pre-wrap;
+  overflow-x: auto;
+  max-width: 100%;
+}
+
+.chat-tool-card__block-empty {
+  color: var(--muted);
+  font-family: inherit;
+  font-style: italic;
+  font-size: 12px !important;
+  padding: 8px 12px !important;
+}
+
+.chat-tool-card__block-preview {
+  overflow: hidden;
+  max-height: 60px;
+  position: relative;
+}
+
+.chat-tool-card__block-preview::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 18px;
+  background: linear-gradient(to top, color-mix(in srgb, var(--bg) 70%, var(--bg-muted)), transparent);
+  pointer-events: none;
+}
+
+.chat-tool-card__action-btn {
+  width: 28px;
+  height: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  border: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
+  background: color-mix(in srgb, var(--card) 92%, transparent);
+  color: var(--muted);
+  cursor: pointer;
+  transition: border-color 140ms ease, color 140ms ease, background 140ms ease, transform 140ms ease;
+}
+
+.chat-tool-card__action-btn:hover {
+  border-color: color-mix(in srgb, var(--accent) 50%, var(--border));
+  color: var(--accent);
+  transform: translateY(-1px);
+  background: color-mix(in srgb, var(--accent) 8%, var(--card));
+}
+
+.chat-tool-card__action-icon {
+  display: inline-flex;
+  width: 14px;
+  height: 14px;
+}
+
+.chat-tool-card__action-icon svg { width: 14px; height: 14px; }
+
+/* Tools-summary chevron (collapsed state) */
+.chat-tools-summary {
+  padding: 6px 10px !important;
+  font-size: 12px;
+  font-weight: 540;
+  color: var(--muted);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--bg-elevated) 50%, transparent);
+  border: 1px solid color-mix(in srgb, var(--border) 50%, transparent);
+}
+
+.chat-tools-summary:hover {
+  background: color-mix(in srgb, var(--accent) 8%, var(--bg-elevated));
+  border-color: color-mix(in srgb, var(--accent) 35%, var(--border));
+  color: var(--text);
+}
+
+/* Tool group footer — quieter timestamp + context chip */
+.chat-group.tool .chat-group-footer,
+.chat-group.system .chat-group-footer {
+  margin-top: 6px;
+  padding-left: 0;
+  font-size: 10.5px;
+  color: var(--muted);
+  letter-spacing: 0.02em;
+}
+
+/* "Context" disclosure chip near tool/assistant footer */
+.chat-context-toggle,
+.chat-group-footer details > summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 9px;
+  border: 1px solid color-mix(in srgb, var(--border) 60%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--card) 80%, transparent);
+  font-size: 10.5px;
+  font-weight: 540;
+  color: var(--muted);
+  cursor: pointer;
+  transition: border-color 140ms ease, color 140ms ease, background 140ms ease;
+  list-style: none;
+}
+
+.chat-group-footer details > summary::-webkit-details-marker { display: none; }
+
+.chat-context-toggle:hover,
+.chat-group-footer details > summary:hover {
+  border-color: color-mix(in srgb, var(--accent) 40%, var(--border));
+  color: var(--text);
+  background: color-mix(in srgb, var(--accent) 8%, var(--card));
+}
+
+/* ============================================================
+   [SHORT ASSISTANT MESSAGE TIGHTENING]
+   --------------------------------------------------------------
+   When the assistant says something short like "HEARTBEAT_OK"
+   the row was huge with weak hierarchy. Tighten and treat short
+   ALL_CAPS_TOKEN responses as a status pill.
+   ============================================================ */
+
+.chat-text:has(> p:only-child) {
+  margin: 0;
+}
+
+.chat-thread-inner {
+  /* Smaller min-gap between consecutive messages so short
+     replies don't open big gaps */
+  gap: 22px;
+}
+
+/* When the inner thread is short, anchor it to the top so it
+   doesn't drift to the middle */
+.chat-thread {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ============================================================
    [MOBILE] — responsive tightening
    ============================================================ */
 
