@@ -1,9 +1,8 @@
 /* ============================================================
-   LOGIN GATE — Carapace modern redesign
+   LOGIN GATE — Claude/ChatGPT-grade onboarding
    --------------------------------------------------------------
-   Single-column focused product moment. Confident hero brand
-   block, clean form, help collapsed into a disclosure so the
-   card stays compact and never overflows a 900px viewport.
+   Single centered card on a calm backdrop. Confident hero brand,
+   refined form, accent pill connect button, collapsible help.
    ============================================================ */
 
 .login-gate {
@@ -12,14 +11,14 @@
   place-items: center;
   min-height: 100vh;
   min-height: 100dvh;
-  padding: clamp(16px, 3vw, 40px);
+  padding: clamp(20px, 4vw, 48px);
   overflow: hidden;
   isolation: isolate;
   background: var(--bg);
   color: var(--text);
 }
 
-/* Layered ambient backdrop: warm radial wash + subtle grid */
+/* Ambient backdrop — calm, not flashy */
 .login-gate::before {
   content: "";
   position: absolute;
@@ -27,9 +26,9 @@
   z-index: -2;
   pointer-events: none;
   background:
-    radial-gradient(720px 520px at 12% 20%, color-mix(in srgb, var(--accent) 20%, transparent), transparent 65%),
-    radial-gradient(700px 480px at 88% 78%, color-mix(in srgb, var(--accent-2, #38bdf8) 14%, transparent), transparent 60%),
-    linear-gradient(140deg, color-mix(in srgb, var(--bg) 96%, black 4%), var(--bg));
+    radial-gradient(900px 600px at 18% 22%, color-mix(in srgb, var(--accent) 18%, transparent), transparent 60%),
+    radial-gradient(800px 540px at 86% 76%, color-mix(in srgb, var(--accent-2, #38bdf8) 12%, transparent), transparent 60%),
+    linear-gradient(150deg, color-mix(in srgb, var(--bg) 96%, black 4%), var(--bg));
 }
 
 .login-gate::after {
@@ -39,36 +38,39 @@
   z-index: -1;
   pointer-events: none;
   background-image:
-    linear-gradient(color-mix(in srgb, var(--grid-line, var(--border)) 80%, transparent) 1px, transparent 1px),
-    linear-gradient(90deg, color-mix(in srgb, var(--grid-line, var(--border)) 80%, transparent) 1px, transparent 1px);
-  background-size: 48px 48px;
-  mask-image: radial-gradient(ellipse 60% 60% at 50% 40%, rgba(0,0,0,0.55), transparent 75%);
-  opacity: 0.6;
+    linear-gradient(color-mix(in srgb, var(--grid-line, var(--border)) 70%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--grid-line, var(--border)) 70%, transparent) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, rgba(0, 0, 0, 0.45), transparent 75%);
+  opacity: 0.45;
 }
 
 .login-gate__theme {
   position: absolute;
-  top: 18px;
-  right: 18px;
+  top: 22px;
+  right: 22px;
   z-index: 2;
 }
 
-/* Card — focused, modern, single column */
+/* The card */
 .login-gate__card {
   position: relative;
   z-index: 1;
-  width: min(420px, 100%);
+  width: min(440px, 100%);
+  display: flex;
+  flex-direction: column;
   padding: 0;
   overflow: hidden;
-  border: 1px solid color-mix(in srgb, var(--border-strong) 60%, transparent);
-  border-radius: 20px;
+  border: 1px solid color-mix(in srgb, var(--border-strong) 56%, transparent);
+  border-radius: 24px;
   background:
     linear-gradient(180deg, color-mix(in srgb, white 6%, transparent), transparent 50%),
     color-mix(in srgb, var(--card) 92%, transparent);
   box-shadow:
     inset 0 1px 0 color-mix(in srgb, white 10%, transparent),
-    0 24px 60px color-mix(in srgb, black 40%, transparent),
+    0 30px 80px color-mix(in srgb, black 50%, transparent),
     0 0 0 1px color-mix(in srgb, white 3%, transparent);
+  animation: login-card-in 360ms var(--carapace-ease-out, cubic-bezier(0.16, 1, 0.3, 1)) both;
 }
 
 @supports (backdrop-filter: blur(1px)) {
@@ -76,109 +78,145 @@
     background:
       linear-gradient(180deg, color-mix(in srgb, white 7%, transparent), transparent 48%),
       color-mix(in srgb, var(--card) 76%, transparent);
-    backdrop-filter: blur(28px) saturate(1.5);
-    -webkit-backdrop-filter: blur(28px) saturate(1.5);
+    backdrop-filter: blur(32px) saturate(1.5);
+    -webkit-backdrop-filter: blur(32px) saturate(1.5);
   }
 }
 
-/* Accent rail at top of card */
+@keyframes login-card-in {
+  from { opacity: 0; transform: translateY(12px) scale(0.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Top accent rail */
 .login-gate__card::before {
   content: "";
   display: block;
   height: 3px;
   background: linear-gradient(
     90deg,
-    color-mix(in srgb, var(--accent) 30%, transparent),
-    var(--accent),
-    color-mix(in srgb, var(--accent-2, var(--accent)) 80%, white 20%),
-    var(--accent),
-    color-mix(in srgb, var(--accent) 30%, transparent)
+    transparent,
+    color-mix(in srgb, var(--accent) 40%, transparent) 20%,
+    var(--accent) 50%,
+    color-mix(in srgb, var(--accent) 40%, transparent) 80%,
+    transparent
   );
 }
 
-/* Header — centred logo, gradient title, kicker */
+/* Header — center-aligned hero */
 .login-gate__header {
   margin: 0;
-  padding: 28px 28px 20px;
+  padding: 32px 32px 24px;
   text-align: center;
   border-bottom: 1px solid color-mix(in srgb, var(--border) 50%, transparent);
 }
 
 .login-gate__logo {
-  width: 56px;
-  height: 56px;
-  margin: 0 auto 14px;
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 16px;
   display: block;
-  border-radius: 16px;
-  background: color-mix(in srgb, var(--card) 96%, transparent);
-  border: 1px solid color-mix(in srgb, var(--border-strong) 60%, transparent);
+  border-radius: 18px;
+  background:
+    radial-gradient(circle at 30% 25%, color-mix(in srgb, var(--accent) 30%, transparent), transparent 65%),
+    color-mix(in srgb, var(--card) 96%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent) 28%, transparent);
   box-shadow:
     inset 0 1px 0 color-mix(in srgb, white 18%, transparent),
-    0 12px 28px color-mix(in srgb, var(--accent) 24%, transparent),
-    0 0 0 6px color-mix(in srgb, var(--accent) 6%, transparent);
+    0 16px 36px color-mix(in srgb, var(--accent) 28%, transparent),
+    0 0 0 8px color-mix(in srgb, var(--accent) 5%, transparent);
+  animation: login-logo-glow 4s ease-in-out infinite;
+}
+
+@keyframes login-logo-glow {
+  0%, 100% {
+    box-shadow:
+      inset 0 1px 0 color-mix(in srgb, white 18%, transparent),
+      0 16px 36px color-mix(in srgb, var(--accent) 28%, transparent),
+      0 0 0 8px color-mix(in srgb, var(--accent) 5%, transparent);
+  }
+  50% {
+    box-shadow:
+      inset 0 1px 0 color-mix(in srgb, white 18%, transparent),
+      0 20px 44px color-mix(in srgb, var(--accent) 38%, transparent),
+      0 0 0 12px color-mix(in srgb, var(--accent) 8%, transparent);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .login-gate__card { animation: none; }
+  .login-gate__logo { animation: none; }
 }
 
 .login-gate__title {
   margin: 0;
   color: var(--text-strong);
-  font-size: 24px;
-  font-weight: 680;
-  line-height: 1.15;
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 1.1;
   letter-spacing: -0.028em;
   background: linear-gradient(
     135deg,
-    var(--text-strong) 35%,
-    color-mix(in srgb, var(--accent) 70%, var(--text-strong)) 100%
+    var(--text-strong) 30%,
+    color-mix(in srgb, var(--accent) 75%, var(--text-strong)) 100%
   );
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 }
 
-/* Drop the underline accent from the title — the top rail does it now */
 .login-gate__title::after { content: none; }
 
 .login-gate__sub {
-  margin: 8px auto 0;
+  margin: 10px auto 0;
   max-width: 320px;
   color: color-mix(in srgb, var(--muted) 86%, var(--text) 14%);
   font-size: 13px;
   line-height: 1.55;
+  letter-spacing: -0.005em;
 }
 
-/* Form — clean, focused inputs */
+/* Form */
 .login-gate__form {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  padding: 20px 28px 16px;
+  gap: 14px;
+  padding: 24px 32px 18px;
 }
 
-.login-gate .field { gap: 6px; }
+.login-gate .field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
 
 .login-gate .field span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   color: color-mix(in srgb, var(--muted) 78%, var(--text) 22%);
   font-size: 10.5px;
   font-weight: 700;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.085em;
   text-transform: uppercase;
 }
 
 .login-gate .field input,
 .login-gate__secret-row input {
-  min-height: 40px;
+  min-height: 42px;
   padding: 0 14px;
   border: 1px solid color-mix(in srgb, var(--border-strong) 50%, transparent);
-  border-radius: 10px;
+  border-radius: 11px;
   background: color-mix(in srgb, var(--bg-elevated) 50%, var(--bg) 50%);
   color: var(--text-strong);
-  font-size: 13px;
+  font-size: 13.5px;
+  font-family: inherit;
   letter-spacing: -0.005em;
   box-shadow: inset 0 1px 0 color-mix(in srgb, white 5%, transparent);
   transition:
-    border-color 120ms ease,
-    background 120ms ease,
-    box-shadow 120ms ease;
+    border-color 140ms ease,
+    background 140ms ease,
+    box-shadow 140ms ease;
 }
 
 .login-gate .field input:hover,
@@ -192,8 +230,14 @@
   border-color: color-mix(in srgb, var(--accent) 60%, var(--border-strong));
   background: color-mix(in srgb, var(--bg-elevated) 80%, var(--bg) 20%);
   box-shadow:
-    0 0 0 3px color-mix(in srgb, var(--accent) 20%, transparent),
+    0 0 0 3px color-mix(in srgb, var(--accent) 22%, transparent),
     inset 0 1px 0 color-mix(in srgb, white 7%, transparent);
+}
+
+.login-gate .field input::placeholder {
+  color: color-mix(in srgb, var(--muted) 70%, transparent);
+  font-family: var(--mono);
+  font-size: 12.5px;
 }
 
 .login-gate__secret-row {
@@ -202,17 +246,17 @@
 }
 
 .login-gate__secret-row .btn--icon {
-  width: 40px;
-  min-width: 40px;
-  height: 40px;
-  border-radius: 10px;
+  width: 42px;
+  min-width: 42px;
+  height: 42px;
+  border-radius: 11px;
   border: 1px solid color-mix(in srgb, var(--border-strong) 50%, transparent);
   background: color-mix(in srgb, var(--bg-elevated) 50%, var(--bg) 50%);
   color: var(--muted);
   transition:
-    border-color 120ms ease,
-    background 120ms ease,
-    color 120ms ease;
+    border-color 140ms ease,
+    background 140ms ease,
+    color 140ms ease;
 }
 
 .login-gate__secret-row .btn--icon:hover {
@@ -228,48 +272,66 @@
 
 /* Connect button — generous accent pill */
 .login-gate__connect {
-  min-height: 44px;
-  margin-top: 6px;
-  border-radius: 10px;
-  font-size: 13.5px;
-  font-weight: 700;
+  min-height: 46px !important;
+  margin-top: 8px;
+  border-radius: 11px !important;
+  font-size: 14px !important;
+  font-weight: 700 !important;
   letter-spacing: -0.005em;
-  background: var(--accent);
-  border: 1px solid color-mix(in srgb, var(--accent) 70%, black 14%);
-  color: var(--accent-foreground);
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--accent) 100%, white 8%) 0%,
+    var(--accent) 60%,
+    color-mix(in srgb, var(--accent) 100%, black 8%) 100%
+  ) !important;
+  border: 1px solid color-mix(in srgb, var(--accent) 70%, black 14%) !important;
+  color: var(--accent-foreground) !important;
   box-shadow:
-    inset 0 1px 0 color-mix(in srgb, white 14%, transparent),
-    0 6px 16px -4px color-mix(in srgb, var(--accent) 30%, transparent);
+    inset 0 1px 0 color-mix(in srgb, white 18%, transparent),
+    0 8px 22px -4px color-mix(in srgb, var(--accent) 38%, transparent),
+    0 0 0 1px color-mix(in srgb, var(--accent) 50%, transparent) !important;
   transition:
-    background 120ms ease,
-    transform 120ms ease,
-    box-shadow 120ms ease;
+    transform 140ms ease,
+    filter 140ms ease,
+    box-shadow 140ms ease;
 }
 
 .login-gate__connect:hover:not(:disabled) {
-  background: color-mix(in srgb, var(--accent) 92%, white 8%);
-  transform: translateY(-1px);
+  transform: translateY(-1px) !important;
+  filter: brightness(1.04);
   box-shadow:
-    inset 0 1px 0 color-mix(in srgb, white 14%, transparent),
-    0 10px 24px -4px color-mix(in srgb, var(--accent) 38%, transparent);
+    inset 0 1px 0 color-mix(in srgb, white 22%, transparent),
+    0 14px 32px -4px color-mix(in srgb, var(--accent) 50%, transparent),
+    0 0 0 1px color-mix(in srgb, var(--accent) 60%, transparent) !important;
 }
 
 .login-gate__connect:active:not(:disabled) {
-  transform: translateY(0);
+  transform: translateY(0) !important;
 }
 
 /* Error callout */
 .login-gate > .login-gate__card > .callout.danger {
-  margin: 0 28px 16px !important;
-  padding: 10px 12px;
-  border-radius: 10px;
+  margin: 0 32px 18px !important;
+  padding: 12px 14px;
+  border-radius: 11px;
   font-size: 12.5px;
+  line-height: 1.5;
   border: 1px solid color-mix(in srgb, var(--danger) 42%, transparent);
   background: color-mix(in srgb, var(--danger) 12%, var(--card));
   color: color-mix(in srgb, var(--danger) 88%, white 12%);
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
 }
 
-/* Help section — collapsed disclosure so the card stays compact */
+.login-gate > .login-gate__card > .callout.danger::before {
+  content: "⚠";
+  font-size: 14px;
+  flex-shrink: 0;
+  opacity: 0.9;
+}
+
+/* Help section — quiet but visible */
 .login-gate__help {
   margin: 0;
   padding: 0;
@@ -279,23 +341,23 @@
 
 .login-gate__help-title {
   display: block;
-  padding: 14px 28px;
-  font-size: 11px;
+  padding: 16px 32px 10px;
+  font-size: 10.5px;
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: color-mix(in srgb, var(--muted) 80%, var(--text) 20%);
+  color: color-mix(in srgb, var(--accent) 50%, var(--muted) 50%);
   cursor: default;
   user-select: none;
 }
 
 .login-gate__steps {
   display: grid;
-  gap: 8px;
+  gap: 10px;
   margin: 0;
-  padding: 0 28px 8px 48px;
+  padding: 0 32px 10px 56px;
   color: color-mix(in srgb, var(--muted) 90%, var(--text) 10%);
-  font-size: 12px;
+  font-size: 12.5px;
   line-height: 1.55;
 }
 
@@ -307,18 +369,18 @@
 .login-gate__command {
   display: inline-flex;
   align-items: center;
-  min-height: 30px;
-  margin-top: 4px;
-  padding: 0 10px;
-  font-size: 11.5px;
+  min-height: 32px;
+  margin-top: 6px;
+  padding: 0 12px;
+  font-size: 12px;
   border: 1px solid color-mix(in srgb, var(--border-strong) 50%, transparent);
-  border-radius: 8px;
+  border-radius: 9px;
   background: color-mix(in srgb, var(--bg) 76%, black 24%);
   color: var(--text);
   box-shadow: inset 0 1px 0 color-mix(in srgb, white 6%, transparent);
   font-family: var(--mono);
   cursor: pointer;
-  transition: border-color 120ms ease, background 120ms ease;
+  transition: border-color 140ms ease, background 140ms ease;
 }
 
 .login-gate__command:hover {
@@ -330,20 +392,20 @@
 .login-gate__steps code {
   color: var(--text-strong);
   font-family: var(--mono);
-  font-size: 11.5px;
+  font-size: 12px;
 }
 
 .login-gate__docs {
-  padding: 4px 28px 18px;
-  font-size: 12px;
+  padding: 4px 32px 22px;
+  font-size: 12.5px;
 }
 
 .login-gate__docs a {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  min-height: 32px;
-  padding: 0 12px;
+  min-height: 34px;
+  padding: 0 14px;
   border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
   border-radius: 999px;
   background: color-mix(in srgb, var(--accent) 10%, transparent);
@@ -351,20 +413,23 @@
   font-weight: 600;
   font-size: 12px;
   text-decoration: none;
-  transition:
-    border-color 120ms ease,
-    background 120ms ease;
+  transition: border-color 140ms ease, background 140ms ease, transform 140ms ease;
 }
 
 .login-gate__docs a::after {
   content: "→";
   font-weight: 400;
   opacity: 0.7;
+  transition: transform 140ms ease;
 }
 
 .login-gate__docs a:hover {
   border-color: color-mix(in srgb, var(--accent) 56%, transparent);
   background: color-mix(in srgb, var(--accent) 16%, transparent);
+}
+
+.login-gate__docs a:hover::after {
+  transform: translateX(2px);
 }
 
 /* Light mode adjustments */
@@ -374,9 +439,9 @@
 
 :root[data-theme-mode="light"] .login-gate::before {
   background:
-    radial-gradient(720px 520px at 12% 20%, color-mix(in srgb, var(--accent) 12%, transparent), transparent 65%),
-    radial-gradient(700px 480px at 88% 78%, color-mix(in srgb, var(--accent-2, #0284c7) 8%, transparent), transparent 60%),
-    linear-gradient(140deg, color-mix(in srgb, var(--bg-content) 92%, white 8%), var(--bg-content));
+    radial-gradient(900px 600px at 18% 22%, color-mix(in srgb, var(--accent) 12%, transparent), transparent 60%),
+    radial-gradient(800px 540px at 86% 76%, color-mix(in srgb, var(--accent-2, #0284c7) 8%, transparent), transparent 60%),
+    linear-gradient(150deg, color-mix(in srgb, var(--bg-content) 92%, white 8%), var(--bg-content));
 }
 
 :root[data-theme-mode="light"] .login-gate__command {
@@ -386,37 +451,31 @@
 /* Short-viewport tightening */
 @media (max-height: 760px) {
   .login-gate {
-    padding: 12px;
+    padding: 16px;
     align-items: start;
   }
 
-  .login-gate__header { padding: 20px 26px 14px; }
-  .login-gate__form { padding: 14px 26px; gap: 10px; }
-  .login-gate__help-title { padding: 10px 26px; }
-  .login-gate__steps { padding: 0 26px 6px 44px; gap: 6px; }
-  .login-gate__docs { padding: 4px 26px 14px; }
-  .login-gate__logo { width: 48px; height: 48px; margin-bottom: 10px; }
-  .login-gate__title { font-size: 21px; }
-  .login-gate__sub { font-size: 12px; margin-top: 6px; }
+  .login-gate__header { padding: 24px 28px 16px; }
+  .login-gate__form { padding: 16px 28px 14px; gap: 12px; }
+  .login-gate__help-title { padding: 12px 28px 8px; }
+  .login-gate__steps { padding: 0 28px 8px 50px; gap: 8px; }
+  .login-gate__docs { padding: 4px 28px 16px; }
+  .login-gate__logo { width: 52px; height: 52px; margin-bottom: 12px; }
+  .login-gate__title { font-size: 22px; }
+  .login-gate__sub { font-size: 12.5px; margin-top: 8px; }
 }
 
 @media (max-width: 680px) {
-  .login-gate { padding: 12px; }
-
-  .login-gate__card { border-radius: 18px; }
-
+  .login-gate { padding: 14px; }
+  .login-gate__card { border-radius: 20px; }
   .login-gate__header,
   .login-gate__form,
-  .login-gate__docs {
-    padding-inline: 22px;
-  }
-
-  .login-gate__steps { padding-left: 40px; padding-right: 22px; }
-  .login-gate__help-title { padding-inline: 22px; }
-
+  .login-gate__docs { padding-inline: 24px; }
+  .login-gate__steps { padding-left: 44px; padding-right: 24px; }
+  .login-gate__help-title { padding-inline: 24px; }
   .login-gate__secret-row .btn--icon {
-    width: 44px;
-    min-width: 44px;
-    height: 44px;
+    width: 46px;
+    min-width: 46px;
+    height: 46px;
   }
 }
