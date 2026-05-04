@@ -1,22 +1,32 @@
-/* Cascade layer order — Carapace wins over every legacy stylesheet.
-   `legacy` covers the pre-existing baseline. `carapace` is the modern
-   overhaul; selectors here beat the same selectors in legacy regardless
-   of specificity. */
+/* ============================================================
+   FROM-SCRATCH CARAPACE — single visual authority
+   --------------------------------------------------------------
+   Loading order:
+   1. base.css          — design tokens (colors, fonts) only
+   2. system markdown   — code highlighting theme
+   3. layout.css        — shell GRID structure (positions only,
+                         visuals overridden by carapace)
+   4. layout.mobile.css — mobile shell rules
+   5. chat.css          — chat structural rules (positions only)
+   6. carapace          — REDESIGN.CSS + LOGIN-POLISH.CSS
+                         (the entire visual layer is owned here)
+
+   Removed: components.css, config.css, config-quick.css,
+   cron-quick-create.css, usage.css, dreams.css, browser-polish.css.
+   These supplied competing visual styles. Their structural class
+   names are now owned by carapace.
+   ============================================================ */
+
 @layer legacy, carapace;
 
+/* Tokens + structural layout primitives only */
 @import "./styles/base.css" layer(legacy);
+@import "@create-markdown/preview/themes/system.css" layer(legacy);
 @import "./styles/layout.css" layer(legacy);
 @import "./styles/layout.mobile.css" layer(legacy);
-@import "./styles/components.css" layer(legacy);
 @import "./styles/chat.css" layer(legacy);
-@import "./styles/config.css" layer(legacy);
-@import "./styles/config-quick.css" layer(legacy);
-@import "./styles/cron-quick-create.css" layer(legacy);
-@import "./styles/usage.css" layer(legacy);
-@import "./styles/dreams.css" layer(legacy);
-@import "@create-markdown/preview/themes/system.css" layer(legacy);
-@import "./styles/browser-polish.css" layer(legacy);
 
+/* Carapace visual layer — single source of truth */
 @import "./styles/redesign.css" layer(carapace);
 @import "./styles/login-polish.css" layer(carapace);
 
