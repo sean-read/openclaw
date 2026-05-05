@@ -1,5 +1,5 @@
 /* ============================================================
-   FROM-SCRATCH CARAPACE — single visual authority
+   CARAPACE MODERN — single visual authority
    --------------------------------------------------------------
    Loading order:
    1. base.css          — design tokens (colors, fonts) only
@@ -7,10 +7,7 @@
    3. layout.css        — shell GRID structure (positions only)
    4. layout.mobile.css — mobile shell rules
    5. chat.css          — chat structural rules (positions only)
-   6. carapace-fresh    — entire visual layer, completely new DNA
-
-   Removed all prior carapace + legacy visual stylesheets so the
-   new aesthetic isn't fighting any inherited treatment.
+   6. carapace-modern   — entire visual layer, modern liquid-glass DNA
    ============================================================ */
 
 @layer legacy, carapace;
@@ -21,7 +18,7 @@
 @import "./styles/layout.mobile.css" layer(legacy);
 @import "./styles/chat.css" layer(legacy);
 
-@import "./styles/carapace-fresh.css" layer(carapace);
+@import "./styles/carapace-modern.css" layer(carapace);
 
 .cm-preview {
   --cm-mono: var(--mono);
